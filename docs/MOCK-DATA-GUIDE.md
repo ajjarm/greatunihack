@@ -33,7 +33,7 @@ pitch, README, video and QA.
 | `persona.json` | Profile, incomes, outgoings, limits, rules, goal, balance, demoNow | everything |
 | `purchases.json` | ~60 purchases over the 90 days before demoDate, with feedback on ~25 | purchases tab, insights, duplicates, history factor |
 | `assessments-history.json` | ~20 past nudges (what the agent said, what Sam did), so Home and Insights have history | home, insights |
-| `scenarios.json` | The five demo baskets with full assessment responses and variants | nudge, watcher |
+| `scenarios.json` | The five demo baskets with full assessment responses and variants | nudge, extension |
 | `home.json` | Spend Score with 8 weeks of history, the insight sentence | home |
 | `insights.json` | The insight sentences and the aggregates behind them | insights tab |
 | `timeline.json` | 60 days of projected balance from demoDate, with income and bill events | insights, nudge show-more |
@@ -82,7 +82,7 @@ calibration for the category.
 | `scn_2_essential` | Amazon, 2 days before rent: paracetamol £3.49 + prescription top-up £10.50 | Item necessity 92, `essentialPrompt: true`. Before the answer: verdict `nudge` with headline "Looks essential. Is it?". Variant `essentialYes` → `essential_cover`, headline "Buy it. Skip one takeaway this week and you're covered.", regret 8. |
 | `scn_3_duplicate` | Amazon: noise-cancelling headphones £54 + phone case £35 | `nudge`, regret 58 (headphones 22 `useful`, case 81 `want`). Factors: duplicateOf the phone case from 6 weeks ago ("you own two"), accessories regret 75%. Negotiation: drop case → risk 22, `go_ahead`. reflectionDays 7 for headphones, 3 for the case (use 7 at basket level). Variant `negotiated`. This is the one Sam "buys anyway" in the demo, so `assessments-history.json` must not already contain it. |
 | `scn_4_fine` | Amazon: course reader £6 | `go_ahead`, regret 6, headline "Looks fine. £406 safe after this." Rule "course books are always fine" matched. Toast only. |
-| `scn_5_steam` | Steam: a game £39.99, Friday 22:30, "-40% ends in 2 days" countdown | `nudge`, regret 64. Factors: Friday-after-10pm window, countdown cue, fun limit £30 → £10 over. Negotiation: delay 5 days (after the next shift) → risk 38. reflectionDays 7. |
+| `scn_5_deal` | Amazon: a video game £39.99, Friday 22:30, "Lightning deal ends in 2h 10m" countdown | `nudge`, regret 64. Factors: Friday-after-10pm window, countdown cue, fun limit £30 → £10 over. Negotiation: delay 5 days (after the next shift) → risk 38. reflectionDays 7. |
 
 Make the numbers agree: scenario 1's `impact.safeToSpendBeforePence` must equal the
 timeline's lowest point before the next income; `limit.spentThisWeekPence` must equal
@@ -112,7 +112,7 @@ with no decimals unless under £10. No exclamation marks. No "um, basically".
 
 ## Realism checklist
 
-- Merchants vary (Amazon, ASOS, Tesco, Deliveroo, Uber Eats, Trainline, Boots, Steam,
+- Merchants vary (Amazon, ASOS, Tesco, Deliveroo, Uber Eats, Trainline, Boots, Spotify,
   Spotify, the SU shop, a kebab place). Not everything is Amazon.
 - Amounts are not round. £13.47, not £13.
 - Dates spread across all 90 days, with the patterns above on top of ordinary life.

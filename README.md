@@ -21,8 +21,8 @@ cd apps/web && npm install && DEMO_FAST_TIMERS=1 npm run dev
 ```
 
 Then open http://localhost:3000 for the index, `/nudge?scenario=scn_1_impulse` for
-the nudge, `/home` for the dashboard. The Watcher is in `apps/watcher`
-(`npm install && npm start`).
+the nudge, `/home` for the dashboard. The Chrome extension is in `apps/extension`
+(load unpacked from chrome://extensions).
 
 ## Start here (team)
 
@@ -44,7 +44,7 @@ the nudge, `/home` for the dashboard. The Watcher is in `apps/watcher`
 | `docs/TRACK-ANALYSIS.md` | Every track and idea scored. |
 | `plan/active/` | One file per person: directories, steps, done-when, the prompt. |
 | `apps/web` | Next.js: API + nudge page + dashboard. |
-| `apps/watcher` | Electron menu-bar Watcher (macOS). |
+| `apps/extension` | Chrome extension (Amazon checkout → API → nudge iframe). |
 | `data/` | Fixture data (the demo's brain in phase 1). |
 | `scripts/` | `sync`, `checkpoint`, `land`, `ask`, `inbox`, `answer`. |
 

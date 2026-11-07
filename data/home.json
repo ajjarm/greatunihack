@@ -1,0 +1,59 @@
+{
+  "demoNow": "2026-11-08T23:40:00+00:00",
+  "spendScore": {
+    "value": 72,
+    "band": "amber",
+    "trend": "up",
+    "explanation": "Up three points on last week. You kept the eating out and groceries limits and waited on the overshirt on Friday night. Clothes is still the category that pulls the score down.",
+    "history": [
+      {
+        "weekStart": "2026-09-14",
+        "value": 58
+      },
+      {
+        "weekStart": "2026-09-21",
+        "value": 61
+      },
+      {
+        "weekStart": "2026-09-28",
+        "value": 60
+      },
+      {
+        "weekStart": "2026-10-05",
+        "value": 64
+      },
+      {
+        "weekStart": "2026-10-12",
+        "value": 63
+      },
+      {
+        "weekStart": "2026-10-19",
+        "value": 67
+      },
+      {
+        "weekStart": "2026-10-26",
+        "value": 69
+      },
+      {
+        "weekStart": "2026-11-02",
+        "value": 72
+      }
+    ]
+  },
+  "balancePence": 41200,
+  "safeToSpendPence": 41200,
+  "daysToNextIncome": 5,
+  "nextIncome": {
+    "name": "Part-time job",
+    "date": "2026-11-13",
+    "amountPence": 19800
+  },
+  "nextBill": {
+    "name": "Phone",
+    "date": "2026-11-14",
+    "amountPence": 1800
+  },
+  "insight": "You've regretted 3 of your last 4 late-night clothes orders. It's 11:40pm.",
+  "recentAssessments": [],
+  "pendingReflections": 0
+}

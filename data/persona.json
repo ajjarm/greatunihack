@@ -1,0 +1,104 @@
+{
+  "name": "Sam",
+  "demoDate": "2026-11-08",
+  "demoNow": "2026-11-08T23:40:00+00:00",
+  "hourlyRatePence": 950,
+  "balancePence": 41200,
+  "incomes": [
+    {
+      "id": "inc_job",
+      "name": "Part-time job",
+      "amountPence": 19800,
+      "schedule": {
+        "type": "fortnightly",
+        "weekday": 5,
+        "nextDate": "2026-11-13"
+      },
+      "nextDate": "2026-11-13"
+    },
+    {
+      "id": "inc_loan",
+      "name": "Maintenance loan",
+      "amountPence": 214000,
+      "schedule": {
+        "type": "once",
+        "date": "2027-01-12"
+      },
+      "nextDate": "2027-01-12"
+    }
+  ],
+  "outgoings": [
+    {
+      "id": "out_rent",
+      "name": "Rent",
+      "amountPence": 65000,
+      "dayOfMonth": 1,
+      "category": "household"
+    },
+    {
+      "id": "out_spotify",
+      "name": "Spotify",
+      "amountPence": 1100,
+      "dayOfMonth": 5,
+      "category": "subscriptions"
+    },
+    {
+      "id": "out_phone",
+      "name": "Phone",
+      "amountPence": 1800,
+      "dayOfMonth": 14,
+      "category": "subscriptions"
+    },
+    {
+      "id": "out_gym",
+      "name": "Gym",
+      "amountPence": 2400,
+      "dayOfMonth": 20,
+      "category": "health"
+    }
+  ],
+  "limits": [
+    {
+      "category": "eating_out",
+      "weeklyLimitPence": 4000
+    },
+    {
+      "category": "clothes",
+      "weeklyLimitPence": 6000
+    },
+    {
+      "category": "fun",
+      "weeklyLimitPence": 3000
+    },
+    {
+      "category": "groceries",
+      "weeklyLimitPence": 4500
+    }
+  ],
+  "rules": [
+    {
+      "id": "rule_trainers",
+      "text": "No trainers until exams are over",
+      "category": "clothes",
+      "direction": "avoid",
+      "until": "exams"
+    },
+    {
+      "id": "rule_takeaway",
+      "text": "Stop ordering takeaway on weeknights",
+      "category": "eating_out",
+      "direction": "avoid"
+    },
+    {
+      "id": "rule_books",
+      "text": "Course books are always fine",
+      "category": "books",
+      "direction": "always_fine"
+    }
+  ],
+  "goal": {
+    "name": "Summer trip",
+    "targetPence": 60000,
+    "savedPence": 14000
+  }
+}

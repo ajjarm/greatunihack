@@ -20,7 +20,8 @@ apps/web/                         Next.js 15, App Router, TypeScript, Tailwind. 
   src/app/(dashboard)/**          Dashboard routes and its own layout. AARAV.
   src/components/dashboard/**     Dashboard components. AARAV.
   package.json, package-lock.json AJJAR. Need a dependency? ask.sh ajjar "add dep: x".
-apps/watcher/                     Electron menu-bar app. AJJAR.
+apps/extension/                   Chrome extension (Amazon checkout → API → nudge iframe). AJJAR.
+apps/web/src/lib/host.ts          postMessage helpers the nudge page uses. AJJAR.
 data/                             Fixture data (JSON). ZACK.
 n8n/                              Exported workflows. RAYAN (phase 2).
 docs/DESIGN.md                    Design system, written by Ajjar from the Claude Design file.
@@ -71,7 +72,7 @@ category?, direction `avoid|always_fine`, until?), `goal` (name, targetPence,
 savedPence).
 
 **Purchase** — `id`, `merchant`, `item`, `category`, `amountPence`, `purchasedAt`,
-`source` (`feed|watcher|manual`), `essential`, `cues[]`, `predictedRegret?`,
+`source` (`feed|extension|manual`), `essential`, `cues[]`, `predictedRegret?`,
 `assessmentId?`, `feedback` (`happy|regretted|unsure|null`), `feedbackReason?`,
 `feedbackAt?`, `reflectionDueAt?`.
 
@@ -126,8 +127,8 @@ state changing.
 | Method | Path | Body | Returns | Used by |
 |---|---|---|---|---|
 | GET | `/api/health` | | `{ok, mode: "fixture"|"live", demoNow}` | all |
-| GET | `/api/scenarios` | | `[{id, title, merchant, totalPence}]` | nudge dev, watcher |
-| POST | `/api/assess` | `AssessRequest` (`scenarioId` optional: when present, the matching fixture is used) | `Assessment` | watcher, nudge dev |
+| GET | `/api/scenarios` | | `[{id, title, merchant, totalPence}]` | nudge dev, extension |
+| POST | `/api/assess` | `AssessRequest` (`scenarioId` optional: when present, the matching fixture is used) | `Assessment` | extension, nudge dev |
 | GET | `/api/assessments/:id` | | `Assessment` | nudge |
 | POST | `/api/assessments/:id/reason` | `{text}` | `Assessment` (updated, with `reason`) | nudge |
 | PATCH | `/api/assessments/:id/essential` | `{itemIndex, essential: boolean}` | `Assessment` (re-judged) | nudge |
@@ -151,7 +152,7 @@ state changing.
 
 ```json
 {
-  "source": "watcher",
+  "source": "extension",
   "merchant": "Amazon",
   "url": "https://www.amazon.co.uk/gp/buy/...",
   "items": [{"name": "Nike Air Max 90", "pricePence": 8500, "qty": 1, "category": "clothes"}],
@@ -168,29 +169,35 @@ Fixture matching in `POST /api/assess`: `scenarioId` wins; else exact `basketHas
 else merchant + totalPence within ±1; else a generic `go_ahead` assessment is built from
 the request (phase 1) or computed for real (phase 2).
 
-## 6. The nudge page and the Electron bridge
+## 6. The nudge page and the host bridge
 
 The nudge is a Next.js page: `/nudge?assessmentId=<id>` renders that assessment;
 `/nudge?scenario=<scenarioId>` (dev convenience) first calls `POST /api/assess` with
-that `scenarioId`, then renders. The Electron window loads this page (local dev server
-URL, or the deployed URL). Window size: width 400, height whatever the page asks for.
+that `scenarioId`, then renders. The Chrome extension injects this page into the Amazon
+checkout as an `<iframe>` fixed to the top-right, 400px wide, height whatever the page
+asks for.
 
-The bridge, injected by Electron's preload as `window.watcher` (absent in a normal
-browser; always feature-detect):
+The page talks to its host with `window.postMessage` (works in the iframe; harmless in
+a plain tab). Use the helper in `apps/web/src/lib/host.ts` (Ajjar) rather than calling
+postMessage yourself:
 
 ```ts
-interface WatcherBridge {
-  close(): void;                       // dismiss the window
-  resize(height: number): void;        // page reports its content height after render
-  openDashboard(path?: string): void;  // open the web app in the default browser
-}
+// apps/web/src/lib/host.ts
+hostResize(height: number)   // posts {source:"st-nudge", type:"resize", height}
+hostClose()                  // posts {source:"st-nudge", type:"close"}
+hostOpenDashboard(path?)     // posts {source:"st-nudge", type:"open", path}
 ```
 
-The page must work with the bridge absent (plain browser): buttons still call the API;
-`close()` becomes a no-op.
+Rules: call `hostResize(document.body.scrollHeight)` after every render; call
+`hostClose()` after a decision. In a plain browser tab these are no-ops, so the page
+must still behave sensibly (buttons call the API; after a decision show a quiet "done"
+state).
 
-Toast variant: when `verdict === "go_ahead"`, the page renders the small green toast
-layout and asks for `resize(72)`.
+Toast variant: when `verdict === "go_ahead"`, render the small green toast layout and
+call `hostResize(72)`; auto-close after 3 seconds.
+
+The extension's content script (Ajjar, `apps/extension`) listens for these messages
+and resizes or removes the iframe; it never reaches into the page.
 
 ## 7. Scenario fixtures (data/scenarios.json)
 

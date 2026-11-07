@@ -1,0 +1,344 @@
+[
+  {
+    "id": "p_05",
+    "merchant": "Tesco",
+    "item": "Weekly shop",
+    "category": "groceries",
+    "amountPence": 2384,
+    "purchasedAt": "2026-11-07T11:10:00+00:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_24",
+    "merchant": "Bee Network",
+    "item": "Weekly bus pass",
+    "category": "transport",
+    "amountPence": 1850,
+    "purchasedAt": "2026-11-05T08:10:00+00:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_23",
+    "merchant": "ASOS",
+    "item": "Plain white tee",
+    "category": "clothes",
+    "amountPence": 1299,
+    "purchasedAt": "2026-11-03T20:15:00+00:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "happy",
+    "feedbackAt": "2026-11-06T18:50:00+00:00"
+  },
+  {
+    "id": "p_22",
+    "merchant": "SU shop",
+    "item": "Course reader, week 6",
+    "category": "books",
+    "amountPence": 550,
+    "purchasedAt": "2026-11-01T16:20:00+00:00",
+    "source": "watcher",
+    "essential": true,
+    "cues": [],
+    "predictedRegret": 6,
+    "assessmentId": "ah_03",
+    "feedback": "happy",
+    "feedbackAt": "2026-11-03T09:30:00+00:00"
+  },
+  {
+    "id": "p_21",
+    "merchant": "Uber Eats",
+    "item": "Burgers, Halloween",
+    "category": "eating_out",
+    "amountPence": 2240,
+    "purchasedAt": "2026-10-31T19:00:00+00:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "happy",
+    "feedbackAt": "2026-11-01T11:45:00+00:00"
+  },
+  {
+    "id": "p_20",
+    "merchant": "ASOS",
+    "item": "Zip hoodie, navy",
+    "category": "clothes",
+    "amountPence": 3800,
+    "purchasedAt": "2026-10-30T23:40:00+00:00",
+    "source": "watcher",
+    "essential": false,
+    "cues": [
+      "scarcity"
+    ],
+    "predictedRegret": 71,
+    "assessmentId": "ah_04",
+    "feedback": "regretted",
+    "feedbackReason": "Third hoodie this term",
+    "feedbackAt": "2026-11-03T20:05:00+00:00"
+  },
+  {
+    "id": "p_19",
+    "merchant": "Amazon",
+    "item": "Phone grip ring",
+    "category": "accessories",
+    "amountPence": 699,
+    "purchasedAt": "2026-10-24T23:55:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [
+      "countdown"
+    ],
+    "feedback": "regretted",
+    "feedbackReason": "Never put it on",
+    "feedbackAt": "2026-10-28T17:30:00+00:00"
+  },
+  {
+    "id": "p_18",
+    "merchant": "Tesco",
+    "item": "Big shop",
+    "category": "groceries",
+    "amountPence": 3112,
+    "purchasedAt": "2026-10-17T13:30:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_17",
+    "merchant": "ASOS",
+    "item": "Black cargo trousers",
+    "category": "clothes",
+    "amountPence": 4200,
+    "purchasedAt": "2026-10-17T01:10:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [
+      "sale"
+    ],
+    "feedback": "happy",
+    "feedbackAt": "2026-10-22T19:15:00+01:00"
+  },
+  {
+    "id": "p_16",
+    "merchant": "Steam",
+    "item": "Hades II",
+    "category": "fun",
+    "amountPence": 2399,
+    "purchasedAt": "2026-10-16T22:45:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [
+      "sale",
+      "countdown"
+    ],
+    "feedback": "regretted",
+    "feedbackReason": "Played it for an hour",
+    "feedbackAt": "2026-10-23T20:40:00+01:00"
+  },
+  {
+    "id": "p_15",
+    "merchant": "Just Eat",
+    "item": "Chinese takeaway, Wednesday",
+    "category": "eating_out",
+    "amountPence": 1980,
+    "purchasedAt": "2026-10-14T18:45:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "regretted",
+    "feedbackReason": "Weeknight, again",
+    "feedbackAt": "2026-10-15T12:00:00+01:00"
+  },
+  {
+    "id": "p_14",
+    "merchant": "Amazon",
+    "item": "Wireless earbuds, Anker",
+    "category": "accessories",
+    "amountPence": 2499,
+    "purchasedAt": "2026-10-10T23:30:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [
+      "scarcity"
+    ],
+    "feedback": "regretted",
+    "feedbackReason": "The old pair still works",
+    "feedbackAt": "2026-10-17T18:25:00+01:00"
+  },
+  {
+    "id": "p_13",
+    "merchant": "Waterstones",
+    "item": "Fundamentals of Statistics",
+    "category": "books",
+    "amountPence": 2899,
+    "purchasedAt": "2026-10-06T17:20:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": "happy",
+    "feedbackAt": "2026-10-10T16:00:00+01:00"
+  },
+  {
+    "id": "p_12",
+    "merchant": "Deliveroo",
+    "item": "Brunch",
+    "category": "eating_out",
+    "amountPence": 1625,
+    "purchasedAt": "2026-10-03T12:40:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "happy",
+    "feedbackAt": "2026-10-04T10:30:00+01:00"
+  },
+  {
+    "id": "p_11",
+    "merchant": "ASOS",
+    "item": "Nike Dunk Low",
+    "category": "clothes",
+    "amountPence": 9500,
+    "purchasedAt": "2026-10-02T23:15:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [
+      "scarcity",
+      "countdown"
+    ],
+    "feedback": "regretted",
+    "feedbackReason": "Worn them twice",
+    "feedbackAt": "2026-10-07T21:05:00+01:00"
+  },
+  {
+    "id": "p_10",
+    "merchant": "Amazon",
+    "item": "Leather phone case, black",
+    "category": "accessories",
+    "amountPence": 1299,
+    "purchasedAt": "2026-09-27T00:30:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [
+      "sale"
+    ],
+    "feedback": "regretted",
+    "feedbackReason": "The clear one was fine",
+    "feedbackAt": "2026-10-02T19:10:00+01:00"
+  },
+  {
+    "id": "p_09",
+    "merchant": "Blackwell's",
+    "item": "Microeconomics, 3rd edition",
+    "category": "books",
+    "amountPence": 3499,
+    "purchasedAt": "2026-09-23T14:00:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": "happy",
+    "feedbackAt": "2026-09-30T11:20:00+01:00"
+  },
+  {
+    "id": "p_08",
+    "merchant": "Amazon",
+    "item": "Sony WH-CH520 headphones",
+    "category": "tech",
+    "amountPence": 4999,
+    "purchasedAt": "2026-09-22T10:15:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "happy",
+    "feedbackReason": "Use them every day",
+    "feedbackAt": "2026-09-29T17:45:00+01:00"
+  },
+  {
+    "id": "p_07",
+    "merchant": "Trainline",
+    "item": "Train to Leeds",
+    "category": "transport",
+    "amountPence": 2150,
+    "purchasedAt": "2026-09-12T15:30:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": "happy",
+    "feedbackAt": "2026-09-14T20:00:00+01:00"
+  },
+  {
+    "id": "p_06",
+    "merchant": "Uber Eats",
+    "item": "Kebab, late",
+    "category": "eating_out",
+    "amountPence": 1290,
+    "purchasedAt": "2026-09-04T22:55:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "regretted",
+    "feedbackReason": "Was not even hungry",
+    "feedbackAt": "2026-09-05T13:30:00+01:00"
+  },
+  {
+    "id": "p_04",
+    "merchant": "Amazon",
+    "item": "Wireless earbuds",
+    "category": "accessories",
+    "amountPence": 1999,
+    "purchasedAt": "2026-08-22T00:40:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [
+      "scarcity"
+    ],
+    "feedback": null
+  },
+  {
+    "id": "p_02",
+    "merchant": "Amazon",
+    "item": "Clear phone case",
+    "category": "accessories",
+    "amountPence": 899,
+    "purchasedAt": "2026-08-18T13:05:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "happy",
+    "feedbackAt": "2026-08-25T09:40:00+01:00"
+  },
+  {
+    "id": "p_03",
+    "merchant": "Deliveroo",
+    "item": "Pizza with flatmates",
+    "category": "eating_out",
+    "amountPence": 1847,
+    "purchasedAt": "2026-08-15T19:30:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "happy",
+    "feedbackAt": "2026-08-16T12:15:00+01:00"
+  },
+  {
+    "id": "p_01",
+    "merchant": "ASOS",
+    "item": "Oversized hoodie, grey",
+    "category": "clothes",
+    "amountPence": 3200,
+    "purchasedAt": "2026-08-14T23:20:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [
+      "sale"
+    ],
+    "feedback": "regretted",
+    "feedbackReason": "Already had two hoodies",
+    "feedbackAt": "2026-08-18T18:02:00+01:00"
+  }
+]

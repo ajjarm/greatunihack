@@ -1,0 +1,196 @@
+{
+  "sentences": [
+    {
+      "key": "category",
+      "text": "Clothes and accessories are where your regrets live: 3 of 5 clothes buys and 3 of 4 accessories you reviewed went badly. Books never have.",
+      "evidence": "clothes 3 of 5, accessories 3 of 4, books 0 of 3, eating out 2 of 5"
+    },
+    {
+      "key": "late_night",
+      "text": "Between 11pm and 2am you regret almost everything you buy. Six of the seven late-night purchases you reviewed were regrets.",
+      "evidence": "7 reviewed late-night purchases, 6 regretted"
+    },
+    {
+      "key": "friday",
+      "text": "Friday after 10pm is the worst hour of your week. Five purchases, five regrets.",
+      "evidence": "p_01, p_06, p_11, p_16, p_20"
+    },
+    {
+      "key": "payday",
+      "text": "The two days after a shift pays are busier and riskier: 4 of the 7 purchases you reviewed in those windows were regrets, against 9 of 20 overall.",
+      "evidence": "7 reviewed within 48h of payday, 4 regretted; 20 reviewed overall, 9 regretted"
+    },
+    {
+      "key": "pressure",
+      "text": "Under a sale, countdown or only-2-left banner you regretted 7 of 8 purchases. Without one, 2 of 12.",
+      "evidence": "8 reviewed with a cue, 7 regretted; 12 without, 2 regretted"
+    },
+    {
+      "key": "duplicates",
+      "text": "You own two phone cases and two pairs of earbuds. The second of each was a late-night order, and the second case was a regret.",
+      "evidence": "p_02 and p_10 phone cases; p_04 and p_14 earbuds"
+    },
+    {
+      "key": "calibration",
+      "text": "I'm 81% tuned to you, up from 64% a month ago. Accessories is where I've learned most.",
+      "evidence": "20 reviewed purchases; accessories 81%, clothes 78%, books 90%"
+    }
+  ],
+  "regretByCategory": [
+    {
+      "category": "accessories",
+      "reviewed": 4,
+      "regretted": 3,
+      "ratePct": 75
+    },
+    {
+      "category": "clothes",
+      "reviewed": 5,
+      "regretted": 3,
+      "ratePct": 60
+    },
+    {
+      "category": "fun",
+      "reviewed": 1,
+      "regretted": 1,
+      "ratePct": 100
+    },
+    {
+      "category": "eating_out",
+      "reviewed": 5,
+      "regretted": 2,
+      "ratePct": 40
+    },
+    {
+      "category": "tech",
+      "reviewed": 1,
+      "regretted": 0,
+      "ratePct": 0
+    },
+    {
+      "category": "transport",
+      "reviewed": 1,
+      "regretted": 0,
+      "ratePct": 0
+    },
+    {
+      "category": "books",
+      "reviewed": 3,
+      "regretted": 0,
+      "ratePct": 0
+    }
+  ],
+  "riskyWindows": [
+    {
+      "label": "Friday after 10pm",
+      "ratePct": 100,
+      "evidence": "5 of 5 reviewed purchases regretted"
+    },
+    {
+      "label": "Late night, 11pm to 2am",
+      "ratePct": 86,
+      "evidence": "6 of 7 reviewed purchases regretted"
+    },
+    {
+      "label": "48 hours after payday",
+      "ratePct": 57,
+      "evidence": "4 of 7 reviewed purchases regretted"
+    }
+  ],
+  "pressure": {
+    "withCueRatePct": 88,
+    "withoutCueRatePct": 17,
+    "sentence": "With a sales cue on the page you regretted 88% of purchases. Without one, 17%."
+  },
+  "duplicates": [
+    {
+      "item": "Phone case",
+      "count": 2,
+      "purchaseIds": [
+        "p_02",
+        "p_10"
+      ]
+    },
+    {
+      "item": "Wireless earbuds",
+      "count": 2,
+      "purchaseIds": [
+        "p_04",
+        "p_14"
+      ]
+    }
+  ],
+  "avoidedPence": 13800,
+  "avoidedCouldBe": [
+    {
+      "label": "Trip fund",
+      "text": "£138 is nearly a quarter of what you still need for the summer trip."
+    },
+    {
+      "label": "Rent buffer",
+      "text": "£138 would cover the gap on 1 January until the loan lands."
+    },
+    {
+      "label": "Days of spending",
+      "text": "£138 is about nine days of your usual spending."
+    }
+  ],
+  "calibration": {
+    "overallPct": 81,
+    "byCategory": [
+      {
+        "category": "accessories",
+        "pct": 81,
+        "multiplier": 1.2,
+        "deltaPct": 14
+      },
+      {
+        "category": "clothes",
+        "pct": 78,
+        "multiplier": 1.1,
+        "deltaPct": 9
+      },
+      {
+        "category": "books",
+        "pct": 90,
+        "multiplier": 0.8,
+        "deltaPct": 6
+      },
+      {
+        "category": "eating_out",
+        "pct": 70,
+        "multiplier": 1,
+        "deltaPct": 5
+      },
+      {
+        "category": "fun",
+        "pct": 70,
+        "multiplier": 1,
+        "deltaPct": 3
+      }
+    ]
+  },
+  "limits": [
+    {
+      "category": "eating_out",
+      "weeklyLimitPence": 4000,
+      "spentThisWeekPence": 0
+    },
+    {
+      "category": "clothes",
+      "weeklyLimitPence": 6000,
+      "spentThisWeekPence": 1299
+    },
+    {
+      "category": "fun",
+      "weeklyLimitPence": 3000,
+      "spentThisWeekPence": 0
+    },
+    {
+      "category": "groceries",
+      "weeklyLimitPence": 4500,
+      "spentThisWeekPence": 2384
+    }
+  ],
+  "timeline": []
+}

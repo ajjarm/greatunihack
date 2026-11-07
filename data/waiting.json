@@ -1,0 +1,24 @@
+[
+  {
+    "id": "wait_01",
+    "assessmentId": "ah_01",
+    "itemName": "Corduroy overshirt, tan",
+    "pricePence": 5400,
+    "merchant": "ASOS",
+    "url": "https://www.asos.com/",
+    "savedAt": "2026-11-06T23:06:00+00:00",
+    "reconsiderAt": "2026-11-09T09:00:00+00:00",
+    "status": "waiting"
+  },
+  {
+    "id": "wait_02",
+    "assessmentId": "ah_06",
+    "itemName": "Puffer jacket, black",
+    "pricePence": 4800,
+    "merchant": "Amazon",
+    "url": "https://www.amazon.co.uk/",
+    "savedAt": "2026-10-20T21:12:00+01:00",
+    "reconsiderAt": "2026-11-20T09:00:00+00:00",
+    "status": "extended"
+  }
+]

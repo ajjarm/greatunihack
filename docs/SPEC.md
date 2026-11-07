@@ -2,21 +2,26 @@
 
 **Status: final for build day, 8 Nov 2026.** Demo-first. Sections 8 and 9 are the
 per-person instructions. `docs/INTERFACES.md` is the contract; where this file and that
-file disagree, INTERFACES wins. The name is undecided; code uses "SecondThought" as a
-placeholder string in one place only (`apps/web/src/lib/brand.ts`, Ajjar).
+file disagree, INTERFACES wins. The name is undecided; the placeholder lives in one
+file (`apps/web/src/lib/brand.ts`, Ajjar).
+
+Capture surface decided 7 Nov evening: **a Chrome extension scoped to Amazon**, not a
+screen-watching Mac app. Reason: a screen watcher makes some people (and possibly
+judges) uncomfortable; the extension has a narrow permission and keeps every other
+feature. Demo is Amazon only.
 
 ---
 
 ## 1. The product in one paragraph
 
-A money agent for students that lives on your laptop. It knows when your money arrives
-(loan drops, shifts) and when it leaves (rent, phone, gym), and it sees every purchase
-you make through a bank-style transaction feed. It watches your screen and, the moment
-you reach a checkout anywhere, it steps in: a predicted regret score, the real impact on
-your money between now and your next income, the factors you should weigh, and a "show
-more" for the detail. It never blocks. You can tell it why you're buying, and it judges
-whether that reason holds. It learns from what you buy and how you feel about it later,
-and shows you how well it has learned you.
+A money agent for students that lives in your browser. It knows when your money
+arrives (loan drops, shifts) and when it leaves (rent, phone, gym), and it sees every
+purchase you make through a bank-style transaction feed. The moment you reach a
+checkout, it steps in: a predicted regret score, the real impact on your money between
+now and your next income, the factors you should weigh, and a "show more" for the
+detail. It never blocks. You can tell it why you're buying, and it judges whether that
+reason holds. It learns from what you buy and how you feel about it later, and shows
+you how well it has learned you.
 
 **User:** university students who shop online (wording open; "especially useful if you
 have ADHD or find impulse control hard" is the one permitted line, no medical claims).
@@ -26,10 +31,14 @@ steps in at the checkout, knows what your rent and payday do to this purchase, a
 tells you what to drop instead of saying no.
 
 **Why it's original (say this to BNY):** checkout-pause tools exist (Pocketlens,
-REGRET, Worth It). None of them: watch the screen with no extension or integration;
-compute impact against real income dates and bills; negotiate the basket instead of
-pause-or-continue; read pressure cues off the page and feed them back as insight; show
-their calibration to you. We add those five.
+REGRET, Worth It). None of them: compute impact against your real income dates and
+bills; negotiate the basket instead of pause-or-continue; read pressure cues off the
+page and feed them back as insight; let you argue your case and re-judge; show their
+calibration to you. We add those five.
+
+**Privacy line:** the extension only has permission for amazon.co.uk, only runs on
+checkout pages, and only sends item names, prices and visible banner text to our API.
+Nothing else is read or stored.
 
 ## 2. Principles (every lane)
 
@@ -39,44 +48,46 @@ their calibration to you. We add those five.
 - No shame. Friendly, short, specific. Colour always paired with a text label.
   Keyboard reachable. Escape closes. No red flashing. No exclamation marks in copy.
 - The user wins arguments: one tap overrides any AI judgement, and it's remembered.
-- Privacy: screens are read locally and discarded unless they're a checkout; only
-  extracted item facts are stored, never screenshots.
 - Money is integer pence, GBP, Europe/London. "Now" is `persona.demoNow`.
 
 ## 3. Demo-first strategy
 
 Everything the judge sees is built against **fixture data first**. The API serves
 fixtures from `data/` from minute zero, so the nudge and dashboard call real endpoints
-from the start and never change when the logic becomes real. Detection starts as a
-hotkey, then OCR. Fixtures become real behaviour one endpoint at a time in phase 2. If
-time runs out, whatever is still on fixtures stays on fixtures and we say so.
+from the start and never change when the logic becomes real. The extension starts by
+triggering fixture scenarios on the Amazon checkout page, then reads the real basket.
+Fixtures become real behaviour one endpoint at a time in phase 2. If time runs out,
+whatever is still on fixtures stays on fixtures and we say so.
 
 | Phase | Clock | What is true at the end |
 |---|---|---|
 | 0 Setup | 0:00–0:30 | Everyone has cloned, run `npm install` and `npm run dev` in `apps/web`, seen `/api/health` and `/nudge?scenario=scn_1_impulse` return data. Branches created. Organisers' questions asked (submission format, deadline, hacking window). |
-| 1 Fixtures | 0:30–3:00 | Nudge renders all five scenarios beautifully. Dashboard's five tabs render from the API. Watcher shows the nudge via hotkey, then via OCR on the Amazon checkout. Zack's data v1 at 1:30, final at 2:30. First full run-through at 2:00. |
-| 2 Real | 3:00–5:00 | `/api/assess` computes for real (timeline, necessity, affordability, factors 1–7, reason). Claude vision reads real baskets. Reflection loop changes calibration. Dashboard reads live values. Backup video recorded at 4:00. |
+| 1 Fixtures | 0:30–3:00 | Nudge renders all five scenarios beautifully. Dashboard's five tabs render from the API. Extension injects the nudge on the Amazon checkout page (fixture scenario first, then the real basket). Zack's data v1 at 1:30, final at 2:30. First full run-through at 2:00. |
+| 2 Real | 3:00–5:00 | `/api/assess` computes for real (timeline, necessity, affordability, factors 1–7, reason). Reflection loop changes calibration. Dashboard reads live values. Backup video recorded at 4:00. |
 | 3 Freeze | 5:00–6:00 | No new code except a crash on the demo path. Two timed rehearsals. Submit. |
 
 ## 4. Surfaces
 
-### 4.1 The Watcher (Mac menu-bar app) — Ajjar
+### 4.1 The Chrome extension — Ajjar
 
-Electron, menu-bar icon, no dock icon. States: idle, watching, thinking, nudged,
-paused. Loop every 2 seconds: screenshot → local text recognition → discard unless
-checkout vocabulary is present ("place your order", "place order", "pay now",
-"checkout", "order total", "buy now", "confirm purchase", "complete order", "purchase",
-"basket total") and the basket is new this session → one screenshot to Claude vision
-for structured extraction (merchant, items with name/price/qty, delivery, total,
-pressure cues visible) → `POST /api/assess` → open the nudge window at
-`/nudge?assessmentId=…`. Basket identity is `merchant|item:price|…|total`; one nudge
-per basket; a changed total re-judges. Global hotkey (⌃⌥N) "judge this screen now" is
-the stage safety net; in phase 1 the hotkey cycles the five scenarios. Dropdown:
-safe-to-spend, days to next income, limits remaining, pause for an hour, open
-dashboard. Window: 400 wide, height from the page's `resize()` call, top-right of the
-screen, always on top, frameless, transparent corners.
+Manifest V3. Host permission: `https://www.amazon.co.uk/*` only. A content script
+runs on checkout URLs (`/gp/buy/*`, `/checkout/*`) and confirms it is really the
+checkout: a "Place your order" (or "Buy now") button plus an order summary are present.
+It reads the item names, prices and quantities from the order summary, delivery and
+total, and any visible pressure text ("Only 2 left in stock", "Lightning deal ends in",
+"people viewing"), builds an `AssessRequest`, calls `POST ${WEB_URL}/api/assess`, and
+injects `${WEB_URL}/nudge?assessmentId=…` as a fixed top-right iframe, 400px wide,
+height set by the page's `resize` message. One nudge per basket hash per tab session;
+a changed total re-judges. Keyboard shortcut `Alt+Shift+N` forces an assessment of the
+current page; in phase 1 it cycles the fixture scenarios. Extension popup (toolbar
+icon): safe-to-spend, days to next income, limits remaining, pause for an hour, open
+dashboard. `WEB_URL` defaults to `http://localhost:3000`.
 
-### 4.2 The Nudge (web page inside the Watcher window) — Rayan
+Phase 1: trigger on the Amazon checkout URL and show scenario fixtures (match by
+basket total where possible). Phase 2: parse the real basket from the page and let the
+real Brain score it.
+
+### 4.2 The Nudge (web page inside the extension's iframe) — Rayan
 
 `/nudge?assessmentId=<id>` renders an `Assessment`; `/nudge?scenario=<id>` creates one
 from a fixture first (dev and demo convenience). Layout, top to bottom:
@@ -100,18 +111,19 @@ from a fixture first (dev and demo convenience). Layout, top to bottom:
    animating from old to new.
 9. "Why are you buying it?" single-line input → `POST reason`; show `reason.verdictText`
    and the new risk; impact unchanged by design.
-10. Buttons: I'll wait · Buying anyway · Dismiss → `PATCH decision`, then
-    `window.watcher?.close()`.
+10. Buttons: I'll wait · Buying anyway · Dismiss → `PATCH decision`, then `hostClose()`.
 11. Show more: expands `reasoning`, every item's `factors[]` with points out of max, the
     `timeline` as a small chart with income and bill markers and the after-basket line,
     and `calibration` ("81% tuned to you on clothes").
 12. Toast variant when `verdict === "go_ahead"`: one green line, 72px tall, auto-closes
     after 3 seconds.
 
-Motion: slide in from the right over `--motion-slow` with `--ease-out`; thinking pulse
-while fetching; numbers count between values over `--motion-base`; respect reduced
-motion. Keyboard: Tab order top to bottom, Escape = Dismiss. Call
-`window.watcher?.resize(document.body.scrollHeight)` after every render.
+Host communication only through `apps/web/src/lib/host.ts` (`hostResize`, `hostClose`,
+`hostOpenDashboard`); see INTERFACES section 6. Call `hostResize(document.body.scrollHeight)`
+after every render. Motion: slide in from the right over `--motion-slow` with
+`--ease-out`; thinking pulse while fetching; numbers count between values over
+`--motion-base`; respect reduced motion. Keyboard: Tab order top to bottom, Escape =
+Dismiss.
 
 ### 4.3 The Dashboard (web app, laptop and phone) — Aarav
 
@@ -143,16 +155,8 @@ Visual: big numbers, small labels, cards, one accent. Phone first.
 
 ### 4.4 Phone and voice
 
-Out of scope for build day except: the dashboard opened full-screen on a phone, and an
-iOS Shortcut if someone has 15 spare minutes at the end. ElevenLabs is dropped;
-`spokenLine` stays in the data so captions can show it.
-
-### 4.5 Backup: Chrome extension
-
-Only if the Watcher is unreliable by hour three. A subagent in Ajjar's session builds a
-content script for Amazon's checkout URL that reads the basket and opens
-`/nudge?assessmentId=…` in a side panel via the same `POST /api/assess`. Same page,
-same API, no new features.
+Out of scope for build day except the dashboard opened full-screen on a phone.
+ElevenLabs is dropped; `spokenLine` stays in the data so captions can show it.
 
 ## 5. The Brain (phase 2) — Ajjar
 
@@ -234,7 +238,7 @@ say "mock feed in the shape of Open Banking; a real connection is one connector"
 See `docs/MOCK-DATA-GUIDE.md`. The data is the demo's brain until phase 2. v1 at
 1:30, final at 2:30, `npm run check:data` must pass.
 
-## 7. Design — Ajjar (parallel to the Watcher)
+## 7. Design — Ajjar (parallel to the extension)
 
 Ajjar produces the design file (both screens) in Claude Design, then writes
 `docs/DESIGN.md` (tokens, type scale, spacing, component notes for the nudge and the
@@ -250,9 +254,9 @@ the neutral defaults and never hard-code a colour.
 2. **The API is the only thing UIs talk to.** No imports from `data/`, no reading
    fixtures, no shared components between lanes.
 3. **Shared files are Ajjar's:** package.json, lockfile, root layout, globals.css,
-   tokens.css, types.ts, INTERFACES.md. Dependency requests: `ask.sh ajjar "add dep: x
-   because y"`; Ajjar lands it within minutes; everyone picks it up on the next
-   `land.sh`.
+   tokens.css, types.ts, host.ts, INTERFACES.md. Dependency requests: `ask.sh ajjar
+   "add dep: x because y"`; Ajjar lands it within minutes; everyone picks it up on the
+   next `land.sh`.
 4. **Branches:** `ajjar/<thing>`, `rayan/nudge`, `aarav/dashboard`, `zack/data`.
    `checkpoint.sh` every 20 minutes. `land.sh` every 45 minutes. Conflicts in shared
    files go to Ajjar.
@@ -261,7 +265,7 @@ the neutral defaults and never hard-code a colour.
 6. **Types are law.** If your UI needs a field that isn't on the type, you ask for it;
    you don't invent it locally.
 7. **Dev server:** one per person, `npm run dev` in `apps/web`, default port 3000. The
-   Watcher reads `WEB_URL` (default http://localhost:3000).
+   extension reads `WEB_URL` (default http://localhost:3000).
 8. **Fast timers:** run the API with `DEMO_FAST_TIMERS=1` for the demo so reflections
    and waiting-list timers fire in seconds.
 9. **No secrets in git.** `.env.local` in `apps/web`; keys listed in `.env.example`.
@@ -274,18 +278,18 @@ Each person's plan file in `plan/active/` has the agent prompt to paste. Summary
 
 | Person | Tool | Lane | Directories | Branch | Done when |
 |---|---|---|---|---|---|
-| Ajjar | Claude Ultra | Watcher, Brain, design, integrator | apps/watcher, apps/web/src/lib, src/app/api, shared files, docs/DESIGN.md | ajjar/* | Hotkey and OCR open the nudge over Amazon and Steam; phase-2 assess returns real verdicts for the five scenarios; design tokens applied |
-| Rayan | Claude Pro | The nudge page | apps/web/src/app/nudge, src/components/nudge | rayan/nudge | All five scenarios render and animate; negotiate, reason, essential, decision all call the API and update; toast variant; works with and without the bridge; keyboard and Escape |
+| Ajjar | Claude Ultra | Extension, Brain, design, integrator | apps/extension, apps/web/src/lib, src/app/api, shared files, docs/DESIGN.md | ajjar/* | Extension injects the nudge on the Amazon checkout for the five scenarios, then on a real basket; phase-2 assess returns real verdicts; design tokens applied |
+| Rayan | Claude Pro | The nudge page | apps/web/src/app/nudge, src/components/nudge | rayan/nudge | All five scenarios render and animate; negotiate, reason, essential, decision all call the API and update; toast variant; works in an iframe and in a tab; keyboard and Escape |
 | Aarav | Codex | The dashboard | apps/web/src/app/(dashboard), src/components/dashboard | aarav/dashboard | Five tabs from the API; phone layout; feedback changes calibration on Insights; chat on Profile shows changes |
 | Zack | any | Data, then pitch | data/ (then docs/PITCH.md, README, video) | zack/data | check:data passes; patterns in the guide present; v1 1:30, final 2:30; then script, slides, backup video at 4:00 |
 
 If Claude Pro hits its limit, Rayan moves to QA and rehearsals and Ajjar's session
 takes the rest of the nudge as one more subagent. Plan for it.
 
-## 10. Demo (two minutes, Amazon then Steam)
+## 10. Demo (two minutes, all on Amazon)
 
-1. 23:40, Amazon, hoodie and trainers, "Only 2 left". Nudge slides in: "Hold on, this
-   looks like an impulse buy." 78%. (25s)
+1. 23:40, Amazon checkout, hoodie and trainers, "Only 2 left". Nudge slides in: "Hold
+   on, this looks like an impulse buy." 78%. (25s)
 2. Impact and factors; the "2 left" named as a cue; Apply "drop the trainers", numbers
    animate to green. (20s)
 3. Paracetamol, two days before rent: "Looks essential. Is it?" Yes. "Buy it, skip one
@@ -294,28 +298,28 @@ takes the rest of the nudge as one more subagent. Plan for it.
    money impact unchanged. Buying anyway. (20s)
 5. Show more: factors with points, the timeline, the matched rule. Then the reflection
    prompt appears on the dashboard, tap "regretted it", calibration ticks. (20s)
-6. Steam, a game at checkout, same nudge over a native app: "it watches the screen, not
-   the browser". The one sentence. (20s)
+6. A lightning-deal game under a countdown: the cue named, the Friday-night window
+   named, "wait 5 days" suggested. Then the dashboard on a phone. The one sentence. (20s)
 
 Backup: the recorded video of the same six beats.
 
 ## 11. Cut order and out of scope
 
-Cut first → last: Steam scenario polish; the Profile chat parser (keep the structured
+Cut first → last: scenario 5 polish; the Profile chat parser (keep the structured
 view); the timeline chart in show-more (keep the numbers); waiting-list countdowns
-(keep the list); Claude vision extraction (hotkey with scenarios still works); the
-backup extension.
+(keep the list); real basket parsing in the extension (fixture scenarios on the
+checkout URL still work).
 
 Never cut: the nudge on scenarios 1–3, the dashboard Home and Purchases, show-more,
 the reflection changing calibration, the backup video.
 
-Out of scope on the day: voice, iPhone native, Windows, real bank connection, refunds,
-authentication, multiple users, non-GBP, photo-based duplicate matching, mood tracking,
-rewards mechanics.
+Out of scope on the day: screen watching, voice, iPhone native, other shops, real bank
+connection, refunds, authentication, multiple users, non-GBP, photo-based duplicate
+matching, mood tracking, rewards mechanics.
 
 ## 12. Open items
 
 Name. Target-user wording. Anthropic API key with credit (needed at 3:00, not before).
-Vercel, Supabase or Neon only if the dashboard must be reachable from a phone during
-judging; otherwise everything runs on the demo Mac. Submission format, deadline and
-hacking window from the organisers at 0:00.
+Hosting only if the dashboard must be reachable from a phone during judging; otherwise
+everything runs on the demo Mac. Submission format, deadline and hacking window from
+the organisers at 0:00.

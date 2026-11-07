@@ -1,0 +1,90 @@
+[
+  {
+    "id": "ah_01",
+    "createdAt": "2026-11-06T23:05:00+00:00",
+    "merchant": "ASOS",
+    "totalPence": 5400,
+    "verdict": "strong_nudge",
+    "regretRisk": 74,
+    "headline": "Hold on, this looks like a late-night impulse buy.",
+    "decision": "wait",
+    "outcome": null
+  },
+  {
+    "id": "ah_02",
+    "createdAt": "2026-11-04T12:30:00+00:00",
+    "merchant": "Tesco",
+    "totalPence": 2715,
+    "verdict": "go_ahead",
+    "regretRisk": 9,
+    "headline": "Looks fine. £385 safe after this.",
+    "decision": "dismiss",
+    "outcome": null
+  },
+  {
+    "id": "ah_03",
+    "createdAt": "2026-11-01T16:15:00+00:00",
+    "merchant": "SU shop",
+    "totalPence": 550,
+    "verdict": "go_ahead",
+    "regretRisk": 6,
+    "headline": "Looks fine. Course books are always fine.",
+    "decision": "dismiss",
+    "outcome": "happy"
+  },
+  {
+    "id": "ah_04",
+    "createdAt": "2026-10-30T23:35:00+00:00",
+    "merchant": "ASOS",
+    "totalPence": 3800,
+    "verdict": "strong_nudge",
+    "regretRisk": 71,
+    "headline": "Late on a Friday, and it's clothes again.",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
+  },
+  {
+    "id": "ah_05",
+    "createdAt": "2026-10-24T23:50:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 699,
+    "verdict": "nudge",
+    "regretRisk": 52,
+    "headline": "Small, but it's a countdown banner at midnight.",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
+  },
+  {
+    "id": "ah_06",
+    "createdAt": "2026-10-20T21:10:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 4800,
+    "verdict": "nudge",
+    "regretRisk": 61,
+    "headline": "You bought a jacket like this three weeks ago.",
+    "decision": "wait",
+    "outcome": null
+  },
+  {
+    "id": "ah_07",
+    "createdAt": "2026-10-16T22:40:00+01:00",
+    "merchant": "Steam",
+    "totalPence": 2399,
+    "verdict": "nudge",
+    "regretRisk": 63,
+    "headline": "Friday after ten and a sale timer. Sure?",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
+  },
+  {
+    "id": "ah_08",
+    "createdAt": "2026-10-12T19:20:00+01:00",
+    "merchant": "Deliveroo",
+    "totalPence": 3600,
+    "verdict": "nudge",
+    "regretRisk": 49,
+    "headline": "Weeknight takeaway for two, and you said you'd stop.",
+    "decision": "dismiss",
+    "outcome": null
+  }
+]

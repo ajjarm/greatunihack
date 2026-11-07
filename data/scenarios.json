@@ -1,0 +1,3924 @@
+[
+  {
+    "id": "scn_1_impulse",
+    "title": "Late-night trainers under a scarcity banner",
+    "trigger": {
+      "merchant": "Amazon",
+      "keywords": [
+        "Place your order"
+      ],
+      "urlPattern": "amazon.co.uk/gp/buy"
+    },
+    "request": {
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "items": [
+        {
+          "name": "Champion reverse weave hoodie",
+          "pricePence": 4500,
+          "qty": 1,
+          "category": "clothes"
+        },
+        {
+          "name": "Nike Air Max 90",
+          "pricePence": 8500,
+          "qty": 1,
+          "category": "clothes"
+        }
+      ],
+      "deliveryPence": 0,
+      "totalPence": 13000,
+      "cues": [
+        {
+          "key": "scarcity",
+          "text": "Only 2 left in stock"
+        }
+      ],
+      "capturedAt": "2026-11-08T23:40:00+00:00",
+      "basketHash": "amazon|champion reverse weave hoodie:4500|nike air max 90:8500|13000"
+    },
+    "response": {
+      "id": "asm_scn_1",
+      "createdAt": "2026-11-08T23:40:00+00:00",
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "totalPence": 13000,
+      "verdict": "strong_nudge",
+      "headline": "Hold on, this looks like an impulse buy.",
+      "spokenLine": "Hold on. Two late-night clothes orders, one of them trainers you said you would wait on.",
+      "regretRisk": 78,
+      "affordability": 52,
+      "items": [
+        {
+          "index": 0,
+          "name": "Champion reverse weave hoodie",
+          "pricePence": 4500,
+          "qty": 1,
+          "category": "clothes",
+          "necessity": 35,
+          "necessityTag": "want",
+          "necessityConfidence": "medium",
+          "essentialPrompt": false,
+          "essential": null,
+          "regretRisk": 41,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 12,
+              "max": 25,
+              "text": "A hoodie at 11:40pm is a want, not a plan"
+            },
+            {
+              "key": "history",
+              "points": 10,
+              "max": 20,
+              "text": "You regretted 3 of your last 4 late-night clothes orders",
+              "evidence": "ASOS on 14 Aug, 2 Oct and 30 Oct, all regretted; cargos on 17 Oct were fine"
+            },
+            {
+              "key": "pressure",
+              "points": 6,
+              "max": 10,
+              "text": "There is a scarcity banner on the page"
+            },
+            {
+              "key": "timing",
+              "points": 8,
+              "max": 10,
+              "text": "It is 11:40pm, inside your riskiest window"
+            },
+            {
+              "key": "money_strain",
+              "points": 5,
+              "max": 15,
+              "text": "You already spent £13 of the £60 clothes limit this week"
+            }
+          ],
+          "limitedHistory": false
+        },
+        {
+          "index": 1,
+          "name": "Nike Air Max 90",
+          "pricePence": 8500,
+          "qty": 1,
+          "category": "clothes",
+          "necessity": 20,
+          "necessityTag": "want",
+          "necessityConfidence": "high",
+          "essentialPrompt": false,
+          "essential": null,
+          "regretRisk": 89,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 22,
+              "max": 25,
+              "text": "You set a rule: no trainers until exams are over",
+              "evidence": "Rule added 4 October"
+            },
+            {
+              "key": "history",
+              "points": 18,
+              "max": 20,
+              "text": "3 of your last 4 late-night clothes orders were regrets",
+              "evidence": "Nike Dunk Low on 2 Oct was one of them"
+            },
+            {
+              "key": "duplicate",
+              "points": 15,
+              "max": 15,
+              "text": "You bought Nike Dunks five weeks ago and regretted them",
+              "evidence": "p_11, 2 October, £95"
+            },
+            {
+              "key": "pressure",
+              "points": 9,
+              "max": 10,
+              "text": "Only 2 left is the oldest trick there is"
+            },
+            {
+              "key": "timing",
+              "points": 10,
+              "max": 10,
+              "text": "11:40pm on a Sunday"
+            },
+            {
+              "key": "money_strain",
+              "points": 15,
+              "max": 15,
+              "text": "This puts clothes £83 over the weekly limit and leaves rent £6 short on 1 December"
+            }
+          ],
+          "limitedHistory": false
+        }
+      ],
+      "impact": {
+        "safeToSpendBeforePence": 41200,
+        "safeToSpendAfterPence": 28200,
+        "daysToNextIncome": 5,
+        "nextIncome": {
+          "name": "Part-time job",
+          "date": "2026-11-13",
+          "amountPence": 19800
+        },
+        "nextBill": {
+          "name": "Phone",
+          "date": "2026-11-14",
+          "amountPence": 1800,
+          "coveredAfter": true
+        },
+        "limit": {
+          "category": "clothes",
+          "weeklyLimitPence": 6000,
+          "spentThisWeekPence": 1299,
+          "remainingAfterPence": -8299,
+          "overByPence": 8299
+        },
+        "workingHours": 13.7,
+        "goalSharePct": 22,
+        "overdraftUntil": "2026-12-11"
+      },
+      "topFactors": [
+        {
+          "key": "want_level",
+          "text": "You set a rule: no trainers until exams are over"
+        },
+        {
+          "key": "history",
+          "text": "You regretted 3 of your last 4 late-night clothes orders"
+        },
+        {
+          "key": "pressure",
+          "text": "Only 2 left is a sales cue, not a fact about your life"
+        }
+      ],
+      "cues": [
+        {
+          "key": "scarcity",
+          "text": "Only 2 left in stock",
+          "note": "Scarcity banners are there to make you hurry. Amazon restocks."
+        }
+      ],
+      "negotiation": [
+        {
+          "id": "neg_drop_1",
+          "action": "drop",
+          "itemIndex": 1,
+          "text": "Drop the trainers, keep the hoodie",
+          "resultRegretRisk": 41,
+          "resultSafeToSpendAfterPence": 36700,
+          "resultVerdict": "nudge"
+        },
+        {
+          "id": "neg_delay_1",
+          "action": "delay",
+          "itemIndex": 1,
+          "text": "Put the trainers on the list for 14 days",
+          "resultRegretRisk": 48,
+          "resultSafeToSpendAfterPence": 36700,
+          "resultVerdict": "nudge",
+          "delayUntil": "2026-11-22"
+        }
+      ],
+      "reflectionDays": 3,
+      "reasoning": "Two clothes items at 11:40pm, and one of them is trainers, which you asked me to hold off on until exams are over. Your last four late-night clothes orders went badly three times, including the Dunks on 2 October. The £130 leaves £282 before Friday's shift and takes clothes £83 over this week's limit. The bigger problem is 1 December: after rent you would be £6 short until the shift on the 11th. Drop the trainers and the hoodie alone is a maybe, not a no.",
+      "timeline": [
+        {
+          "date": "2026-11-08",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 28200
+        },
+        {
+          "date": "2026-11-09",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 28200
+        },
+        {
+          "date": "2026-11-10",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 28200
+        },
+        {
+          "date": "2026-11-11",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 28200
+        },
+        {
+          "date": "2026-11-12",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 28200
+        },
+        {
+          "date": "2026-11-13",
+          "projectedPence": 61000,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 19800
+            }
+          ],
+          "projectedAfterPence": 48000
+        },
+        {
+          "date": "2026-11-14",
+          "projectedPence": 59200,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone",
+              "amountPence": 1800
+            }
+          ],
+          "projectedAfterPence": 46200
+        },
+        {
+          "date": "2026-11-15",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 46200
+        },
+        {
+          "date": "2026-11-16",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 46200
+        },
+        {
+          "date": "2026-11-17",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 46200
+        },
+        {
+          "date": "2026-11-18",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 46200
+        },
+        {
+          "date": "2026-11-19",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 46200
+        },
+        {
+          "date": "2026-11-20",
+          "projectedPence": 56800,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym",
+              "amountPence": 2400
+            }
+          ],
+          "projectedAfterPence": 43800
+        },
+        {
+          "date": "2026-11-21",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 43800
+        },
+        {
+          "date": "2026-11-22",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 43800
+        },
+        {
+          "date": "2026-11-23",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 43800
+        },
+        {
+          "date": "2026-11-24",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 43800
+        },
+        {
+          "date": "2026-11-25",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 43800
+        },
+        {
+          "date": "2026-11-26",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 43800
+        },
+        {
+          "date": "2026-11-27",
+          "projectedPence": 77400,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 20600
+            }
+          ],
+          "projectedAfterPence": 64400
+        },
+        {
+          "date": "2026-11-28",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 64400
+        },
+        {
+          "date": "2026-11-29",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 64400
+        },
+        {
+          "date": "2026-11-30",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 64400
+        },
+        {
+          "date": "2026-12-01",
+          "projectedPence": 12400,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 65000
+            }
+          ],
+          "projectedAfterPence": -600
+        },
+        {
+          "date": "2026-12-02",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": -600
+        },
+        {
+          "date": "2026-12-03",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": -600
+        },
+        {
+          "date": "2026-12-04",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": -600
+        },
+        {
+          "date": "2026-12-05",
+          "projectedPence": 11300,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Spotify",
+              "amountPence": 1100
+            }
+          ],
+          "projectedAfterPence": -1700
+        },
+        {
+          "date": "2026-12-06",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": -1700
+        },
+        {
+          "date": "2026-12-07",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": -1700
+        },
+        {
+          "date": "2026-12-08",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": -1700
+        },
+        {
+          "date": "2026-12-09",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": -1700
+        },
+        {
+          "date": "2026-12-10",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": -1700
+        },
+        {
+          "date": "2026-12-11",
+          "projectedPence": 30300,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 19000
+            }
+          ],
+          "projectedAfterPence": 17300
+        },
+        {
+          "date": "2026-12-12",
+          "projectedPence": 30300,
+          "events": [],
+          "projectedAfterPence": 17300
+        },
+        {
+          "date": "2026-12-13",
+          "projectedPence": 30300,
+          "events": [],
+          "projectedAfterPence": 17300
+        },
+        {
+          "date": "2026-12-14",
+          "projectedPence": 28500,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone",
+              "amountPence": 1800
+            }
+          ],
+          "projectedAfterPence": 15500
+        }
+      ],
+      "calibration": {
+        "category": "clothes",
+        "multiplier": 1.1,
+        "tunedPct": 78
+      },
+      "decision": "none"
+    },
+    "variants": {
+      "reason": {
+        "input": "they're for my sister's birthday",
+        "response": {
+          "id": "asm_scn_1",
+          "createdAt": "2026-11-08T23:40:00+00:00",
+          "source": "watcher",
+          "merchant": "Amazon",
+          "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+          "totalPence": 13000,
+          "verdict": "nudge",
+          "headline": "Fair enough, a gift changes this.",
+          "spokenLine": "A birthday gift changes this. The money still comes out of the same pot, though.",
+          "regretRisk": 44,
+          "affordability": 52,
+          "items": [
+            {
+              "index": 0,
+              "name": "Champion reverse weave hoodie",
+              "pricePence": 4500,
+              "qty": 1,
+              "category": "clothes",
+              "necessity": 35,
+              "necessityTag": "want",
+              "necessityConfidence": "medium",
+              "essentialPrompt": false,
+              "essential": null,
+              "regretRisk": 11,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 12,
+                  "max": 25,
+                  "text": "A hoodie at 11:40pm is a want, not a plan"
+                },
+                {
+                  "key": "history",
+                  "points": 10,
+                  "max": 20,
+                  "text": "You regretted 3 of your last 4 late-night clothes orders",
+                  "evidence": "ASOS on 14 Aug, 2 Oct and 30 Oct, all regretted; cargos on 17 Oct were fine"
+                },
+                {
+                  "key": "pressure",
+                  "points": 6,
+                  "max": 10,
+                  "text": "There is a scarcity banner on the page"
+                },
+                {
+                  "key": "timing",
+                  "points": 8,
+                  "max": 10,
+                  "text": "It is 11:40pm, inside your riskiest window"
+                },
+                {
+                  "key": "money_strain",
+                  "points": 5,
+                  "max": 15,
+                  "text": "You already spent £13 of the £60 clothes limit this week"
+                },
+                {
+                  "key": "reason",
+                  "points": -30,
+                  "max": 0,
+                  "text": "Gift for your sister's birthday"
+                }
+              ],
+              "limitedHistory": false
+            },
+            {
+              "index": 1,
+              "name": "Nike Air Max 90",
+              "pricePence": 8500,
+              "qty": 1,
+              "category": "clothes",
+              "necessity": 20,
+              "necessityTag": "want",
+              "necessityConfidence": "high",
+              "essentialPrompt": false,
+              "essential": null,
+              "regretRisk": 59,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 22,
+                  "max": 25,
+                  "text": "You set a rule: no trainers until exams are over",
+                  "evidence": "Rule added 4 October"
+                },
+                {
+                  "key": "history",
+                  "points": 18,
+                  "max": 20,
+                  "text": "3 of your last 4 late-night clothes orders were regrets",
+                  "evidence": "Nike Dunk Low on 2 Oct was one of them"
+                },
+                {
+                  "key": "duplicate",
+                  "points": 15,
+                  "max": 15,
+                  "text": "You bought Nike Dunks five weeks ago and regretted them",
+                  "evidence": "p_11, 2 October, £95"
+                },
+                {
+                  "key": "pressure",
+                  "points": 9,
+                  "max": 10,
+                  "text": "Only 2 left is the oldest trick there is"
+                },
+                {
+                  "key": "timing",
+                  "points": 10,
+                  "max": 10,
+                  "text": "11:40pm on a Sunday"
+                },
+                {
+                  "key": "money_strain",
+                  "points": 15,
+                  "max": 15,
+                  "text": "This puts clothes £83 over the weekly limit and leaves rent £6 short on 1 December"
+                },
+                {
+                  "key": "reason",
+                  "points": -30,
+                  "max": 0,
+                  "text": "Gift for your sister's birthday"
+                }
+              ],
+              "limitedHistory": false
+            }
+          ],
+          "impact": {
+            "safeToSpendBeforePence": 41200,
+            "safeToSpendAfterPence": 28200,
+            "daysToNextIncome": 5,
+            "nextIncome": {
+              "name": "Part-time job",
+              "date": "2026-11-13",
+              "amountPence": 19800
+            },
+            "nextBill": {
+              "name": "Phone",
+              "date": "2026-11-14",
+              "amountPence": 1800,
+              "coveredAfter": true
+            },
+            "limit": {
+              "category": "clothes",
+              "weeklyLimitPence": 6000,
+              "spentThisWeekPence": 1299,
+              "remainingAfterPence": -8299,
+              "overByPence": 8299
+            },
+            "workingHours": 13.7,
+            "goalSharePct": 22,
+            "overdraftUntil": "2026-12-11"
+          },
+          "topFactors": [
+            {
+              "key": "reason",
+              "text": "A birthday gift, so the want score drops"
+            },
+            {
+              "key": "money_strain",
+              "text": "Rent on 1 December would still be £6 short"
+            },
+            {
+              "key": "pressure",
+              "text": "Only 2 left is a sales cue, not a fact about your life"
+            }
+          ],
+          "cues": [
+            {
+              "key": "scarcity",
+              "text": "Only 2 left in stock",
+              "note": "Scarcity banners are there to make you hurry. Amazon restocks."
+            }
+          ],
+          "negotiation": [
+            {
+              "id": "neg_drop_1",
+              "action": "drop",
+              "itemIndex": 1,
+              "text": "Drop the trainers, keep the hoodie",
+              "resultRegretRisk": 41,
+              "resultSafeToSpendAfterPence": 36700,
+              "resultVerdict": "nudge"
+            },
+            {
+              "id": "neg_delay_1",
+              "action": "delay",
+              "itemIndex": 1,
+              "text": "Put the trainers on the list for 14 days",
+              "resultRegretRisk": 48,
+              "resultSafeToSpendAfterPence": 36700,
+              "resultVerdict": "nudge",
+              "delayUntil": "2026-11-22"
+            }
+          ],
+          "reflectionDays": 3,
+          "reasoning": "A gift for your sister's birthday is a good reason, so the want score drops a lot. The money is unchanged: £130 still leaves rent £6 short on 1 December until the shift on the 11th. If the hoodie is for you, dropping it keeps the gift and the rent.",
+          "timeline": [
+            {
+              "date": "2026-11-08",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 28200
+            },
+            {
+              "date": "2026-11-09",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 28200
+            },
+            {
+              "date": "2026-11-10",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 28200
+            },
+            {
+              "date": "2026-11-11",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 28200
+            },
+            {
+              "date": "2026-11-12",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 28200
+            },
+            {
+              "date": "2026-11-13",
+              "projectedPence": 61000,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Part-time job",
+                  "amountPence": 19800
+                }
+              ],
+              "projectedAfterPence": 48000
+            },
+            {
+              "date": "2026-11-14",
+              "projectedPence": 59200,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone",
+                  "amountPence": 1800
+                }
+              ],
+              "projectedAfterPence": 46200
+            },
+            {
+              "date": "2026-11-15",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 46200
+            },
+            {
+              "date": "2026-11-16",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 46200
+            },
+            {
+              "date": "2026-11-17",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 46200
+            },
+            {
+              "date": "2026-11-18",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 46200
+            },
+            {
+              "date": "2026-11-19",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 46200
+            },
+            {
+              "date": "2026-11-20",
+              "projectedPence": 56800,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym",
+                  "amountPence": 2400
+                }
+              ],
+              "projectedAfterPence": 43800
+            },
+            {
+              "date": "2026-11-21",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 43800
+            },
+            {
+              "date": "2026-11-22",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 43800
+            },
+            {
+              "date": "2026-11-23",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 43800
+            },
+            {
+              "date": "2026-11-24",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 43800
+            },
+            {
+              "date": "2026-11-25",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 43800
+            },
+            {
+              "date": "2026-11-26",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 43800
+            },
+            {
+              "date": "2026-11-27",
+              "projectedPence": 77400,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Part-time job",
+                  "amountPence": 20600
+                }
+              ],
+              "projectedAfterPence": 64400
+            },
+            {
+              "date": "2026-11-28",
+              "projectedPence": 77400,
+              "events": [],
+              "projectedAfterPence": 64400
+            },
+            {
+              "date": "2026-11-29",
+              "projectedPence": 77400,
+              "events": [],
+              "projectedAfterPence": 64400
+            },
+            {
+              "date": "2026-11-30",
+              "projectedPence": 77400,
+              "events": [],
+              "projectedAfterPence": 64400
+            },
+            {
+              "date": "2026-12-01",
+              "projectedPence": 12400,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 65000
+                }
+              ],
+              "projectedAfterPence": -600
+            },
+            {
+              "date": "2026-12-02",
+              "projectedPence": 12400,
+              "events": [],
+              "projectedAfterPence": -600
+            },
+            {
+              "date": "2026-12-03",
+              "projectedPence": 12400,
+              "events": [],
+              "projectedAfterPence": -600
+            },
+            {
+              "date": "2026-12-04",
+              "projectedPence": 12400,
+              "events": [],
+              "projectedAfterPence": -600
+            },
+            {
+              "date": "2026-12-05",
+              "projectedPence": 11300,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Spotify",
+                  "amountPence": 1100
+                }
+              ],
+              "projectedAfterPence": -1700
+            },
+            {
+              "date": "2026-12-06",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": -1700
+            },
+            {
+              "date": "2026-12-07",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": -1700
+            },
+            {
+              "date": "2026-12-08",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": -1700
+            },
+            {
+              "date": "2026-12-09",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": -1700
+            },
+            {
+              "date": "2026-12-10",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": -1700
+            },
+            {
+              "date": "2026-12-11",
+              "projectedPence": 30300,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Part-time job",
+                  "amountPence": 19000
+                }
+              ],
+              "projectedAfterPence": 17300
+            },
+            {
+              "date": "2026-12-12",
+              "projectedPence": 30300,
+              "events": [],
+              "projectedAfterPence": 17300
+            },
+            {
+              "date": "2026-12-13",
+              "projectedPence": 30300,
+              "events": [],
+              "projectedAfterPence": 17300
+            },
+            {
+              "date": "2026-12-14",
+              "projectedPence": 28500,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone",
+                  "amountPence": 1800
+                }
+              ],
+              "projectedAfterPence": 15500
+            }
+          ],
+          "calibration": {
+            "category": "clothes",
+            "multiplier": 1.1,
+            "tunedPct": 78
+          },
+          "decision": "none",
+          "reason": {
+            "text": "they're for my sister's birthday",
+            "accepted": true,
+            "adjustment": -30,
+            "verdictText": "A gift changes the risk, not the money. Risk drops from 78 to 44; rent is still tight on 1 December."
+          }
+        }
+      },
+      "negotiated": {
+        "optionId": "neg_drop_1",
+        "response": {
+          "id": "asm_scn_1",
+          "createdAt": "2026-11-08T23:40:00+00:00",
+          "source": "watcher",
+          "merchant": "Amazon",
+          "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+          "totalPence": 4500,
+          "verdict": "nudge",
+          "headline": "Better. Just the hoodie now.",
+          "spokenLine": "Better. Just the hoodie now, and rent is covered.",
+          "regretRisk": 41,
+          "affordability": 74,
+          "items": [
+            {
+              "index": 0,
+              "name": "Champion reverse weave hoodie",
+              "pricePence": 4500,
+              "qty": 1,
+              "category": "clothes",
+              "necessity": 35,
+              "necessityTag": "want",
+              "necessityConfidence": "medium",
+              "essentialPrompt": false,
+              "essential": null,
+              "regretRisk": 41,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 12,
+                  "max": 25,
+                  "text": "A hoodie at 11:40pm is a want, not a plan"
+                },
+                {
+                  "key": "history",
+                  "points": 10,
+                  "max": 20,
+                  "text": "You regretted 3 of your last 4 late-night clothes orders",
+                  "evidence": "ASOS on 14 Aug, 2 Oct and 30 Oct, all regretted; cargos on 17 Oct were fine"
+                },
+                {
+                  "key": "pressure",
+                  "points": 6,
+                  "max": 10,
+                  "text": "There is a scarcity banner on the page"
+                },
+                {
+                  "key": "timing",
+                  "points": 8,
+                  "max": 10,
+                  "text": "It is 11:40pm, inside your riskiest window"
+                },
+                {
+                  "key": "money_strain",
+                  "points": 5,
+                  "max": 15,
+                  "text": "You already spent £13 of the £60 clothes limit this week"
+                }
+              ],
+              "limitedHistory": false
+            }
+          ],
+          "impact": {
+            "safeToSpendBeforePence": 41200,
+            "safeToSpendAfterPence": 36700,
+            "daysToNextIncome": 5,
+            "nextIncome": {
+              "name": "Part-time job",
+              "date": "2026-11-13",
+              "amountPence": 19800
+            },
+            "nextBill": {
+              "name": "Phone",
+              "date": "2026-11-14",
+              "amountPence": 1800,
+              "coveredAfter": true
+            },
+            "limit": {
+              "category": "clothes",
+              "weeklyLimitPence": 6000,
+              "spentThisWeekPence": 1299,
+              "remainingAfterPence": 201,
+              "overByPence": 0
+            },
+            "workingHours": 4.7,
+            "goalSharePct": 8,
+            "overdraftUntil": null
+          },
+          "topFactors": [
+            {
+              "key": "history",
+              "text": "You regretted 3 of your last 4 late-night clothes orders"
+            },
+            {
+              "key": "timing",
+              "text": "It is 11:40pm, inside your riskiest window"
+            },
+            {
+              "key": "money_strain",
+              "text": "£45 keeps you inside the clothes limit with £2 to spare"
+            }
+          ],
+          "cues": [
+            {
+              "key": "scarcity",
+              "text": "Only 2 left in stock",
+              "note": "Scarcity banners are there to make you hurry. Amazon restocks."
+            }
+          ],
+          "negotiation": [
+            {
+              "id": "neg_delay_0",
+              "action": "delay",
+              "itemIndex": 0,
+              "text": "Sleep on the hoodie too",
+              "resultRegretRisk": 20,
+              "resultSafeToSpendAfterPence": 41200,
+              "resultVerdict": "go_ahead",
+              "delayUntil": "2026-11-10"
+            }
+          ],
+          "reflectionDays": 3,
+          "reasoning": "With the trainers gone this is a £45 hoodie at 11:40pm. It stays inside the clothes limit with £2 to spare and rent on 1 December is covered with £79 left. Your late-night record on clothes is the only thing still counting against it.",
+          "timeline": [
+            {
+              "date": "2026-11-08",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 36700
+            },
+            {
+              "date": "2026-11-09",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 36700
+            },
+            {
+              "date": "2026-11-10",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 36700
+            },
+            {
+              "date": "2026-11-11",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 36700
+            },
+            {
+              "date": "2026-11-12",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 36700
+            },
+            {
+              "date": "2026-11-13",
+              "projectedPence": 61000,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Part-time job",
+                  "amountPence": 19800
+                }
+              ],
+              "projectedAfterPence": 56500
+            },
+            {
+              "date": "2026-11-14",
+              "projectedPence": 59200,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone",
+                  "amountPence": 1800
+                }
+              ],
+              "projectedAfterPence": 54700
+            },
+            {
+              "date": "2026-11-15",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 54700
+            },
+            {
+              "date": "2026-11-16",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 54700
+            },
+            {
+              "date": "2026-11-17",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 54700
+            },
+            {
+              "date": "2026-11-18",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 54700
+            },
+            {
+              "date": "2026-11-19",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 54700
+            },
+            {
+              "date": "2026-11-20",
+              "projectedPence": 56800,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym",
+                  "amountPence": 2400
+                }
+              ],
+              "projectedAfterPence": 52300
+            },
+            {
+              "date": "2026-11-21",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 52300
+            },
+            {
+              "date": "2026-11-22",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 52300
+            },
+            {
+              "date": "2026-11-23",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 52300
+            },
+            {
+              "date": "2026-11-24",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 52300
+            },
+            {
+              "date": "2026-11-25",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 52300
+            },
+            {
+              "date": "2026-11-26",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 52300
+            },
+            {
+              "date": "2026-11-27",
+              "projectedPence": 77400,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Part-time job",
+                  "amountPence": 20600
+                }
+              ],
+              "projectedAfterPence": 72900
+            },
+            {
+              "date": "2026-11-28",
+              "projectedPence": 77400,
+              "events": [],
+              "projectedAfterPence": 72900
+            },
+            {
+              "date": "2026-11-29",
+              "projectedPence": 77400,
+              "events": [],
+              "projectedAfterPence": 72900
+            },
+            {
+              "date": "2026-11-30",
+              "projectedPence": 77400,
+              "events": [],
+              "projectedAfterPence": 72900
+            },
+            {
+              "date": "2026-12-01",
+              "projectedPence": 12400,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 65000
+                }
+              ],
+              "projectedAfterPence": 7900
+            },
+            {
+              "date": "2026-12-02",
+              "projectedPence": 12400,
+              "events": [],
+              "projectedAfterPence": 7900
+            },
+            {
+              "date": "2026-12-03",
+              "projectedPence": 12400,
+              "events": [],
+              "projectedAfterPence": 7900
+            },
+            {
+              "date": "2026-12-04",
+              "projectedPence": 12400,
+              "events": [],
+              "projectedAfterPence": 7900
+            },
+            {
+              "date": "2026-12-05",
+              "projectedPence": 11300,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Spotify",
+                  "amountPence": 1100
+                }
+              ],
+              "projectedAfterPence": 6800
+            },
+            {
+              "date": "2026-12-06",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 6800
+            },
+            {
+              "date": "2026-12-07",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 6800
+            },
+            {
+              "date": "2026-12-08",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 6800
+            },
+            {
+              "date": "2026-12-09",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 6800
+            },
+            {
+              "date": "2026-12-10",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 6800
+            },
+            {
+              "date": "2026-12-11",
+              "projectedPence": 30300,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Part-time job",
+                  "amountPence": 19000
+                }
+              ],
+              "projectedAfterPence": 25800
+            },
+            {
+              "date": "2026-12-12",
+              "projectedPence": 30300,
+              "events": [],
+              "projectedAfterPence": 25800
+            },
+            {
+              "date": "2026-12-13",
+              "projectedPence": 30300,
+              "events": [],
+              "projectedAfterPence": 25800
+            },
+            {
+              "date": "2026-12-14",
+              "projectedPence": 28500,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone",
+                  "amountPence": 1800
+                }
+              ],
+              "projectedAfterPence": 24000
+            }
+          ],
+          "calibration": {
+            "category": "clothes",
+            "multiplier": 1.1,
+            "tunedPct": 78
+          },
+          "decision": "negotiated"
+        }
+      }
+    }
+  },
+  {
+    "id": "scn_2_essential",
+    "title": "Paracetamol and a prescription top-up",
+    "trigger": {
+      "merchant": "Amazon",
+      "keywords": [
+        "Place your order"
+      ],
+      "urlPattern": "amazon.co.uk/gp/buy"
+    },
+    "request": {
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "items": [
+        {
+          "name": "Paracetamol 500mg, 32 tablets",
+          "pricePence": 349,
+          "qty": 1,
+          "category": "health"
+        },
+        {
+          "name": "Prescription prepayment top-up",
+          "pricePence": 1050,
+          "qty": 1,
+          "category": "health"
+        }
+      ],
+      "deliveryPence": 0,
+      "totalPence": 1399,
+      "cues": [],
+      "capturedAt": "2026-11-08T23:40:00+00:00",
+      "basketHash": "amazon|paracetamol 500mg, 32 tablets:349|prescription prepayment top-up:1050|1399"
+    },
+    "response": {
+      "id": "asm_scn_2",
+      "createdAt": "2026-11-08T23:40:00+00:00",
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "totalPence": 1399,
+      "verdict": "nudge",
+      "headline": "Looks essential. Is it?",
+      "spokenLine": "This looks essential. Is it?",
+      "regretRisk": 18,
+      "affordability": 88,
+      "items": [
+        {
+          "index": 0,
+          "name": "Paracetamol 500mg, 32 tablets",
+          "pricePence": 349,
+          "qty": 1,
+          "category": "health",
+          "necessity": 92,
+          "necessityTag": "need",
+          "necessityConfidence": "high",
+          "essentialPrompt": true,
+          "essential": null,
+          "regretRisk": 12,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 2,
+              "max": 25,
+              "text": "Medicine, not a treat"
+            },
+            {
+              "key": "history",
+              "points": 0,
+              "max": 20,
+              "text": "No health purchases to learn from yet"
+            },
+            {
+              "key": "timing",
+              "points": 6,
+              "max": 10,
+              "text": "It is late, but this is not a pattern buy"
+            },
+            {
+              "key": "money_strain",
+              "points": 4,
+              "max": 15,
+              "text": "£14 leaves £398 before Friday's shift"
+            }
+          ],
+          "limitedHistory": true
+        },
+        {
+          "index": 1,
+          "name": "Prescription prepayment top-up",
+          "pricePence": 1050,
+          "qty": 1,
+          "category": "health",
+          "necessity": 92,
+          "necessityTag": "need",
+          "necessityConfidence": "high",
+          "essentialPrompt": true,
+          "essential": null,
+          "regretRisk": 10,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 1,
+              "max": 25,
+              "text": "A prescription is a need"
+            },
+            {
+              "key": "history",
+              "points": 0,
+              "max": 20,
+              "text": "No health purchases to learn from yet"
+            },
+            {
+              "key": "timing",
+              "points": 5,
+              "max": 10,
+              "text": "Late, but not a pattern buy"
+            },
+            {
+              "key": "money_strain",
+              "points": 4,
+              "max": 15,
+              "text": "£14 leaves £398 before Friday's shift"
+            }
+          ],
+          "limitedHistory": true
+        }
+      ],
+      "impact": {
+        "safeToSpendBeforePence": 41200,
+        "safeToSpendAfterPence": 39801,
+        "daysToNextIncome": 5,
+        "nextIncome": {
+          "name": "Part-time job",
+          "date": "2026-11-13",
+          "amountPence": 19800
+        },
+        "nextBill": {
+          "name": "Phone",
+          "date": "2026-11-14",
+          "amountPence": 1800,
+          "coveredAfter": true
+        },
+        "workingHours": 1.5,
+        "goalSharePct": 2,
+        "overdraftUntil": null
+      },
+      "topFactors": [
+        {
+          "key": "want_level",
+          "text": "Medicine, not a treat"
+        },
+        {
+          "key": "money_strain",
+          "text": "£14 leaves £398 safe before Friday's shift"
+        },
+        {
+          "key": "timing",
+          "text": "Late, but this is not one of your late-night pattern buys"
+        }
+      ],
+      "cues": [],
+      "negotiation": [],
+      "reflectionDays": 14,
+      "reasoning": "Paracetamol and a prescription top-up look like needs, and I have no history of you regretting health purchases. It is late, which is usually a warning sign for you, but not for this kind of basket. Tell me if it is essential and I will show you how to cover it.",
+      "timeline": [
+        {
+          "date": "2026-11-08",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 39801
+        },
+        {
+          "date": "2026-11-09",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 39801
+        },
+        {
+          "date": "2026-11-10",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 39801
+        },
+        {
+          "date": "2026-11-11",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 39801
+        },
+        {
+          "date": "2026-11-12",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 39801
+        },
+        {
+          "date": "2026-11-13",
+          "projectedPence": 61000,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 19800
+            }
+          ],
+          "projectedAfterPence": 59601
+        },
+        {
+          "date": "2026-11-14",
+          "projectedPence": 59200,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone",
+              "amountPence": 1800
+            }
+          ],
+          "projectedAfterPence": 57801
+        },
+        {
+          "date": "2026-11-15",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 57801
+        },
+        {
+          "date": "2026-11-16",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 57801
+        },
+        {
+          "date": "2026-11-17",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 57801
+        },
+        {
+          "date": "2026-11-18",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 57801
+        },
+        {
+          "date": "2026-11-19",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 57801
+        },
+        {
+          "date": "2026-11-20",
+          "projectedPence": 56800,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym",
+              "amountPence": 2400
+            }
+          ],
+          "projectedAfterPence": 55401
+        },
+        {
+          "date": "2026-11-21",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 55401
+        },
+        {
+          "date": "2026-11-22",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 55401
+        },
+        {
+          "date": "2026-11-23",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 55401
+        },
+        {
+          "date": "2026-11-24",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 55401
+        },
+        {
+          "date": "2026-11-25",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 55401
+        },
+        {
+          "date": "2026-11-26",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 55401
+        },
+        {
+          "date": "2026-11-27",
+          "projectedPence": 77400,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 20600
+            }
+          ],
+          "projectedAfterPence": 76001
+        },
+        {
+          "date": "2026-11-28",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 76001
+        },
+        {
+          "date": "2026-11-29",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 76001
+        },
+        {
+          "date": "2026-11-30",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 76001
+        },
+        {
+          "date": "2026-12-01",
+          "projectedPence": 12400,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 65000
+            }
+          ],
+          "projectedAfterPence": 11001
+        },
+        {
+          "date": "2026-12-02",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": 11001
+        },
+        {
+          "date": "2026-12-03",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": 11001
+        },
+        {
+          "date": "2026-12-04",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": 11001
+        },
+        {
+          "date": "2026-12-05",
+          "projectedPence": 11300,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Spotify",
+              "amountPence": 1100
+            }
+          ],
+          "projectedAfterPence": 9901
+        },
+        {
+          "date": "2026-12-06",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 9901
+        },
+        {
+          "date": "2026-12-07",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 9901
+        },
+        {
+          "date": "2026-12-08",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 9901
+        },
+        {
+          "date": "2026-12-09",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 9901
+        },
+        {
+          "date": "2026-12-10",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 9901
+        },
+        {
+          "date": "2026-12-11",
+          "projectedPence": 30300,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 19000
+            }
+          ],
+          "projectedAfterPence": 28901
+        },
+        {
+          "date": "2026-12-12",
+          "projectedPence": 30300,
+          "events": [],
+          "projectedAfterPence": 28901
+        },
+        {
+          "date": "2026-12-13",
+          "projectedPence": 30300,
+          "events": [],
+          "projectedAfterPence": 28901
+        },
+        {
+          "date": "2026-12-14",
+          "projectedPence": 28500,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone",
+              "amountPence": 1800
+            }
+          ],
+          "projectedAfterPence": 27101
+        }
+      ],
+      "calibration": {
+        "category": "health",
+        "multiplier": 1,
+        "tunedPct": 70
+      },
+      "decision": "none"
+    },
+    "variants": {
+      "essentialYes": {
+        "itemIndex": 0,
+        "response": {
+          "id": "asm_scn_2",
+          "createdAt": "2026-11-08T23:40:00+00:00",
+          "source": "watcher",
+          "merchant": "Amazon",
+          "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+          "totalPence": 1399,
+          "verdict": "essential_cover",
+          "headline": "Buy it. Skip one takeaway this week and you're covered.",
+          "spokenLine": "Buy it. Skip one takeaway this week and you are covered.",
+          "regretRisk": 8,
+          "affordability": 90,
+          "items": [
+            {
+              "index": 0,
+              "name": "Paracetamol 500mg, 32 tablets",
+              "pricePence": 349,
+              "qty": 1,
+              "category": "health",
+              "necessity": 92,
+              "necessityTag": "need",
+              "necessityConfidence": "high",
+              "essentialPrompt": true,
+              "essential": true,
+              "regretRisk": 8,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 2,
+                  "max": 25,
+                  "text": "Medicine, not a treat"
+                },
+                {
+                  "key": "history",
+                  "points": 0,
+                  "max": 20,
+                  "text": "No health purchases to learn from yet"
+                },
+                {
+                  "key": "timing",
+                  "points": 6,
+                  "max": 10,
+                  "text": "It is late, but this is not a pattern buy"
+                },
+                {
+                  "key": "money_strain",
+                  "points": 4,
+                  "max": 15,
+                  "text": "£14 leaves £398 before Friday's shift"
+                }
+              ],
+              "limitedHistory": true
+            },
+            {
+              "index": 1,
+              "name": "Prescription prepayment top-up",
+              "pricePence": 1050,
+              "qty": 1,
+              "category": "health",
+              "necessity": 92,
+              "necessityTag": "need",
+              "necessityConfidence": "high",
+              "essentialPrompt": true,
+              "essential": true,
+              "regretRisk": 6,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 1,
+                  "max": 25,
+                  "text": "A prescription is a need"
+                },
+                {
+                  "key": "history",
+                  "points": 0,
+                  "max": 20,
+                  "text": "No health purchases to learn from yet"
+                },
+                {
+                  "key": "timing",
+                  "points": 5,
+                  "max": 10,
+                  "text": "Late, but not a pattern buy"
+                },
+                {
+                  "key": "money_strain",
+                  "points": 4,
+                  "max": 15,
+                  "text": "£14 leaves £398 before Friday's shift"
+                }
+              ],
+              "limitedHistory": true
+            }
+          ],
+          "impact": {
+            "safeToSpendBeforePence": 41200,
+            "safeToSpendAfterPence": 39801,
+            "daysToNextIncome": 5,
+            "nextIncome": {
+              "name": "Part-time job",
+              "date": "2026-11-13",
+              "amountPence": 19800
+            },
+            "nextBill": {
+              "name": "Phone",
+              "date": "2026-11-14",
+              "amountPence": 1800,
+              "coveredAfter": true
+            },
+            "workingHours": 1.5,
+            "goalSharePct": 2,
+            "overdraftUntil": null
+          },
+          "topFactors": [
+            {
+              "key": "want_level",
+              "text": "You said it is essential, so it is"
+            },
+            {
+              "key": "money_strain",
+              "text": "£14 is one takeaway. Skip one this week and nothing else moves"
+            }
+          ],
+          "cues": [],
+          "negotiation": [],
+          "reflectionDays": 14,
+          "reasoning": "You said it is essential, so the question is only how to cover it. £14 is roughly one takeaway, and your eating out limit has £40 left this week. Skip one and the rest of the week is unchanged. Rent on 1 December is still covered with £110 left.",
+          "timeline": [
+            {
+              "date": "2026-11-08",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 39801
+            },
+            {
+              "date": "2026-11-09",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 39801
+            },
+            {
+              "date": "2026-11-10",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 39801
+            },
+            {
+              "date": "2026-11-11",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 39801
+            },
+            {
+              "date": "2026-11-12",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 39801
+            },
+            {
+              "date": "2026-11-13",
+              "projectedPence": 61000,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Part-time job",
+                  "amountPence": 19800
+                }
+              ],
+              "projectedAfterPence": 59601
+            },
+            {
+              "date": "2026-11-14",
+              "projectedPence": 59200,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone",
+                  "amountPence": 1800
+                }
+              ],
+              "projectedAfterPence": 57801
+            },
+            {
+              "date": "2026-11-15",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 57801
+            },
+            {
+              "date": "2026-11-16",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 57801
+            },
+            {
+              "date": "2026-11-17",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 57801
+            },
+            {
+              "date": "2026-11-18",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 57801
+            },
+            {
+              "date": "2026-11-19",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 57801
+            },
+            {
+              "date": "2026-11-20",
+              "projectedPence": 56800,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym",
+                  "amountPence": 2400
+                }
+              ],
+              "projectedAfterPence": 55401
+            },
+            {
+              "date": "2026-11-21",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 55401
+            },
+            {
+              "date": "2026-11-22",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 55401
+            },
+            {
+              "date": "2026-11-23",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 55401
+            },
+            {
+              "date": "2026-11-24",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 55401
+            },
+            {
+              "date": "2026-11-25",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 55401
+            },
+            {
+              "date": "2026-11-26",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 55401
+            },
+            {
+              "date": "2026-11-27",
+              "projectedPence": 77400,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Part-time job",
+                  "amountPence": 20600
+                }
+              ],
+              "projectedAfterPence": 76001
+            },
+            {
+              "date": "2026-11-28",
+              "projectedPence": 77400,
+              "events": [],
+              "projectedAfterPence": 76001
+            },
+            {
+              "date": "2026-11-29",
+              "projectedPence": 77400,
+              "events": [],
+              "projectedAfterPence": 76001
+            },
+            {
+              "date": "2026-11-30",
+              "projectedPence": 77400,
+              "events": [],
+              "projectedAfterPence": 76001
+            },
+            {
+              "date": "2026-12-01",
+              "projectedPence": 12400,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 65000
+                }
+              ],
+              "projectedAfterPence": 11001
+            },
+            {
+              "date": "2026-12-02",
+              "projectedPence": 12400,
+              "events": [],
+              "projectedAfterPence": 11001
+            },
+            {
+              "date": "2026-12-03",
+              "projectedPence": 12400,
+              "events": [],
+              "projectedAfterPence": 11001
+            },
+            {
+              "date": "2026-12-04",
+              "projectedPence": 12400,
+              "events": [],
+              "projectedAfterPence": 11001
+            },
+            {
+              "date": "2026-12-05",
+              "projectedPence": 11300,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Spotify",
+                  "amountPence": 1100
+                }
+              ],
+              "projectedAfterPence": 9901
+            },
+            {
+              "date": "2026-12-06",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 9901
+            },
+            {
+              "date": "2026-12-07",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 9901
+            },
+            {
+              "date": "2026-12-08",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 9901
+            },
+            {
+              "date": "2026-12-09",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 9901
+            },
+            {
+              "date": "2026-12-10",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 9901
+            },
+            {
+              "date": "2026-12-11",
+              "projectedPence": 30300,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Part-time job",
+                  "amountPence": 19000
+                }
+              ],
+              "projectedAfterPence": 28901
+            },
+            {
+              "date": "2026-12-12",
+              "projectedPence": 30300,
+              "events": [],
+              "projectedAfterPence": 28901
+            },
+            {
+              "date": "2026-12-13",
+              "projectedPence": 30300,
+              "events": [],
+              "projectedAfterPence": 28901
+            },
+            {
+              "date": "2026-12-14",
+              "projectedPence": 28500,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone",
+                  "amountPence": 1800
+                }
+              ],
+              "projectedAfterPence": 27101
+            }
+          ],
+          "calibration": {
+            "category": "health",
+            "multiplier": 1,
+            "tunedPct": 70
+          },
+          "decision": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "scn_3_duplicate",
+    "title": "Headphones plus a third phone case",
+    "trigger": {
+      "merchant": "Amazon",
+      "keywords": [
+        "Place your order"
+      ],
+      "urlPattern": "amazon.co.uk/gp/buy"
+    },
+    "request": {
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "items": [
+        {
+          "name": "Anker Soundcore Q20i noise-cancelling headphones",
+          "pricePence": 5400,
+          "qty": 1,
+          "category": "tech"
+        },
+        {
+          "name": "Spigen phone case, clear",
+          "pricePence": 3500,
+          "qty": 1,
+          "category": "accessories"
+        }
+      ],
+      "deliveryPence": 0,
+      "totalPence": 8900,
+      "cues": [],
+      "capturedAt": "2026-11-08T23:40:00+00:00",
+      "basketHash": "amazon|anker soundcore q20i noise-cancelling headphones:5400|spigen phone case, clear:3500|8900"
+    },
+    "response": {
+      "id": "asm_scn_3",
+      "createdAt": "2026-11-08T23:40:00+00:00",
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "totalPence": 8900,
+      "verdict": "nudge",
+      "headline": "The headphones make sense. You own two phone cases.",
+      "spokenLine": "The headphones make sense. The case would be your third.",
+      "regretRisk": 58,
+      "affordability": 70,
+      "items": [
+        {
+          "index": 0,
+          "name": "Anker Soundcore Q20i noise-cancelling headphones",
+          "pricePence": 5400,
+          "qty": 1,
+          "category": "tech",
+          "necessity": 55,
+          "necessityTag": "useful",
+          "necessityConfidence": "medium",
+          "essentialPrompt": false,
+          "essential": null,
+          "regretRisk": 22,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 8,
+              "max": 25,
+              "text": "Useful for the library, and you have used the Sony pair since September"
+            },
+            {
+              "key": "history",
+              "points": 4,
+              "max": 20,
+              "text": "Tech has gone fine for you; the Sony headphones on 22 September were a happy one",
+              "evidence": "p_08, £50, happy"
+            },
+            {
+              "key": "timing",
+              "points": 4,
+              "max": 10,
+              "text": "Late, but tech is not part of your late-night pattern"
+            },
+            {
+              "key": "money_strain",
+              "points": 6,
+              "max": 15,
+              "text": "£54 is just under six hours of shifts"
+            }
+          ],
+          "limitedHistory": false
+        },
+        {
+          "index": 1,
+          "name": "Spigen phone case, clear",
+          "pricePence": 3500,
+          "qty": 1,
+          "category": "accessories",
+          "necessity": 15,
+          "necessityTag": "want",
+          "necessityConfidence": "high",
+          "essentialPrompt": false,
+          "essential": null,
+          "regretRisk": 81,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 24,
+              "max": 25,
+              "text": "This would be your third phone case this term"
+            },
+            {
+              "key": "history",
+              "points": 18,
+              "max": 20,
+              "text": "You regretted 3 of the 4 accessories you reviewed",
+              "evidence": "Leather case 27 Sep, earbuds 10 Oct, grip ring 24 Oct"
+            },
+            {
+              "key": "duplicate",
+              "points": 15,
+              "max": 15,
+              "text": "You own two cases already; the leather one from 27 September was a regret",
+              "evidence": "p_02 clear case 18 Aug, p_10 leather case 27 Sep"
+            },
+            {
+              "key": "timing",
+              "points": 10,
+              "max": 10,
+              "text": "11:40pm, and accessories after 11pm have not gone well"
+            },
+            {
+              "key": "money_strain",
+              "points": 14,
+              "max": 15,
+              "text": "£35 on a case is three and a half hours of shifts"
+            }
+          ],
+          "duplicateOf": {
+            "purchaseId": "p_10",
+            "item": "Leather phone case, black",
+            "purchasedAt": "2026-09-27T00:30:00+01:00"
+          },
+          "limitedHistory": false
+        }
+      ],
+      "impact": {
+        "safeToSpendBeforePence": 41200,
+        "safeToSpendAfterPence": 32300,
+        "daysToNextIncome": 5,
+        "nextIncome": {
+          "name": "Part-time job",
+          "date": "2026-11-13",
+          "amountPence": 19800
+        },
+        "nextBill": {
+          "name": "Phone",
+          "date": "2026-11-14",
+          "amountPence": 1800,
+          "coveredAfter": true
+        },
+        "workingHours": 9.4,
+        "goalSharePct": 15,
+        "overdraftUntil": null
+      },
+      "topFactors": [
+        {
+          "key": "duplicate",
+          "text": "You own two phone cases already"
+        },
+        {
+          "key": "history",
+          "text": "You regretted 3 of the last 4 accessories you reviewed"
+        },
+        {
+          "key": "want_level",
+          "text": "The headphones look useful; the case looks like a want"
+        }
+      ],
+      "cues": [],
+      "negotiation": [
+        {
+          "id": "neg_drop_case",
+          "action": "drop",
+          "itemIndex": 1,
+          "text": "Drop the case, keep the headphones",
+          "resultRegretRisk": 22,
+          "resultSafeToSpendAfterPence": 35800,
+          "resultVerdict": "go_ahead"
+        }
+      ],
+      "reflectionDays": 7,
+      "reasoning": "The headphones look useful: you bought a Sony pair in September and still use them, so a noise-cancelling pair for the library is a reasonable upgrade. The phone case is different. You bought a clear one in August and a leather one on 27 September at half past midnight, and you regretted the second. This would be the third, and accessories after 11pm are where most of your regrets live. £89 leaves £323 before Friday and keeps rent covered. Drop the case and this is a yes.",
+      "timeline": [
+        {
+          "date": "2026-11-08",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 32300
+        },
+        {
+          "date": "2026-11-09",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 32300
+        },
+        {
+          "date": "2026-11-10",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 32300
+        },
+        {
+          "date": "2026-11-11",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 32300
+        },
+        {
+          "date": "2026-11-12",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 32300
+        },
+        {
+          "date": "2026-11-13",
+          "projectedPence": 61000,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 19800
+            }
+          ],
+          "projectedAfterPence": 52100
+        },
+        {
+          "date": "2026-11-14",
+          "projectedPence": 59200,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone",
+              "amountPence": 1800
+            }
+          ],
+          "projectedAfterPence": 50300
+        },
+        {
+          "date": "2026-11-15",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 50300
+        },
+        {
+          "date": "2026-11-16",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 50300
+        },
+        {
+          "date": "2026-11-17",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 50300
+        },
+        {
+          "date": "2026-11-18",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 50300
+        },
+        {
+          "date": "2026-11-19",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 50300
+        },
+        {
+          "date": "2026-11-20",
+          "projectedPence": 56800,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym",
+              "amountPence": 2400
+            }
+          ],
+          "projectedAfterPence": 47900
+        },
+        {
+          "date": "2026-11-21",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 47900
+        },
+        {
+          "date": "2026-11-22",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 47900
+        },
+        {
+          "date": "2026-11-23",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 47900
+        },
+        {
+          "date": "2026-11-24",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 47900
+        },
+        {
+          "date": "2026-11-25",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 47900
+        },
+        {
+          "date": "2026-11-26",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 47900
+        },
+        {
+          "date": "2026-11-27",
+          "projectedPence": 77400,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 20600
+            }
+          ],
+          "projectedAfterPence": 68500
+        },
+        {
+          "date": "2026-11-28",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 68500
+        },
+        {
+          "date": "2026-11-29",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 68500
+        },
+        {
+          "date": "2026-11-30",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 68500
+        },
+        {
+          "date": "2026-12-01",
+          "projectedPence": 12400,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 65000
+            }
+          ],
+          "projectedAfterPence": 3500
+        },
+        {
+          "date": "2026-12-02",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": 3500
+        },
+        {
+          "date": "2026-12-03",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": 3500
+        },
+        {
+          "date": "2026-12-04",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": 3500
+        },
+        {
+          "date": "2026-12-05",
+          "projectedPence": 11300,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Spotify",
+              "amountPence": 1100
+            }
+          ],
+          "projectedAfterPence": 2400
+        },
+        {
+          "date": "2026-12-06",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 2400
+        },
+        {
+          "date": "2026-12-07",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 2400
+        },
+        {
+          "date": "2026-12-08",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 2400
+        },
+        {
+          "date": "2026-12-09",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 2400
+        },
+        {
+          "date": "2026-12-10",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 2400
+        },
+        {
+          "date": "2026-12-11",
+          "projectedPence": 30300,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 19000
+            }
+          ],
+          "projectedAfterPence": 21400
+        },
+        {
+          "date": "2026-12-12",
+          "projectedPence": 30300,
+          "events": [],
+          "projectedAfterPence": 21400
+        },
+        {
+          "date": "2026-12-13",
+          "projectedPence": 30300,
+          "events": [],
+          "projectedAfterPence": 21400
+        },
+        {
+          "date": "2026-12-14",
+          "projectedPence": 28500,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone",
+              "amountPence": 1800
+            }
+          ],
+          "projectedAfterPence": 19600
+        }
+      ],
+      "calibration": {
+        "category": "accessories",
+        "multiplier": 1.2,
+        "tunedPct": 81
+      },
+      "decision": "none"
+    },
+    "variants": {
+      "negotiated": {
+        "optionId": "neg_drop_case",
+        "response": {
+          "id": "asm_scn_3",
+          "createdAt": "2026-11-08T23:40:00+00:00",
+          "source": "watcher",
+          "merchant": "Amazon",
+          "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+          "totalPence": 5400,
+          "verdict": "go_ahead",
+          "headline": "Just the headphones. Looks fine, £358 safe after this.",
+          "spokenLine": "Just the headphones. Looks fine.",
+          "regretRisk": 22,
+          "affordability": 80,
+          "items": [
+            {
+              "index": 0,
+              "name": "Anker Soundcore Q20i noise-cancelling headphones",
+              "pricePence": 5400,
+              "qty": 1,
+              "category": "tech",
+              "necessity": 55,
+              "necessityTag": "useful",
+              "necessityConfidence": "medium",
+              "essentialPrompt": false,
+              "essential": null,
+              "regretRisk": 22,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 8,
+                  "max": 25,
+                  "text": "Useful for the library, and you have used the Sony pair since September"
+                },
+                {
+                  "key": "history",
+                  "points": 4,
+                  "max": 20,
+                  "text": "Tech has gone fine for you; the Sony headphones on 22 September were a happy one",
+                  "evidence": "p_08, £50, happy"
+                },
+                {
+                  "key": "timing",
+                  "points": 4,
+                  "max": 10,
+                  "text": "Late, but tech is not part of your late-night pattern"
+                },
+                {
+                  "key": "money_strain",
+                  "points": 6,
+                  "max": 15,
+                  "text": "£54 is just under six hours of shifts"
+                }
+              ],
+              "limitedHistory": false
+            }
+          ],
+          "impact": {
+            "safeToSpendBeforePence": 41200,
+            "safeToSpendAfterPence": 35800,
+            "daysToNextIncome": 5,
+            "nextIncome": {
+              "name": "Part-time job",
+              "date": "2026-11-13",
+              "amountPence": 19800
+            },
+            "nextBill": {
+              "name": "Phone",
+              "date": "2026-11-14",
+              "amountPence": 1800,
+              "coveredAfter": true
+            },
+            "workingHours": 5.7,
+            "goalSharePct": 9,
+            "overdraftUntil": null
+          },
+          "topFactors": [
+            {
+              "key": "want_level",
+              "text": "Useful, and your tech buys have gone well"
+            }
+          ],
+          "cues": [],
+          "negotiation": [],
+          "reflectionDays": 7,
+          "reasoning": "With the case gone this is a £54 pair of headphones you will use for the library. Your tech purchases have been happy ones, and £54 leaves £358 before Friday's shift with rent covered.",
+          "timeline": [
+            {
+              "date": "2026-11-08",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 35800
+            },
+            {
+              "date": "2026-11-09",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 35800
+            },
+            {
+              "date": "2026-11-10",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 35800
+            },
+            {
+              "date": "2026-11-11",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 35800
+            },
+            {
+              "date": "2026-11-12",
+              "projectedPence": 41200,
+              "events": [],
+              "projectedAfterPence": 35800
+            },
+            {
+              "date": "2026-11-13",
+              "projectedPence": 61000,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Part-time job",
+                  "amountPence": 19800
+                }
+              ],
+              "projectedAfterPence": 55600
+            },
+            {
+              "date": "2026-11-14",
+              "projectedPence": 59200,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone",
+                  "amountPence": 1800
+                }
+              ],
+              "projectedAfterPence": 53800
+            },
+            {
+              "date": "2026-11-15",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 53800
+            },
+            {
+              "date": "2026-11-16",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 53800
+            },
+            {
+              "date": "2026-11-17",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 53800
+            },
+            {
+              "date": "2026-11-18",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 53800
+            },
+            {
+              "date": "2026-11-19",
+              "projectedPence": 59200,
+              "events": [],
+              "projectedAfterPence": 53800
+            },
+            {
+              "date": "2026-11-20",
+              "projectedPence": 56800,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym",
+                  "amountPence": 2400
+                }
+              ],
+              "projectedAfterPence": 51400
+            },
+            {
+              "date": "2026-11-21",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 51400
+            },
+            {
+              "date": "2026-11-22",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 51400
+            },
+            {
+              "date": "2026-11-23",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 51400
+            },
+            {
+              "date": "2026-11-24",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 51400
+            },
+            {
+              "date": "2026-11-25",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 51400
+            },
+            {
+              "date": "2026-11-26",
+              "projectedPence": 56800,
+              "events": [],
+              "projectedAfterPence": 51400
+            },
+            {
+              "date": "2026-11-27",
+              "projectedPence": 77400,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Part-time job",
+                  "amountPence": 20600
+                }
+              ],
+              "projectedAfterPence": 72000
+            },
+            {
+              "date": "2026-11-28",
+              "projectedPence": 77400,
+              "events": [],
+              "projectedAfterPence": 72000
+            },
+            {
+              "date": "2026-11-29",
+              "projectedPence": 77400,
+              "events": [],
+              "projectedAfterPence": 72000
+            },
+            {
+              "date": "2026-11-30",
+              "projectedPence": 77400,
+              "events": [],
+              "projectedAfterPence": 72000
+            },
+            {
+              "date": "2026-12-01",
+              "projectedPence": 12400,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 65000
+                }
+              ],
+              "projectedAfterPence": 7000
+            },
+            {
+              "date": "2026-12-02",
+              "projectedPence": 12400,
+              "events": [],
+              "projectedAfterPence": 7000
+            },
+            {
+              "date": "2026-12-03",
+              "projectedPence": 12400,
+              "events": [],
+              "projectedAfterPence": 7000
+            },
+            {
+              "date": "2026-12-04",
+              "projectedPence": 12400,
+              "events": [],
+              "projectedAfterPence": 7000
+            },
+            {
+              "date": "2026-12-05",
+              "projectedPence": 11300,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Spotify",
+                  "amountPence": 1100
+                }
+              ],
+              "projectedAfterPence": 5900
+            },
+            {
+              "date": "2026-12-06",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 5900
+            },
+            {
+              "date": "2026-12-07",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 5900
+            },
+            {
+              "date": "2026-12-08",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 5900
+            },
+            {
+              "date": "2026-12-09",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 5900
+            },
+            {
+              "date": "2026-12-10",
+              "projectedPence": 11300,
+              "events": [],
+              "projectedAfterPence": 5900
+            },
+            {
+              "date": "2026-12-11",
+              "projectedPence": 30300,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Part-time job",
+                  "amountPence": 19000
+                }
+              ],
+              "projectedAfterPence": 24900
+            },
+            {
+              "date": "2026-12-12",
+              "projectedPence": 30300,
+              "events": [],
+              "projectedAfterPence": 24900
+            },
+            {
+              "date": "2026-12-13",
+              "projectedPence": 30300,
+              "events": [],
+              "projectedAfterPence": 24900
+            },
+            {
+              "date": "2026-12-14",
+              "projectedPence": 28500,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone",
+                  "amountPence": 1800
+                }
+              ],
+              "projectedAfterPence": 23100
+            }
+          ],
+          "calibration": {
+            "category": "tech",
+            "multiplier": 1,
+            "tunedPct": 70
+          },
+          "decision": "negotiated"
+        }
+      }
+    }
+  },
+  {
+    "id": "scn_4_fine",
+    "title": "A £6 course reader",
+    "trigger": {
+      "merchant": "Amazon",
+      "keywords": [
+        "Place your order"
+      ],
+      "urlPattern": "amazon.co.uk/gp/buy"
+    },
+    "request": {
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "items": [
+        {
+          "name": "Course reader: Development Economics, week 7",
+          "pricePence": 600,
+          "qty": 1,
+          "category": "books"
+        }
+      ],
+      "deliveryPence": 0,
+      "totalPence": 600,
+      "cues": [],
+      "capturedAt": "2026-11-08T23:40:00+00:00",
+      "basketHash": "amazon|course reader: development economics, week 7:600|600"
+    },
+    "response": {
+      "id": "asm_scn_4",
+      "createdAt": "2026-11-08T23:40:00+00:00",
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "totalPence": 600,
+      "verdict": "go_ahead",
+      "headline": "Looks fine. £406 safe after this.",
+      "spokenLine": "Looks fine.",
+      "regretRisk": 6,
+      "affordability": 96,
+      "items": [
+        {
+          "index": 0,
+          "name": "Course reader: Development Economics, week 7",
+          "pricePence": 600,
+          "qty": 1,
+          "category": "books",
+          "necessity": 85,
+          "necessityTag": "need",
+          "necessityConfidence": "high",
+          "essentialPrompt": false,
+          "essential": null,
+          "regretRisk": 6,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 2,
+              "max": 25,
+              "text": "Course reading, and you said course books are always fine",
+              "evidence": "Rule: course books are always fine"
+            },
+            {
+              "key": "history",
+              "points": 0,
+              "max": 20,
+              "text": "All three book purchases you reviewed were happy ones",
+              "evidence": "p_09, p_13, p_22"
+            },
+            {
+              "key": "timing",
+              "points": 4,
+              "max": 10,
+              "text": "Late, but books do not follow your late-night pattern"
+            }
+          ],
+          "limitedHistory": false
+        }
+      ],
+      "impact": {
+        "safeToSpendBeforePence": 41200,
+        "safeToSpendAfterPence": 40600,
+        "daysToNextIncome": 5,
+        "nextIncome": {
+          "name": "Part-time job",
+          "date": "2026-11-13",
+          "amountPence": 19800
+        },
+        "nextBill": {
+          "name": "Phone",
+          "date": "2026-11-14",
+          "amountPence": 1800,
+          "coveredAfter": true
+        },
+        "workingHours": 0.6,
+        "goalSharePct": 1,
+        "overdraftUntil": null
+      },
+      "topFactors": [
+        {
+          "key": "want_level",
+          "text": "Course books are always fine, you said"
+        }
+      ],
+      "cues": [],
+      "negotiation": [],
+      "reflectionDays": 14,
+      "reasoning": "A £6 course reader. You told me course books are always fine, and all three you reviewed were happy. £406 safe after this.",
+      "timeline": [
+        {
+          "date": "2026-11-08",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 40600
+        },
+        {
+          "date": "2026-11-09",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 40600
+        },
+        {
+          "date": "2026-11-10",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 40600
+        },
+        {
+          "date": "2026-11-11",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 40600
+        },
+        {
+          "date": "2026-11-12",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 40600
+        },
+        {
+          "date": "2026-11-13",
+          "projectedPence": 61000,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 19800
+            }
+          ],
+          "projectedAfterPence": 60400
+        },
+        {
+          "date": "2026-11-14",
+          "projectedPence": 59200,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone",
+              "amountPence": 1800
+            }
+          ],
+          "projectedAfterPence": 58600
+        },
+        {
+          "date": "2026-11-15",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 58600
+        },
+        {
+          "date": "2026-11-16",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 58600
+        },
+        {
+          "date": "2026-11-17",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 58600
+        },
+        {
+          "date": "2026-11-18",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 58600
+        },
+        {
+          "date": "2026-11-19",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 58600
+        },
+        {
+          "date": "2026-11-20",
+          "projectedPence": 56800,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym",
+              "amountPence": 2400
+            }
+          ],
+          "projectedAfterPence": 56200
+        },
+        {
+          "date": "2026-11-21",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 56200
+        },
+        {
+          "date": "2026-11-22",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 56200
+        },
+        {
+          "date": "2026-11-23",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 56200
+        },
+        {
+          "date": "2026-11-24",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 56200
+        },
+        {
+          "date": "2026-11-25",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 56200
+        },
+        {
+          "date": "2026-11-26",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 56200
+        },
+        {
+          "date": "2026-11-27",
+          "projectedPence": 77400,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 20600
+            }
+          ],
+          "projectedAfterPence": 76800
+        },
+        {
+          "date": "2026-11-28",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 76800
+        },
+        {
+          "date": "2026-11-29",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 76800
+        },
+        {
+          "date": "2026-11-30",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 76800
+        },
+        {
+          "date": "2026-12-01",
+          "projectedPence": 12400,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 65000
+            }
+          ],
+          "projectedAfterPence": 11800
+        },
+        {
+          "date": "2026-12-02",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": 11800
+        },
+        {
+          "date": "2026-12-03",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": 11800
+        },
+        {
+          "date": "2026-12-04",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": 11800
+        },
+        {
+          "date": "2026-12-05",
+          "projectedPence": 11300,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Spotify",
+              "amountPence": 1100
+            }
+          ],
+          "projectedAfterPence": 10700
+        },
+        {
+          "date": "2026-12-06",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 10700
+        },
+        {
+          "date": "2026-12-07",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 10700
+        },
+        {
+          "date": "2026-12-08",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 10700
+        },
+        {
+          "date": "2026-12-09",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 10700
+        },
+        {
+          "date": "2026-12-10",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 10700
+        },
+        {
+          "date": "2026-12-11",
+          "projectedPence": 30300,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 19000
+            }
+          ],
+          "projectedAfterPence": 29700
+        },
+        {
+          "date": "2026-12-12",
+          "projectedPence": 30300,
+          "events": [],
+          "projectedAfterPence": 29700
+        },
+        {
+          "date": "2026-12-13",
+          "projectedPence": 30300,
+          "events": [],
+          "projectedAfterPence": 29700
+        },
+        {
+          "date": "2026-12-14",
+          "projectedPence": 28500,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone",
+              "amountPence": 1800
+            }
+          ],
+          "projectedAfterPence": 27900
+        }
+      ],
+      "calibration": {
+        "category": "books",
+        "multiplier": 0.8,
+        "tunedPct": 90
+      },
+      "decision": "none"
+    }
+  },
+  {
+    "id": "scn_5_steam",
+    "title": "A Steam sale on a Friday night",
+    "trigger": {
+      "merchant": "Steam",
+      "keywords": [
+        "Purchase"
+      ],
+      "urlPattern": "store.steampowered.com/checkout"
+    },
+    "request": {
+      "source": "watcher",
+      "merchant": "Steam",
+      "url": "https://store.steampowered.com/checkout/",
+      "items": [
+        {
+          "name": "Hollow Knight: Silksong",
+          "pricePence": 3999,
+          "qty": 1,
+          "category": "fun"
+        }
+      ],
+      "deliveryPence": 0,
+      "totalPence": 3999,
+      "cues": [
+        {
+          "key": "countdown",
+          "text": "-40% ends in 2 days"
+        },
+        {
+          "key": "sale",
+          "text": "Save 40%"
+        }
+      ],
+      "capturedAt": "2026-11-06T22:30:00+00:00",
+      "basketHash": "steam|hollow knight: silksong:3999|3999"
+    },
+    "response": {
+      "id": "asm_scn_5",
+      "createdAt": "2026-11-08T23:40:00+00:00",
+      "source": "watcher",
+      "merchant": "Steam",
+      "url": "https://store.steampowered.com/checkout/",
+      "totalPence": 3999,
+      "verdict": "nudge",
+      "headline": "Friday after ten, and a sale timer.",
+      "spokenLine": "Friday after ten and a sale timer. Sure?",
+      "regretRisk": 64,
+      "affordability": 72,
+      "items": [
+        {
+          "index": 0,
+          "name": "Hollow Knight: Silksong",
+          "pricePence": 3999,
+          "qty": 1,
+          "category": "fun",
+          "necessity": 20,
+          "necessityTag": "want",
+          "necessityConfidence": "high",
+          "essentialPrompt": false,
+          "essential": null,
+          "regretRisk": 64,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 18,
+              "max": 25,
+              "text": "A game on a Friday night is a treat, which is fine when the budget has room"
+            },
+            {
+              "key": "history",
+              "points": 14,
+              "max": 20,
+              "text": "Hades II on 16 October was the same pattern: Friday, sale timer, regretted",
+              "evidence": "p_16, £24, regretted"
+            },
+            {
+              "key": "pressure",
+              "points": 9,
+              "max": 10,
+              "text": "A countdown and a discount together"
+            },
+            {
+              "key": "timing",
+              "points": 10,
+              "max": 10,
+              "text": "Friday after 10pm: you regretted every one of the five purchases you made in that window",
+              "evidence": "p_01, p_06, p_11, p_16, p_20"
+            },
+            {
+              "key": "money_strain",
+              "points": 13,
+              "max": 15,
+              "text": "Fun limit is £30 a week; this is £40"
+            }
+          ],
+          "limitedHistory": false
+        }
+      ],
+      "impact": {
+        "safeToSpendBeforePence": 41200,
+        "safeToSpendAfterPence": 37201,
+        "daysToNextIncome": 5,
+        "nextIncome": {
+          "name": "Part-time job",
+          "date": "2026-11-13",
+          "amountPence": 19800
+        },
+        "nextBill": {
+          "name": "Phone",
+          "date": "2026-11-14",
+          "amountPence": 1800,
+          "coveredAfter": true
+        },
+        "limit": {
+          "category": "fun",
+          "weeklyLimitPence": 3000,
+          "spentThisWeekPence": 0,
+          "remainingAfterPence": -999,
+          "overByPence": 999
+        },
+        "workingHours": 4.2,
+        "goalSharePct": 7,
+        "overdraftUntil": null
+      },
+      "topFactors": [
+        {
+          "key": "timing",
+          "text": "Friday after 10pm: five for five regretted"
+        },
+        {
+          "key": "pressure",
+          "text": "The timer ends in two days, which is after Friday's shift anyway"
+        },
+        {
+          "key": "money_strain",
+          "text": "£40 on a £30 fun limit"
+        }
+      ],
+      "cues": [
+        {
+          "key": "countdown",
+          "text": "-40% ends in 2 days",
+          "note": "Steam sales come round every few weeks. The timer is there to make you decide tonight."
+        },
+        {
+          "key": "sale",
+          "text": "Save 40%",
+          "note": "A discount only saves money on something you were going to buy anyway."
+        }
+      ],
+      "negotiation": [
+        {
+          "id": "neg_delay_game",
+          "action": "delay",
+          "itemIndex": 0,
+          "text": "Wait until Friday's shift pays, then decide",
+          "resultRegretRisk": 38,
+          "resultSafeToSpendAfterPence": 41200,
+          "resultVerdict": "go_ahead",
+          "delayUntil": "2026-11-13"
+        }
+      ],
+      "reflectionDays": 7,
+      "reasoning": "Friday after 10pm is your worst window: all five purchases you made then were regrets, and Hades II on 16 October was this exact setup, sale timer included. £40 is £10 over the fun limit. The discount still has two days on it, and Friday's shift pays before it ends, so waiting costs nothing.",
+      "timeline": [
+        {
+          "date": "2026-11-08",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 37201
+        },
+        {
+          "date": "2026-11-09",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 37201
+        },
+        {
+          "date": "2026-11-10",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 37201
+        },
+        {
+          "date": "2026-11-11",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 37201
+        },
+        {
+          "date": "2026-11-12",
+          "projectedPence": 41200,
+          "events": [],
+          "projectedAfterPence": 37201
+        },
+        {
+          "date": "2026-11-13",
+          "projectedPence": 61000,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 19800
+            }
+          ],
+          "projectedAfterPence": 57001
+        },
+        {
+          "date": "2026-11-14",
+          "projectedPence": 59200,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone",
+              "amountPence": 1800
+            }
+          ],
+          "projectedAfterPence": 55201
+        },
+        {
+          "date": "2026-11-15",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 55201
+        },
+        {
+          "date": "2026-11-16",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 55201
+        },
+        {
+          "date": "2026-11-17",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 55201
+        },
+        {
+          "date": "2026-11-18",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 55201
+        },
+        {
+          "date": "2026-11-19",
+          "projectedPence": 59200,
+          "events": [],
+          "projectedAfterPence": 55201
+        },
+        {
+          "date": "2026-11-20",
+          "projectedPence": 56800,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym",
+              "amountPence": 2400
+            }
+          ],
+          "projectedAfterPence": 52801
+        },
+        {
+          "date": "2026-11-21",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 52801
+        },
+        {
+          "date": "2026-11-22",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 52801
+        },
+        {
+          "date": "2026-11-23",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 52801
+        },
+        {
+          "date": "2026-11-24",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 52801
+        },
+        {
+          "date": "2026-11-25",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 52801
+        },
+        {
+          "date": "2026-11-26",
+          "projectedPence": 56800,
+          "events": [],
+          "projectedAfterPence": 52801
+        },
+        {
+          "date": "2026-11-27",
+          "projectedPence": 77400,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 20600
+            }
+          ],
+          "projectedAfterPence": 73401
+        },
+        {
+          "date": "2026-11-28",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 73401
+        },
+        {
+          "date": "2026-11-29",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 73401
+        },
+        {
+          "date": "2026-11-30",
+          "projectedPence": 77400,
+          "events": [],
+          "projectedAfterPence": 73401
+        },
+        {
+          "date": "2026-12-01",
+          "projectedPence": 12400,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 65000
+            }
+          ],
+          "projectedAfterPence": 8401
+        },
+        {
+          "date": "2026-12-02",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": 8401
+        },
+        {
+          "date": "2026-12-03",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": 8401
+        },
+        {
+          "date": "2026-12-04",
+          "projectedPence": 12400,
+          "events": [],
+          "projectedAfterPence": 8401
+        },
+        {
+          "date": "2026-12-05",
+          "projectedPence": 11300,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Spotify",
+              "amountPence": 1100
+            }
+          ],
+          "projectedAfterPence": 7301
+        },
+        {
+          "date": "2026-12-06",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 7301
+        },
+        {
+          "date": "2026-12-07",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 7301
+        },
+        {
+          "date": "2026-12-08",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 7301
+        },
+        {
+          "date": "2026-12-09",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 7301
+        },
+        {
+          "date": "2026-12-10",
+          "projectedPence": 11300,
+          "events": [],
+          "projectedAfterPence": 7301
+        },
+        {
+          "date": "2026-12-11",
+          "projectedPence": 30300,
+          "events": [
+            {
+              "type": "income",
+              "name": "Part-time job",
+              "amountPence": 19000
+            }
+          ],
+          "projectedAfterPence": 26301
+        },
+        {
+          "date": "2026-12-12",
+          "projectedPence": 30300,
+          "events": [],
+          "projectedAfterPence": 26301
+        },
+        {
+          "date": "2026-12-13",
+          "projectedPence": 30300,
+          "events": [],
+          "projectedAfterPence": 26301
+        },
+        {
+          "date": "2026-12-14",
+          "projectedPence": 28500,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone",
+              "amountPence": 1800
+            }
+          ],
+          "projectedAfterPence": 24501
+        }
+      ],
+      "calibration": {
+        "category": "fun",
+        "multiplier": 1,
+        "tunedPct": 70
+      },
+      "decision": "none"
+    }
+  }
+]

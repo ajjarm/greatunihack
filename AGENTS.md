@@ -75,7 +75,7 @@ own branch and lands through `./scripts/land.sh`.
 
 | Lane | Who | Directories (only these) | Branch |
 |---|---|---|---|
-| Watcher, Brain, design, integrator | Ajjar | `apps/watcher/**`, `apps/web/src/lib/**`, `apps/web/src/app/api/**`, shared files, `docs/DESIGN.md` | `ajjar/*` |
+| extension, Brain, design, integrator | Ajjar | `apps/extension/**`, `apps/web/src/lib/**`, `apps/web/src/app/api/**`, shared files, `docs/DESIGN.md` | `ajjar/*` |
 | The nudge page | Rayan | `apps/web/src/app/nudge/**`, `apps/web/src/components/nudge/**` | `rayan/nudge` |
 | The dashboard | Aarav | `apps/web/src/app/(dashboard)/**`, `apps/web/src/components/dashboard/**` | `aarav/dashboard` |
 | Fixture data, then pitch | Zack | `data/**`, then `docs/PITCH.md`, `README.md` | `zack/data` |

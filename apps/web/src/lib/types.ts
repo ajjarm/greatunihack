@@ -412,16 +412,9 @@ export interface Scenario {
   };
 }
 
-// ---------- Electron bridge (present only inside the Watcher window) ----------
+// ---------- Host bridge (nudge page ↔ extension iframe host, via postMessage) ----------
 
-export interface WatcherBridge {
-  close(): void;
-  resize(height: number): void;
-  openDashboard(path?: string): void;
-}
-
-declare global {
-  interface Window {
-    watcher?: WatcherBridge;
-  }
-}
+export type HostMessage =
+  | { source: "st-nudge"; type: "resize"; height: number }
+  | { source: "st-nudge"; type: "close" }
+  | { source: "st-nudge"; type: "open"; path?: string };

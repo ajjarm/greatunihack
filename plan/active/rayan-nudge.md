@@ -8,8 +8,8 @@
 ## Goal
 
 A page at `/nudge` that renders an `Assessment` as the floating card the judge sees,
-with real API calls for every button, working both inside the Electron window (bridge
-present) and in a normal browser tab (bridge absent).
+with real API calls for every button, working both inside the extension's iframe
+(host messages via `host.ts`) and in a normal browser tab (messages are no-ops).
 
 ## Steps
 
@@ -21,14 +21,15 @@ present) and in a normal browser tab (bridge absent).
    `tokens.css` variables for colour, radius, shadow, font, motion.
 3. Wire buttons: negotiate → `POST /api/assessments/:id/negotiate`; reason →
    `POST .../reason`; essential chip and prompt → `PATCH .../essential`; I'll wait /
-   Buying anyway / Dismiss → `PATCH .../decision` then `window.watcher?.close()`.
-   Re-render from the returned assessment; animate number changes.
+   Buying anyway / Dismiss → `PATCH .../decision` then `hostClose()` from
+   `apps/web/src/lib/host.ts`. Re-render from the returned assessment; animate number
+   changes.
 4. Show more section: reasoning, per-item factors with points/max, timeline mini
    chart (simple SVG, income and bill markers, before and after lines), calibration.
-5. Toast variant for `verdict === "go_ahead"`; call `window.watcher?.resize(72)`.
-6. Call `window.watcher?.resize(document.body.scrollHeight)` after every render.
+5. Toast variant for `verdict === "go_ahead"`; call `hostResize(72)`; auto-close 3s.
+6. Call `hostResize(document.body.scrollHeight)` after every render.
 7. Keyboard: tab order, Escape = Dismiss, focus visible. Reduced motion respected.
-8. Check all five scenarios: `/nudge?scenario=scn_1_impulse` … `scn_5_steam`.
+8. Check all five scenarios: `/nudge?scenario=scn_1_impulse` … `scn_5_deal`.
 9. Later (phase 2): apply `docs/DESIGN.md` component notes when Ajjar lands it.
 
 ## Done when

@@ -1,0 +1,17 @@
+{
+  "weekStart": "2026-10-26",
+  "nudgesShown": 9,
+  "heeded": 5,
+  "overridden": 4,
+  "overriddenHappy": 1,
+  "overriddenRegretted": 2,
+  "limitsKept": 3,
+  "limitsExceeded": 1,
+  "avoidedPence": 7200,
+  "spendScore": 69,
+  "sentences": [
+    "You heeded 5 of 9 nudges last week and kept roughly £72 in your account because of it.",
+    "Of the 4 you overrode, you were happy with 1 and regretted 2. Both regrets were late-night clothes orders.",
+    "You kept three of your four limits. Clothes went over by £18 on Friday night."
+  ]
+}
