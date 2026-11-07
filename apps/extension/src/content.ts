@@ -223,9 +223,14 @@ function stashProduct(): ParsedCheckout | null {
   return parsed;
 }
 
+/** Products already judged in THIS page load; a second request for the same one is ignored. */
+const judgedProducts = new Set<string>();
+
 async function judgeProduct(parsed: ParsedCheckout): Promise<boolean> {
   const req = toAssessRequest(parsed);
   if (!req) return false;
+  if (judgedProducts.has(req.basketHash)) return true; // once per page load, full stop
+  judgedProducts.add(req.basketHash);
   req.url = location.href;
   seen.add(req.basketHash);
   return assessAndShow(req.totalPence, req.merchant, () => assessParsed(req));
@@ -236,7 +241,10 @@ async function judgeProduct(parsed: ParsedCheckout): Promise<boolean> {
 const SHOWN_GRACE_MS = 25_000;
 
 /** On a basket/checkout page: if a product was just added, judge that product first. */
+let stashChecked = false;
 async function judgeStashed(): Promise<boolean> {
+  if (stashChecked) return false; // the stash is read once per page load, never on every DOM tick
+  stashChecked = true;
   let raw: string | null = null;
   try {
     raw = sessionStorage.getItem(STASH_KEY);
