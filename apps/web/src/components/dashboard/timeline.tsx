@@ -1,0 +1,12 @@
+import type { TimelinePoint } from "@/lib/types";
+import { date, money } from "./shared";
+
+export function Timeline({ points }: { points: TimelinePoint[] }) {
+  if (!points.length) return <p className="text-sm text-[var(--color-text-muted)]">No timeline yet.</p>;
+  const values = points.flatMap(p => [p.projectedPence, p.projectedAfterPence ?? p.projectedPence]);
+  const min = Math.min(0, ...values), max = Math.max(...values), span = max - min || 1;
+  const x = (i: number) => 22 + i / Math.max(1, points.length - 1) * 556;
+  const y = (v: number) => 150 - (v - min) / span * 125;
+  const line = (after: boolean) => points.map((p, i) => `${i ? "L" : "M"}${x(i)},${y(after ? p.projectedAfterPence ?? p.projectedPence : p.projectedPence)}`).join(" ");
+  return <div><svg viewBox="0 0 600 170" role="img" aria-label="Projected cash balance over time" className="w-full"><line x1="22" y1={y(0)} x2="578" y2={y(0)} stroke="var(--color-border)" strokeDasharray="4 4" /><path d={line(false)} fill="none" stroke="var(--color-accent)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />{points.some(p => p.projectedAfterPence !== undefined) && <path d={line(true)} fill="none" stroke="var(--color-think)" strokeWidth="2" strokeDasharray="5 4" />}{points.map((p, i) => p.events.length ? <g key={p.date}><circle cx={x(i)} cy={y(p.projectedPence)} r="5" fill="var(--color-accent)" /><title>{date(p.date)}: {p.events.map(e => `${e.name} ${money(e.amountPence)}`).join(", ")}</title></g> : null)}</svg><div className="flex justify-between text-xs text-[var(--color-text-muted)]"><span>{date(points[0].date)}</span><span>{date(points.at(-1)!.date)}</span></div><div className="mt-3 flex flex-wrap gap-4 text-xs text-[var(--color-text-muted)]"><span><span className="text-[var(--color-accent)]">●</span> Projected balance</span>{points.some(p => p.projectedAfterPence !== undefined) && <span><span className="text-[var(--color-think)]">●</span> After basket</span>}<span>Dots mark money events</span></div></div>;
+}
