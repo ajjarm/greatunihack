@@ -6,7 +6,8 @@
   "description": "Steps in at the Amazon UK checkout with a regret score and what the basket does to your money before payday.",
   "permissions": [
     "storage",
-    "activeTab"
+    "activeTab",
+    "webRequest"
   ],
   "host_permissions": [
     "https://www.amazon.co.uk/*",

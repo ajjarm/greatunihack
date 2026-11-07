@@ -11,7 +11,7 @@
 import type { AssessRequest, Assessment, HostMessage } from "../../web/src/lib/types";
 import { api } from "./api";
 import { getWebUrl, isPaused, type TabMessage, type WorkerMessage } from "./config";
-import { asinFromUrl, parseCheckout, parseProductPage, toAssessRequest, type ParsedCheckout } from "./parser";
+import { asinFromUrl, DEMO_PRODUCTS, parseCheckout, parseProductPage, toAssessRequest, type ParsedCheckout } from "./parser";
 
 const KEY_PREFIX = "st-ext:";
 const SCENARIO_IDX_KEY = `${KEY_PREFIX}scenario-idx`;
@@ -393,13 +393,68 @@ async function judgeNow() {
   }
 }
 
+/** A product captured from the network trigger: the demo table or, failing that, the page. */
+function productForAsin(asin: string | null): ParsedCheckout | null {
+  const fromPage = parseProductPage(document, location.href);
+  if (fromPage) return fromPage;
+  if (!asin) return null;
+  const known = DEMO_PRODUCTS[asin];
+  if (!known) return null;
+  return {
+    isCheckout: true,
+    hasOrderButton: true,
+    hasSummary: true,
+    merchant: "Amazon",
+    url: location.href,
+    items: [{ name: known.name, pricePence: known.pricePence, qty: 1 }],
+    deliveryPence: 0,
+    totalPence: known.pricePence,
+    cues: [],
+    basketHash: `amazon|${asin}|${known.pricePence}`,
+  };
+}
+
+let networkHandled = false;
+async function onNetworkAdded(asin: string | null, source: string) {
+  if (networkHandled) return;
+  const parsed = productForAsin(asin);
+  if (!parsed) return;
+  networkHandled = true;
+  productJudged = true;
+  console.info(`[st] add-to-basket seen on the network (${source}); judging`, parsed.items[0]?.name);
+  try {
+    sessionStorage.setItem(STASH_KEY, JSON.stringify({ parsed, at: Date.now() }));
+  } catch {
+    /* ignore */
+  }
+  await judgeProduct(parsed);
+  try {
+    await chrome.storage.local.remove(["addedAsin", "addedAt", "addedTab"]);
+  } catch {
+    /* ignore */
+  }
+}
+
+async function checkNetworkAddedOnLoad() {
+  try {
+    const { addedAsin, addedAt } = await chrome.storage.local.get(["addedAsin", "addedAt"]);
+    if (typeof addedAt === "number" && Date.now() - addedAt < 60_000) {
+      await onNetworkAdded(typeof addedAsin === "string" ? addedAsin : null, "storage");
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
 chrome.runtime.onMessage.addListener((msg: TabMessage) => {
   if (msg?.type === "st-judge-now") { console.info("[st] judge-now received"); void judgeNow(); }
+  if (msg?.type === "st-added") void onNetworkAdded(msg.asin, "message");
   return false;
 });
 
 // ---------- start ----------
 console.info("[st] SecondThought content script loaded on", location.href);
+void checkNetworkAddedOnLoad();
 
 // Wake the server's model client so the first real assessment isn't a cold start.
 api("/api/health?warm=1").catch(() => {

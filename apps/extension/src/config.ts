@@ -44,4 +44,4 @@ export type WorkerMessage =
 export type FetchReply = { ok: true; status: number; data: unknown } | { ok: false; status: number; error: string };
 
 // Message from the service worker to the active tab's content script.
-export type TabMessage = { type: "st-judge-now" };
+export type TabMessage = { type: "st-judge-now" } | { type: "st-added"; asin: string | null };

@@ -67,3 +67,59 @@ chrome.runtime.onMessage.addListener((raw: WorkerMessage, _sender, sendResponse)
   }
   return false;
 });
+
+
+// ---------- 4. Network trigger: Amazon's add-to-basket request, however the button is built ----------
+const ADD_URLS = [
+  "*://www.amazon.co.uk/*add-to-cart*",
+  "*://www.amazon.co.uk/*handle-buy-box*",
+  "*://www.amazon.co.uk/cart/add-to-cart*",
+  "*://www.amazon.co.uk/gp/item-dispatch*",
+  "*://www.amazon.co.uk/*/sw-atc*",
+  "*://www.amazon.co.uk/*smart-wagon*",
+];
+const ASIN_RE = /\b([A-Z0-9]{10})\b/;
+
+function asinFromBody(body: { formData?: Record<string, unknown[]> } | undefined | null): string | null {
+  const fd = body?.formData;
+  if (!fd) return null;
+  for (const key of Object.keys(fd)) {
+    if (/asin/i.test(key)) {
+      const v = fd[key]?.[0];
+      if (typeof v === "string" && ASIN_RE.test(v)) return ASIN_RE.exec(v)![1];
+    }
+  }
+  return null;
+}
+
+try {
+  chrome.webRequest.onBeforeRequest.addListener(
+    (details) => {
+      if (details.tabId < 0) return;
+      let asin = asinFromBody(details.requestBody) ?? (/[?&](?:asin|ASIN)=([A-Z0-9]{10})/.exec(details.url)?.[1] ?? null);
+      void (async () => {
+        if (!asin) {
+          try {
+            const tab = await chrome.tabs.get(details.tabId);
+            const m = /\/(?:dp|gp\/product)\/([A-Z0-9]{10})/i.exec(tab.url ?? "");
+            asin = m ? m[1].toUpperCase() : null;
+          } catch {
+            /* ignore */
+          }
+        }
+        await chrome.storage.local.set({ addedAsin: asin, addedAt: Date.now(), addedTab: details.tabId });
+        console.info("[st] add-to-basket request seen", details.url.slice(0, 80), "asin:", asin);
+        const msg: TabMessage = { type: "st-added", asin };
+        try {
+          await chrome.tabs.sendMessage(details.tabId, msg);
+        } catch {
+          /* page is navigating; the content script on the next page reads storage */
+        }
+      })();
+    },
+    { urls: ADD_URLS, types: ["main_frame", "sub_frame", "xmlhttprequest", "other"] },
+    ["requestBody"],
+  );
+} catch (e) {
+  console.warn("[st] webRequest listener not available", e);
+}
