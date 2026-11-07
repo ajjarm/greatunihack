@@ -13,6 +13,8 @@ import { TimelineChart } from "./TimelineChart";
 type Props = {
   /** 70+ on first load: no ✕, and Buying anyway stays locked until the user gives a reason */
   locked?: boolean;
+  /** 40-69 on first load: small corner card, detail behind "More" */
+  compact?: boolean;
   assessment: Assessment;
   busy: string | null;
   error: string | null;
@@ -35,23 +37,27 @@ export function NudgeCard(props: Props) {
   const { assessment: a, busy, error, done } = props;
   const locked = !!busy || !!done;
   const needsReason = !!props.locked && !a.reason;
+  // 40-69 is a small corner card; everything but the essentials sits behind "More"
+  const compact = !!props.compact;
+  const [more, setMore] = useState(false);
+  const full = !compact || more;
   const best = [...a.negotiation].sort((x, y) => x.resultRegretRisk - y.resultRegretRisk)[0];
 
   return (
     <div className="flex flex-col gap-3">
       <article className="nudge-card flex flex-col" data-busy={busy ? "true" : "false"} aria-busy={!!busy} aria-labelledby="nudge-headline">
-        <div className="flex flex-col gap-4 p-5">
-          {/* title row */}
+        <div className={`flex flex-col ${compact ? "gap-3 p-4" : "gap-4 p-5"}`}>
+          {/* title row; the ✕ is hidden on a locked nudge until a reason has been given */}
           <div className="flex items-start gap-3">
             <div className="flex-1 min-w-0 flex flex-col gap-1">
               <span className="text-xs nudge-muted">
                 {BRAND.name} · {a.merchant} · <span className="nudge-num">{money(a.totalPence)}</span>
               </span>
-              <h1 id="nudge-headline" className="text-lg font-semibold leading-snug">
+              <h1 id="nudge-headline" className={`${compact ? "text-base" : "text-lg"} font-semibold leading-snug`}>
                 {a.headline}
               </h1>
             </div>
-            {!done && !props.locked && (
+            {!done && !needsReason && (
               <button
                 type="button"
                 className="nudge-btn nudge-btn-ghost w-8 h-8 shrink-0 flex items-center justify-center"
@@ -65,12 +71,13 @@ export function NudgeCard(props: Props) {
             )}
           </div>
 
-          <RiskRow a={a} />
-          <HoursStrip a={a} />
-          <MoneyLines a={a} />
+          <RiskRow a={a} compact={compact} />
+          <HoursStrip a={a} compact={compact} />
+
+          {full && <MoneyLines a={a} />}
 
           {/* meet in the middle: the best option only */}
-          {best && !done && (
+          {full && best && !done && (
             <div className="nudge-accent-panel px-3 py-2 flex items-center gap-3">
               <div className="flex-1 min-w-0 text-sm">
                 <p className="font-semibold">{best.text}</p>
@@ -97,23 +104,41 @@ export function NudgeCard(props: Props) {
             </p>
           )}
 
-          {done ? <DoneState a={a} done={done} /> : <Decisions a={a} busy={busy} disabled={locked} needsReason={needsReason} onDecision={props.onDecision} />}
+          {done ? (
+            <DoneState a={a} done={done} />
+          ) : (
+            <div className="flex items-center gap-2">
+              {compact && (
+                <button
+                  type="button"
+                  className="nudge-btn nudge-btn-ghost nudge-btn-small px-2 py-2 mr-auto"
+                  aria-expanded={more}
+                  onClick={() => setMore((m) => !m)}
+                >
+                  {more ? "Less ▴" : "More ▾"}
+                </button>
+              )}
+              <div className="flex-1">
+                <Decisions a={a} busy={busy} disabled={locked} needsReason={needsReason} onDecision={props.onDecision} />
+              </div>
+            </div>
+          )}
         </div>
 
-        <ShowMore a={a} disabled={locked} busy={busy} onEssential={props.onEssential} />
+        {full && <ShowMore a={a} disabled={locked} busy={busy} onEssential={props.onEssential} />}
       </article>
 
-      {!done && <ReasonBar a={a} disabled={locked} busy={busy === "reason"} prompt={needsReason} onSubmit={props.onReason} />}
+      {full && !done && <ReasonBar a={a} disabled={locked} busy={busy === "reason"} prompt={needsReason} onSubmit={props.onReason} />}
     </div>
   );
 }
 
-function RiskRow({ a }: { a: Assessment }) {
+function RiskRow({ a, compact }: { a: Assessment; compact?: boolean }) {
   const b = band(a.regretRisk);
   return (
     <section className={`nudge-band-${b} flex flex-col gap-2`} aria-label="Regret risk">
       <div className="flex items-center gap-3">
-        <span className="nudge-band-text nudge-risk-figure text-4xl font-bold leading-none" aria-live="polite">
+        <span className={`nudge-band-text nudge-risk-figure ${compact ? "text-3xl" : "text-4xl"} font-bold leading-none`} aria-live="polite">
           <AnimatedNumber value={a.regretRisk} format={pct} />
         </span>
         <span className="flex-1 text-sm leading-tight">
@@ -130,11 +155,11 @@ function RiskRow({ a }: { a: Assessment }) {
 }
 
 /** The cost in working time, made hard to skim past. */
-function HoursStrip({ a }: { a: Assessment }) {
+function HoursStrip({ a, compact }: { a: Assessment; compact?: boolean }) {
   const im = a.impact;
   return (
-    <section className="nudge-hours px-4 py-3 flex items-center gap-3" aria-label="Cost in working hours">
-      <span className="nudge-hours-figure nudge-num">
+    <section className={`nudge-hours ${compact ? "px-3 py-2" : "px-4 py-3"} flex items-center gap-3`} aria-label="Cost in working hours">
+      <span className="nudge-hours-figure nudge-num" data-compact={compact ? "true" : "false"}>
         <AnimatedNumber value={Math.round(im.workingHours * 10)} format={(n) => hours(n / 10)} />
         <span className="nudge-hours-unit">hrs</span>
       </span>

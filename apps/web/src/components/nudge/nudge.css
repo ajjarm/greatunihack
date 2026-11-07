@@ -238,3 +238,7 @@ body:has(.nudge-root) { background: transparent; }
 @keyframes nudge-fade-in { from { opacity: 0; } to { opacity: 1; } }
 .nudge-pill[data-prompt="true"] { border: 2px solid var(--color-stop); }
 @media (prefers-reduced-motion: reduce) { .nudge-backdrop { animation: none; } }
+.nudge-hours-figure[data-compact="true"] { font-size: 26px; }
+
+/* dev only: the Next.js dev badge renders inside the popup iframe and covers its corner */
+html:has(.nudge-root) nextjs-portal { display: none; }

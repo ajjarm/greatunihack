@@ -13,6 +13,11 @@ export type DoneInfo = { decision: api.DecisionIn; waitingItem?: WaitingItem; pu
 
 const FINAL = ["wait", "buy_anyway", "dismiss"] as const;
 
+function contentHeight(): number {
+  const root = document.querySelector(".nudge-root");
+  return root ? root.getBoundingClientRect().height : document.body.scrollHeight;
+}
+
 /** Reads the query; a new query remounts the loader so its state starts fresh. */
 export function NudgeClient() {
   const params = useSearchParams();
@@ -111,7 +116,8 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape" || !assessment || done || isToast) return;
-      if (isLock) {
+      // locked: Escape does nothing until a reason has been given (same rule as the ✕)
+      if (isLock && !assessment.reason) {
         e.preventDefault();
         return;
       }
@@ -141,14 +147,17 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
 
   // tell the host our height after every render, and whenever layout changes (expand, animations)
   // (a locked nudge fills the viewport, so it sends no resize)
+  // Measures the nudge's own root, not document.body: the root layout gives body min-h-full,
+  // so body.scrollHeight never drops below the iframe's current height and the card couldn't shrink.
   useLayoutEffect(() => {
     if (isToast) hostResize(72);
-    else if (!isLock) hostResize(document.body.scrollHeight);
+    else if (!isLock) hostResize(contentHeight());
   });
   useEffect(() => {
-    if (isToast || isLock || typeof ResizeObserver === "undefined") return;
-    const ro = new ResizeObserver(() => hostResize(document.body.scrollHeight));
-    ro.observe(document.body);
+    const root = document.querySelector(".nudge-root");
+    if (isToast || isLock || !root || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => hostResize(contentHeight()));
+    ro.observe(root);
     return () => ro.disconnect();
   }, [isToast, isLock]);
 
@@ -167,6 +176,7 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
   const card = (
     <NudgeCard
         locked={isLock}
+        compact={mode === "card"}
         assessment={assessment}
         busy={busy}
         error={error}
