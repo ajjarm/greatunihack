@@ -196,7 +196,7 @@ function Impact({ a }: { a: Assessment }) {
       />
       <ImpactLine
         figure={money(im.nextBill.amountPence)}
-        tone={im.nextBill.coveredAfter ? "go" : "stop"}
+        tone={im.nextBill.coveredAfter ? undefined : "stop"}
         text={
           <>
             {im.nextBill.name} on {day(im.nextBill.date)}:{" "}

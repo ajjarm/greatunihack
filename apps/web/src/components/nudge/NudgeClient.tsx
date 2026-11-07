@@ -46,6 +46,8 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<DoneInfo | null>(null);
   const [toastGone, setToastGone] = useState(false);
+  // the toast is decided by the first verdict only; a later re-judge to go_ahead stays in the card
+  const [isToast, setIsToast] = useState(false);
   const started = useRef(false);
 
   // load once (guarded so dev StrictMode does not create two assessments)
@@ -55,6 +57,7 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
     (assessmentId ? api.getAssessment(assessmentId) : api.assessScenario(scenario!))
       .then((a) => {
         setAssessment(a);
+        setIsToast(a.verdict === "go_ahead");
         if ((FINAL as readonly string[]).includes(a.decision)) setDone({ decision: a.decision as api.DecisionIn });
       })
       .catch((e: Error) => setError(e.message));
@@ -104,15 +107,14 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
   // Escape = Dismiss
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape" || !assessment || done || assessment.verdict === "go_ahead") return;
+      if (e.key !== "Escape" || !assessment || done || isToast) return;
       e.preventDefault();
       onDecision("dismiss");
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [assessment, done, onDecision]);
+  }, [assessment, done, isToast, onDecision]);
 
-  const isToast = assessment?.verdict === "go_ahead";
 
   // toast auto-closes after 3 seconds
   useEffect(() => {
