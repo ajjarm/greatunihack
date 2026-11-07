@@ -2,7 +2,7 @@ import { handle, json, uncached } from "@/lib/api";
 import { scoreLive } from "@/lib/brain/mode";
 import { currentWeekFacts, spendScoreLive } from "@/lib/brain/score";
 import { daysBetween, nextBill, nextIncome, pendingReflections, safeToSpend } from "@/lib/logic";
-import { getStore, summaryOf } from "@/lib/store";
+import { demoNowIso, getStore, summaryOf } from "@/lib/store";
 import type { AssessmentSummary, Home, SpendScore } from "@/lib/types";
 
 export async function GET() {
@@ -43,7 +43,7 @@ export async function GET() {
     const home: Home = {
       ...store.home,
       spendScore,
-      demoNow: persona.demoNow,
+      demoNow: demoNowIso(),
       balancePence: persona.balancePence,
       safeToSpendPence: safeToSpend(store),
       daysToNextIncome: Math.max(0, daysBetween(persona.demoDate, income.date)),

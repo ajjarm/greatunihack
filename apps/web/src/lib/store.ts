@@ -99,6 +99,7 @@ export function getStore(): StoreState {
 
 /** Throw away all mutations and reseed from disk. Not exposed as a route; handy in tests. */
 export function resetStore(): StoreState {
+  clockHost.__stDemoClockStart = Date.now();
   const g = globalThis as GlobalWithStore;
   g[GLOBAL_KEY] = seed();
   return g[GLOBAL_KEY];
@@ -110,8 +111,18 @@ export const MS_MINUTE = 60_000;
 export const MS_HOUR = 3_600_000;
 export const MS_DAY = 86_400_000;
 
+/** The demo clock starts at persona.demoNow when the store is seeded and then advances in
+ *  real time, so fast timers (reflections, waiting list) actually come due during a demo. */
+const clockHost = globalThis as unknown as { __stDemoClockStart?: number };
+if (!clockHost.__stDemoClockStart) clockHost.__stDemoClockStart = Date.now();
+
 export function demoNowMs(store: StoreState = getStore()): number {
-  return Date.parse(store.persona.demoNow);
+  return Date.parse(store.persona.demoNow) + (Date.now() - (clockHost.__stDemoClockStart ?? Date.now()));
+}
+
+/** ISO string of the advancing demo clock. Prefer this over persona.demoNow for "now". */
+export function demoNowIso(store: StoreState = getStore()): string {
+  return toIso(demoNowMs(store));
 }
 
 /** ISO 8601 with an explicit +00:00 offset (demo times are Europe/London in November). */
