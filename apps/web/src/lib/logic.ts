@@ -1,7 +1,7 @@
 /**
  * Fixture-mode logic: the deterministic edits the API applies when a scenario has no
  * variant, plus the money maths every route shares. Phase 2 replaces the scoring parts
- * with src/lib/brain/** and keeps the money maths. OWNED BY AJJAR.
+ * with src/lib/brain/** and keeps the money maths. Shared contract; change via a handoff so all lanes stay consistent.
  */
 import { randomBytes } from "node:crypto";
 import {
@@ -270,25 +270,97 @@ export function applyReasonFallback(a: Assessment, text: string): Assessment {
     : `Noted, but it does not change the picture. Risk stays at ${a.regretRisk}.`;
   a.reason = { text, accepted, adjustment, verdictText };
   if (accepted) {
-    a.topFactors = [{ key: "reason", text: "You gave a reason, so the want score drops" }, ...a.topFactors].slice(0, 3);
+    const reasonFactor: Assessment["topFactors"][number] = { key: "reason", text: "You gave a reason, so the want score drops" };
+    a.topFactors = [reasonFactor, ...a.topFactors].slice(0, 3);
   }
   return a;
+}
+
+/**
+ * Pre-essential snapshots, keyed by assessment id: a deep copy of the assessment as it was
+ * before the first "essential: true", so un-marking can put it back exactly. Kept on
+ * globalThis (not on the public Assessment type) so it survives next dev hot reloads.
+ */
+const ESSENTIAL_SNAPSHOT_KEY = "__essentialSnapshots__";
+type GlobalWithSnapshots = typeof globalThis & { [ESSENTIAL_SNAPSHOT_KEY]?: Map<string, Assessment> };
+
+function essentialSnapshots(): Map<string, Assessment> {
+  const g = globalThis as GlobalWithSnapshots;
+  if (!g[ESSENTIAL_SNAPSHOT_KEY]) g[ESSENTIAL_SNAPSHOT_KEY] = new Map();
+  return g[ESSENTIAL_SNAPSHOT_KEY];
+}
+
+/** Record the assessment as it is now, unless a snapshot is already held for it. */
+export function rememberPreEssential(a: Assessment): void {
+  const snaps = essentialSnapshots();
+  if (!snaps.has(a.id)) snaps.set(a.id, JSON.parse(JSON.stringify(a)) as Assessment);
+}
+
+function priceWeightedRisk(items: AssessedItem[]): number {
+  const weight = items.reduce((s, i) => s + i.pricePence * i.qty, 0);
+  if (weight <= 0) return 0;
+  return clamp(Math.round(items.reduce((s, i) => s + i.regretRisk * i.pricePence * i.qty, 0) / weight), 0, 100);
 }
 
 export function applyEssentialFallback(a: Assessment, itemIndex: number, essential: boolean): Assessment {
   const item = a.items[itemIndex];
   if (!item) return a;
-  item.essential = essential;
+  const snaps = essentialSnapshots();
   if (essential) {
+    rememberPreEssential(a);
+    item.essential = true;
     item.regretRisk = 8;
     item.necessityTag = "need";
-    a.regretRisk = Math.min(a.regretRisk, Math.max(8, ...a.items.map((i) => i.regretRisk)));
+    item.necessity = Math.max(item.necessity, 95);
+    a.regretRisk = priceWeightedRisk(a.items);
     a.verdict = "essential_cover";
     a.headline = "Buy it. Here's how to cover it.";
-  } else {
+    return a;
+  }
+
+  item.essential = false;
+  const snap = snaps.get(a.id);
+  const before = snap?.items.find((i) => i.index === item.index && i.name === item.name);
+  if (!snap || !before) {
     a.verdict = verdictFor(a.regretRisk, a.affordability, a.items);
     a.headline = headlineFor(a.verdict, a);
+    return a;
   }
+  // un-marking: this item goes back to its pre-essential judgement
+  item.regretRisk = before.regretRisk;
+  item.necessityTag = before.necessityTag;
+  item.necessity = before.necessity;
+  item.factors = before.factors;
+
+  if (a.items.some((i) => i.essential === true)) {
+    a.regretRisk = priceWeightedRisk(a.items);
+    a.verdict = "essential_cover";
+    a.headline = "Buy it. Here's how to cover it.";
+    return a;
+  }
+
+  // no essential answers left: as if the essential step never happened
+  snaps.delete(a.id);
+  const sameBasket =
+    snap.items.length === a.items.length && snap.items.every((s, i) => s.name === a.items[i].name && s.index === a.items[i].index);
+  const sameReason = (snap.reason?.text ?? null) === (a.reason?.text ?? null);
+  if (sameBasket && sameReason) {
+    a.items = snap.items.map((s) => ({ ...s, essential: s.index === item.index ? false : s.essential }));
+    a.regretRisk = snap.regretRisk;
+    a.verdict = snap.verdict;
+    a.headline = snap.headline;
+    a.spokenLine = snap.spokenLine;
+    a.topFactors = snap.topFactors;
+    a.negotiation = snap.negotiation;
+    return a;
+  }
+  a.regretRisk = priceWeightedRisk(a.items);
+  a.verdict = verdictFor(
+    a.regretRisk,
+    a.affordability,
+    a.items.filter((i) => i.essential !== false),
+  );
+  a.headline = headlineFor(a.verdict, a);
   return a;
 }
 

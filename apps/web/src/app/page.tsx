@@ -3,7 +3,7 @@ const scenarios = [
   ["scn_2_essential", "Paracetamol and a prescription top-up"],
   ["scn_3_duplicate", "Headphones plus a third phone case"],
   ["scn_4_fine", "A £6 course reader"],
-  ["scn_5_steam", "A Steam sale on a Friday night"],
+  ["scn_5_deal", "Lightning deal game under a countdown"],
 ];
 
 const dashboard = ["/home", "/purchases", "/waiting", "/insights", "/profile"];

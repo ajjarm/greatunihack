@@ -280,7 +280,7 @@ if (ready) {
 
   check("scenarios: all five ids present, unique, with the variants the guide names", (errs) => {
     const ids = scenarios.map((s) => s.id);
-    for (const want of ["scn_1_impulse", "scn_2_essential", "scn_3_duplicate", "scn_4_fine", "scn_5_steam"]) if (!ids.includes(want)) errs.push(`missing ${want}`);
+    for (const want of ["scn_1_impulse", "scn_2_essential", "scn_3_duplicate", "scn_4_fine", "scn_5_deal"]) if (!ids.includes(want)) errs.push(`missing ${want}`);
     if (new Set(ids).size !== ids.length) errs.push("duplicate scenario ids");
     const by = (id: string) => scenarios.find((s) => s.id === id);
     if (!by("scn_1_impulse")?.variants?.reason) errs.push("scn_1_impulse needs variants.reason");

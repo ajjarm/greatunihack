@@ -48,7 +48,7 @@ export async function PATCH(req: Request, { params }: Params<"id">) {
           merchant: a.merchant,
           ...(a.url ? { url: a.url } : {}),
           savedAt: toIso(now),
-          reconsiderAt: toIso(now + (fast ? 2 * MS_MINUTE : 24 * MS_HOUR)),
+          reconsiderAt: toIso(now + 24 * MS_HOUR),
           status: "waiting",
         };
         store.waiting.unshift(waitingItem);

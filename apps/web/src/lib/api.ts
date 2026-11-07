@@ -1,5 +1,5 @@
 /**
- * Tiny helpers shared by every route handler. OWNED BY AJJAR.
+ * Tiny helpers shared by every route handler. Shared contract; change via a handoff so all lanes stay consistent.
  *
  * next.config.ts enables cacheComponents, which removes the `dynamic = "force-dynamic"`
  * segment config. `uncached()` calls connection() so the handler always runs at request

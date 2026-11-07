@@ -1,6 +1,8 @@
 import { error, handle, isStr, json, readBody, uncached, type Params } from "@/lib/api";
+import { judgeReasonLive } from "@/lib/brain/assess";
+import { brainLive } from "@/lib/brain/mode";
 import { applyReasonFallback } from "@/lib/logic";
-import { getAssessment, putAssessment, scenarioOf } from "@/lib/store";
+import { getAssessment, getStore, putAssessment, scenarioOf } from "@/lib/store";
 import type { Assessment } from "@/lib/types";
 
 export async function POST(req: Request, { params }: Params<"id">) {
@@ -14,6 +16,11 @@ export async function POST(req: Request, { params }: Params<"id">) {
     const text = body.text.trim();
     if (!text) return error("text is required", 400);
 
+    // live Brain first: Claude judges the actual words; the canned variant is only a fixture-mode shortcut
+    if (brainLive()) {
+      const judged = await judgeReasonLive(getStore(), current, text);
+      if (judged) return json(putAssessment(judged));
+    }
     const variant = scenarioOf(id)?.variants?.reason;
     if (variant && current.decision === "none" && current.items.length === variant.response.items.length) {
       const next = JSON.parse(JSON.stringify(variant.response)) as Assessment;
