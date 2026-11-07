@@ -2,7 +2,7 @@
 
 > Unlike ___, we ___, which means ___.
 
-**Track:** [sponsor track] · **Team:** Ajjar Mansoor, [teammate] · **Built in 6 hours, 8 Nov 2026, Manchester**
+**Track:** [sponsor track] · **Team:** Ajjar Mansoor, Zack Aftab · **Built in 6 hours, 8 Nov 2026, Manchester**
 
 ## What it does
 

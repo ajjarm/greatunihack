@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Team GitHub handles. Sourced by the other scripts. Fill in TEAMMATE tomorrow.
 AJJAR="ajjarm"
-TEAMMATE=""   # e.g. TEAMMATE="their-github-handle"
+TEAMMATE="Zack-Aftab"
 
 me() { gh api user --jq .login 2>/dev/null; }
 

@@ -8,7 +8,7 @@ Agents read this first. If a section is still a template, agents must stop and a
 - [ ] Idea chosen
 - [ ] Stack locked
 - [ ] Ownership assigned
-- [ ] Teammate GitHub handle set in `scripts/team.sh`
+- [x] Teammate GitHub handle set in `scripts/team.sh` (Zack-Aftab)
 
 ## Tracks (fill from the brief)
 

@@ -6,7 +6,7 @@ Codex and any other agent all follow the same rules.
 ## Context
 
 Great Uni Hack, Manchester, **8 November 2026**, a **6-hour** build. Team of two:
-**Ajjar** (GitHub `ajjarm`) and **teammate** (handle in `scripts/team.sh`).
+**Ajjar** (GitHub `ajjarm`) and **Zack** (GitHub `Zack-Aftab`).
 Goal: **win a sponsor sub-track**, not the main theme. Idea, track and stack are
 decided on the day and written in `docs/DECISIONS.md`.
 
