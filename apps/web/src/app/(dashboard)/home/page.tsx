@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import type { Home, Report, SpendScore } from "@/lib/types";
 import { AssessmentFactors } from "@/components/dashboard/factors";
 import { ScoreExamples } from "@/components/dashboard/score-examples";
-import { Card, Chip, Label, PageState, ScoreDial, date, money, useApi } from "@/components/dashboard/shared";
+import { SpendScoreBreakdown } from "@/components/dashboard/spend-score-breakdown";
+import { Card, Chip, Label, PageState, date, money, useApi } from "@/components/dashboard/shared";
 
 const shortDate = (value: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", day: "numeric", month: "short" }).format(new Date(`${value}T12:00:00Z`));
 const scoreColor = (value: number) => value >= 90 ? "var(--color-accent)" : value >= 75 ? "var(--color-go)" : value >= 50 ? "var(--color-think)" : "var(--color-stop)";
@@ -53,10 +54,10 @@ export default function HomePage() {
     <header><Label>Overview</Label><h1 className="mt-1 text-3xl font-bold">Your money, today</h1><p className="mt-1 text-sm text-[var(--color-text-muted)]">{date(data.demoNow)}</p></header>
     {data.pendingReflections > 0 && <Link href="/purchases" className="block border border-[var(--color-accent)] bg-[var(--color-accent-bg)] p-4 text-sm font-semibold text-[var(--color-accent)]" style={{ borderRadius: "var(--radius-md)" }}>{data.pendingReflections} purchase{data.pendingReflections === 1 ? " is" : "s are"} ready for a check-in →</Link>}
 
-    <Card>
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-7">
-        <ScoreDial value={displayedScore} tone={tone} />
-        <div className="min-w-0 flex-1" aria-live="polite">
+    <Card className="relative z-10">
+      <div className="flex flex-col items-center gap-5 text-center">
+        <SpendScoreBreakdown value={displayedScore} tone={tone} report={viewingPast ? selectedReport || null : weekly.data?.weekStart === lastHistoryPoint?.weekStart ? weekly.data : null} current={!viewingPast} explanation={score.explanation} safeToSpendPence={data.safeToSpendPence} />
+        <div className="min-w-0 max-w-2xl" aria-live="polite">
           <Label>{viewingPast ? `Week of ${date(selectedPoint!.weekStart)}` : "Current Spend Score"}</Label>
           <h2 className="mt-1 text-2xl font-bold">{veryGood ? "Very good" : band === "green" ? "Doing well" : band === "amber" ? "Making progress" : "Needs attention"}</h2>
           <div className="mt-3 flex flex-wrap items-center gap-2"><Chip tone={tone}>{veryGood ? "very good" : band}</Chip>{change !== null && <span className="text-sm font-semibold">{change > 0 ? `+${change}` : change} points vs previous week</span>}</div>
@@ -68,8 +69,6 @@ export default function HomePage() {
       <ScoreHistory score={score} selectedWeek={viewingPast ? selectedWeek : null} onSelect={setSelectedWeek} />
       <p className="mt-4 text-xs text-[var(--color-text-muted)]">The score reflects nudges, later feedback, weekly limits and your cash position. Spending alone does not lower it.</p>
     </Card>
-    <ScoreExamples />
-
     <div className="grid gap-5 lg:grid-cols-2">
       <Card><Label>Safe to spend until {date(data.nextIncome.date)}</Label><p className="mt-3 text-4xl font-bold">{money(data.safeToSpendPence)}</p><p className="mt-3 text-sm text-[var(--color-text-muted)]">{data.daysToNextIncome} day{data.daysToNextIncome === 1 ? "" : "s"} until {data.nextIncome.name} ({money(data.nextIncome.amountPence)})</p><div className="mt-6 border-t border-[var(--color-border)] pt-4"><Label>Current balance</Label><p className="mt-1 text-2xl font-semibold">{money(data.balancePence)}</p></div></Card>
       <Card>
@@ -81,5 +80,6 @@ export default function HomePage() {
     <Card><Label>Next bill</Label><div className="mt-2 flex items-end justify-between gap-4"><div><p className="font-semibold">{data.nextBill.name}</p><p className="text-sm text-[var(--color-text-muted)]">{date(data.nextBill.date)}</p></div><p className="text-xl font-bold">{money(data.nextBill.amountPence)}</p></div></Card>
     <Card className="bg-[var(--color-accent-bg)]"><Label>Worth knowing</Label><p className="mt-2 text-lg font-medium leading-snug">{data.insight}</p></Card>
     <section><div className="mb-3 flex items-center justify-between"><h2 className="text-xl font-bold">Recent checkouts</h2><Link href="/purchases" className="text-sm font-semibold text-[var(--color-accent)]">Purchases →</Link></div><div className="space-y-3">{data.recentAssessments.length ? data.recentAssessments.map(a => <Card key={a.id}><div className="flex items-start justify-between gap-3"><div><p className="font-semibold">{a.merchant}</p><p className="mt-1 text-sm text-[var(--color-text-muted)]">{a.headline}</p><p className="mt-2 text-xs text-[var(--color-text-muted)]">{date(a.createdAt)} · {a.decision.replaceAll("_", " ")}</p></div><p className="shrink-0 font-bold">{money(a.totalPence)}</p></div><AssessmentFactors id={a.id} score={a.regretRisk} /></Card>) : <Card><p className="text-sm text-[var(--color-text-muted)]">No checkouts yet.</p></Card>}</div></section>
+    <ScoreExamples />
   </div>;
 }
