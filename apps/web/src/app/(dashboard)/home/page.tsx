@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Home, Report, SpendScore } from "@/lib/types";
 import { AssessmentFactors } from "@/components/dashboard/factors";
+import { BillsCalendar } from "@/components/dashboard/bills-calendar";
 import { ScoreExamples } from "@/components/dashboard/score-examples";
 import { SpendScoreBreakdown } from "@/components/dashboard/spend-score-breakdown";
 import { Card, Chip, Label, PageState, date, money, useApi } from "@/components/dashboard/shared";
@@ -77,7 +78,7 @@ export default function HomePage() {
       </Card>
     </div>
 
-    <Card><Label>Next bill</Label><div className="mt-2 flex items-end justify-between gap-4"><div><p className="font-semibold">{data.nextBill.name}</p><p className="text-sm text-[var(--color-text-muted)]">{date(data.nextBill.date)}</p></div><p className="text-xl font-bold">{money(data.nextBill.amountPence)}</p></div></Card>
+    <BillsCalendar nextBill={data.nextBill} demoNow={data.demoNow} />
     <Card className="bg-[var(--color-accent-bg)]"><Label>Worth knowing</Label><p className="mt-2 text-lg font-medium leading-snug">{data.insight}</p></Card>
     <section><div className="mb-3 flex items-center justify-between"><h2 className="text-xl font-bold">Recent checkouts</h2><Link href="/purchases" className="text-sm font-semibold text-[var(--color-accent)]">Purchases →</Link></div><div className="space-y-3">{data.recentAssessments.length ? data.recentAssessments.map(a => <Card key={a.id}><div className="flex items-start justify-between gap-3"><div><p className="font-semibold">{a.merchant}</p><p className="mt-1 text-sm text-[var(--color-text-muted)]">{a.headline}</p><p className="mt-2 text-xs text-[var(--color-text-muted)]">{date(a.createdAt)} · {a.decision.replaceAll("_", " ")}</p></div><p className="shrink-0 font-bold">{money(a.totalPence)}</p></div><AssessmentFactors id={a.id} score={a.regretRisk} /></Card>) : <Card><p className="text-sm text-[var(--color-text-muted)]">No checkouts yet.</p></Card>}</div></section>
     <ScoreExamples />
