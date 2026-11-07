@@ -151,6 +151,7 @@ async function openDashboard(path?: string) {
 
 async function judgeParsed(force: boolean): Promise<boolean> {
   const parsed = parseCheckout(document, location.href);
+  console.info("[st] parsed page", { isCheckout: parsed.isCheckout, button: parsed.hasOrderButton, summary: parsed.hasSummary, totalPence: parsed.totalPence, items: parsed.items.length, cues: parsed.cues.map((c) => c.key) });
   if (!parsed.isCheckout) return false;
   const req = toAssessRequest(parsed);
   if (!req) return false;
@@ -221,11 +222,12 @@ async function judgeNow() {
 }
 
 chrome.runtime.onMessage.addListener((msg: TabMessage) => {
-  if (msg?.type === "st-judge-now") void judgeNow();
+  if (msg?.type === "st-judge-now") { console.info("[st] judge-now received"); void judgeNow(); }
   return false;
 });
 
 // ---------- start ----------
+console.info("[st] SecondThought content script loaded on", location.href);
 
 const observer = new MutationObserver((records) => {
   // ignore our own iframe going in and out
