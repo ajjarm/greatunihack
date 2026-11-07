@@ -167,3 +167,7 @@
   color: var(--color-surface);
   border-radius: 999px;
 }
+
+/* inside the extension's iframe the page around the card must be see-through */
+html:has(.nudge-root),
+body:has(.nudge-root) { background: transparent; }

@@ -10,7 +10,7 @@ export const metadata = { title: "Nudge" };
  */
 export default function NudgePage() {
   return (
-    <main className="w-full max-w-[400px] mx-auto">
+    <main className="nudge-root w-full max-w-[400px] mx-auto">
       <Suspense fallback={null}>
         <NudgeClient />
       </Suspense>
