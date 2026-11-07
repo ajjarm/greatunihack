@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import type { Home, Report, SpendScore } from "@/lib/types";
 import { AssessmentFactors } from "@/components/dashboard/factors";
 import { ScoreExamples } from "@/components/dashboard/score-examples";
-import { Card, Chip, Label, PageState, ScoreDial, date, money, useApi } from "@/components/dashboard/shared";
+import { SpendScoreBreakdown } from "@/components/dashboard/spend-score-breakdown";
+import { Card, Chip, Label, PageState, date, money, useApi } from "@/components/dashboard/shared";
 
 const shortDate = (value: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", day: "numeric", month: "short" }).format(new Date(`${value}T12:00:00Z`));
 const scoreColor = (value: number) => value >= 90 ? "var(--color-accent)" : value >= 75 ? "var(--color-go)" : value >= 50 ? "var(--color-think)" : "var(--color-stop)";
@@ -53,9 +54,9 @@ export default function HomePage() {
     <header><Label>Overview</Label><h1 className="mt-1 text-3xl font-bold">Your money, today</h1><p className="mt-1 text-sm text-[var(--color-text-muted)]">{date(data.demoNow)}</p></header>
     {data.pendingReflections > 0 && <Link href="/purchases" className="block border border-[var(--color-accent)] bg-[var(--color-accent-bg)] p-4 text-sm font-semibold text-[var(--color-accent)]" style={{ borderRadius: "var(--radius-md)" }}>{data.pendingReflections} purchase{data.pendingReflections === 1 ? " is" : "s are"} ready for a check-in →</Link>}
 
-    <Card>
+    <Card className="relative z-10">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-7">
-        <ScoreDial value={displayedScore} tone={tone} />
+        <SpendScoreBreakdown value={displayedScore} tone={tone} report={viewingPast ? selectedReport || null : weekly.data?.weekStart === lastHistoryPoint?.weekStart ? weekly.data : null} current={!viewingPast} explanation={score.explanation} safeToSpendPence={data.safeToSpendPence} />
         <div className="min-w-0 flex-1" aria-live="polite">
           <Label>{viewingPast ? `Week of ${date(selectedPoint!.weekStart)}` : "Current Spend Score"}</Label>
           <h2 className="mt-1 text-2xl font-bold">{veryGood ? "Very good" : band === "green" ? "Doing well" : band === "amber" ? "Making progress" : "Needs attention"}</h2>
