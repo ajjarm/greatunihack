@@ -299,6 +299,58 @@ export function computeBasketHash(merchant: string, items: BasketItem[], totalPe
 
 // ---------- entry points ----------
 
+
+/** Amazon pages name products via links to /dp/ or /gp/product/ and via product image alts.
+ *  Used when the generic price-row parser finds nothing (Amazon's checkout steps). */
+function amazonItems(doc: Document, totalPence: number | null): BasketItem[] {
+  const out: BasketItem[] = [];
+  const seen = new Set<string>();
+  const push = (name: string, pricePence: number) => {
+    const n = norm(name).replace(/\s*:$/, "");
+    if (n.length < 6 || n.length > 160 || !/[a-z]/i.test(n)) return;
+    if (TITLE_JUNK_RE.test(n) || isCueText(n) || BUTTON_RE.test(n) || classify(`${n}:`) === "total") return;
+    const key = n.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    out.push({ name: n, pricePence, qty: 1 });
+  };
+  const nearestPrice = (el: Element): number | null => {
+    let node: Element | null = el;
+    for (let depth = 0; node && depth < 5; depth++, node = node.parentElement) {
+      const m = PRICE_RE.exec(textOf(node));
+      if (m) return parsePence(m[0]);
+    }
+    return null;
+  };
+  const links = Array.from(doc.querySelectorAll<HTMLAnchorElement>('a[href*="/dp/"], a[href*="/gp/product/"]'));
+  for (const a of links) {
+    if (!isVisible(a)) continue;
+    const name = textOf(a) || a.getAttribute("aria-label") || a.querySelector("img")?.getAttribute("alt") || "";
+    push(name, nearestPrice(a) ?? 0);
+  }
+  if (out.length === 0) {
+    for (const img of Array.from(doc.querySelectorAll<HTMLImageElement>("img[alt]"))) {
+      const alt = img.getAttribute("alt") || "";
+      if (alt.length < 8 || !isVisible(img)) continue;
+      const w = img.width || img.naturalWidth || 0;
+      if (w && w < 40) continue;
+      push(alt, nearestPrice(img) ?? 0);
+    }
+  }
+  // Items without a readable price share the total so the money maths still holds.
+  const unpriced = out.filter((i) => i.pricePence === 0);
+  if (unpriced.length && totalPence != null) {
+    const priced = out.reduce((sum, i) => sum + i.pricePence, 0);
+    const each = Math.max(0, Math.floor((totalPence - priced) / unpriced.length));
+    for (const i of unpriced) i.pricePence = each;
+  }
+  return out.slice(0, 12);
+}
+
+function isAmazonBasketUrl(url: string): boolean {
+  return /amazon\.[a-z.]+\/(cart|gp\/cart|gp\/aw\/c|gp\/buy|checkout)/i.test(url);
+}
+
 export function parseCheckout(doc: Document, url: string): ParsedCheckout {
   const els = allElements(doc);
   const button = findOrderButton(doc);
@@ -320,9 +372,13 @@ export function parseCheckout(doc: Document, url: string): ParsedCheckout {
   }
   const lines = visibleLines(doc);
   if (items.length === 0) items = itemsFromLines(lines);
+  if (items.length === 0) items = amazonItems(doc, totalPence);
+  if (items.length === 0 && totalPence != null && isAmazonBasketUrl(url)) {
+    items = [{ name: "Your Amazon basket", pricePence: totalPence, qty: 1 }];
+  }
 
   return {
-    isCheckout: !!button && hasSummary,
+    isCheckout: (!!button || isAmazonBasketUrl(url)) && hasSummary && totalPence != null,
     hasOrderButton: !!button,
     hasSummary,
     merchant: MERCHANT,
