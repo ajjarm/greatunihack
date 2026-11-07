@@ -11,7 +11,7 @@
 import type { AssessRequest, Assessment, HostMessage } from "../../web/src/lib/types";
 import { api } from "./api";
 import { getWebUrl, isPaused, type TabMessage, type WorkerMessage } from "./config";
-import { parseCheckout, toAssessRequest } from "./parser";
+import { asinFromUrl, parseCheckout, parseProductPage, toAssessRequest, type ParsedCheckout } from "./parser";
 
 const KEY_PREFIX = "st-ext:";
 const SCENARIO_IDX_KEY = `${KEY_PREFIX}scenario-idx`;
@@ -168,7 +168,86 @@ async function assessAndShow(totalPence: number, merchant: string, assess: () =>
 
 // ---------- automatic judging ----------
 
+// ---------- product pages: judge on "Add to Basket" / "Buy Now", not on arrival ----------
+
+const STASH_KEY = "st-added-product";
+const STASH_TTL_MS = 90_000;
+
+function isProductPage(): boolean {
+  return !!asinFromUrl(location.href);
+}
+
+function stashProduct(): ParsedCheckout | null {
+  const parsed = parseProductPage(document, location.href);
+  if (!parsed) return null;
+  try {
+    sessionStorage.setItem(STASH_KEY, JSON.stringify({ parsed, at: Date.now() }));
+  } catch {
+    /* storage unavailable: the same-page path still shows the card */
+  }
+  return parsed;
+}
+
+async function judgeProduct(parsed: ParsedCheckout): Promise<boolean> {
+  const req = toAssessRequest(parsed);
+  if (!req) return false;
+  req.url = location.href;
+  seen.add(req.basketHash);
+  await assessAndShow(req.totalPence, req.merchant, () => assessParsed(req));
+  return true;
+}
+
+/** On a basket/checkout page: if a product was just added, judge that product first. */
+async function judgeStashed(): Promise<boolean> {
+  let raw: string | null = null;
+  try {
+    raw = sessionStorage.getItem(STASH_KEY);
+  } catch {
+    return false;
+  }
+  if (!raw) return false;
+  try {
+    sessionStorage.removeItem(STASH_KEY);
+  } catch {
+    /* ignore */
+  }
+  try {
+    const { parsed, at } = JSON.parse(raw) as { parsed: ParsedCheckout; at: number };
+    if (Date.now() - at > STASH_TTL_MS) return false;
+    console.info("[st] judging the product that was just added to the basket");
+    return await judgeProduct(parsed);
+  } catch {
+    return false;
+  }
+}
+
+function isAddToBasketControl(target: EventTarget | null): boolean {
+  const el = (target as Element | null)?.closest?.("input, button, a, span, div[role='button']") as HTMLElement | null;
+  if (!el) return false;
+  const idName = `${el.id ?? ""} ${el.getAttribute("name") ?? ""} ${el.getAttribute("data-action") ?? ""}`;
+  if (/add-to-cart|add-to-basket|buy-now|buynow|addToCart/i.test(idName)) return true;
+  const text = ((el as HTMLInputElement).value || el.textContent || "").trim();
+  return text.length < 40 && /^(add to basket|add to cart|buy now)$/i.test(text);
+}
+
+document.addEventListener(
+  "click",
+  (ev) => {
+    if (!isProductPage() || !isAddToBasketControl(ev.target)) return;
+    const parsed = stashProduct();
+    if (!parsed) return;
+    console.info("[st] add-to-basket clicked; the card follows to the next page or shows here");
+    // Amazon normally navigates to the "Added to basket" page, where judgeStashed() picks this up.
+    // If it stays on this page (in-page confirmation), show the card here after a moment.
+    setTimeout(() => {
+      if (document.visibilityState !== "hidden" && isProductPage()) void judgeProduct(parsed);
+    }, 1500);
+  },
+  true,
+);
+
 async function judgeParsed(force: boolean): Promise<boolean> {
+  if (isProductPage() && !force) return false; // product pages wait for the add-to-basket click
   const parsed = parseCheckout(document, location.href);
   console.info("[st] parsed page", { isCheckout: parsed.isCheckout, button: parsed.hasOrderButton, summary: parsed.hasSummary, totalPence: parsed.totalPence, items: parsed.items.length, cues: parsed.cues.map((c) => c.key) });
   if (!parsed.isCheckout) return false;
@@ -188,6 +267,7 @@ async function tick() {
   if (await isPaused()) return;
   inFlight = true;
   try {
+    if (!isProductPage() && (await judgeStashed())) return;
     await judgeParsed(false);
   } finally {
     inFlight = false;
