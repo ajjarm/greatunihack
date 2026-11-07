@@ -341,6 +341,26 @@ async function judgeParsed(force: boolean): Promise<boolean> {
   return true;
 }
 
+/** Hard-coded demo path: the basket page was reached FROM one of the demo product pages.
+ *  document.referrer carries the product URL, so the ASIN tells us exactly what was added. */
+let referrerHandled = false;
+async function judgeFromReferrer(): Promise<boolean> {
+  if (referrerHandled || isProductPage()) return false;
+  const ref = document.referrer || "";
+  const asin = asinFromUrl(ref);
+  if (!asin || !DEMO_PRODUCTS[asin]) return false;
+  referrerHandled = true;
+  const parsed = productForAsin(asin);
+  if (!parsed) return false;
+  console.info("[st] basket page reached from a demo product page; judging", parsed.items[0]?.name);
+  try {
+    sessionStorage.setItem(STASH_KEY, JSON.stringify({ parsed, at: Date.now() }));
+  } catch {
+    /* ignore */
+  }
+  return judgeProduct(parsed);
+}
+
 async function tick() {
   if (inFlight) return;
   if (await isPaused()) return;
@@ -348,6 +368,7 @@ async function tick() {
   inFlight = true;
   try {
     if (!isProductPage() && (await judgeStashed())) return;
+    if (await judgeFromReferrer()) return;
     await judgeParsed(false);
   } finally {
     inFlight = false;
