@@ -312,7 +312,7 @@ export function shortNameOf(name: string): string {
     [/headphone/, "headphones"],
     [/earbud|airpod/, "earbuds"],
     [/ps5|xbox|switch|game|silksong/, "game"],
-    [/reader|textbook|book/, "book"],
+    [/reader|textbook|\bbook\b/, "book"],
   ];
   for (const [re, s] of kinds) if (re.test(lower)) return s;
   const head = name.split(/[,:(]/)[0].trim();

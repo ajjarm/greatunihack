@@ -1,6 +1,7 @@
 /**
  * npm run eval:brain — runs the five scenario requests from data/scenarios.json through the
- * live Brain (assessLive) directly, no server, and prints fixture vs live side by side.
+ * live Brain (assessLive: one Claude judge call, then code) directly, no server, and
+ * prints fixture vs live side by side with the wall time of each assessment.
  *
  *   npm run eval:brain              # uses ANTHROPIC_API_KEY from .env.local
  *   npm run eval:brain -- --no-key  # forces every Claude call onto its code fallback
@@ -30,7 +31,7 @@ async function main() {
     const ms = Date.now() - t0;
     const ctx = liveContext(a.id);
     const f = s.response;
-    console.log(`${s.id}  (${ms} ms; necessity ${ctx?.sources.necessity}, words ${ctx?.sources.narrative})`);
+    console.log(`${s.id}  (${ms} ms; judge ${ctx?.sources.necessity})`);
     console.log(`  fixture  ${f.verdict.padEnd(15)} risk ${String(f.regretRisk).padStart(3)}  aff ${String(f.affordability).padStart(3)}  reflect ${f.reflectionDays}d`);
     console.log(`  live     ${a.verdict.padEnd(15)} risk ${String(a.regretRisk).padStart(3)}  aff ${String(a.affordability).padStart(3)}  reflect ${a.reflectionDays}d`);
     console.log(`  headline "${a.headline}"`);

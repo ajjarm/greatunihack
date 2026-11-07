@@ -1,8 +1,9 @@
 /**
- * The live Brain: assessLive builds a full Assessment from a request (Claude for
+ * The live Brain: assessLive builds a full Assessment from a request (one Claude call for
  * necessity and words, code for every number), and the recompute helpers re-judge it when
  * the user answers the essential prompt, applies a negotiation option or gives a reason.
- * Every Claude call has a pure-code fallback, so this path works with no API key.
+ * Every Claude call has a deadline and a pure-code fallback, so this path always answers,
+ * with no API key too; fallback words are marked "(fast fallback) " in reasoning.
  */
 import type { AssessRequest, Assessment, Category, Decision, NegotiationOption, ReasonVerdict } from "../types";
 import { MS_MINUTE, calibrationFor, type StoreState } from "../store";
@@ -18,13 +19,20 @@ import {
   type Evaluation,
   type Overrides,
 } from "./engine";
-import { judgeNecessity, type ItemJudgement } from "./necessity";
+import { judgeBasket, type Narrative } from "./judge";
+import { heuristicJudgement, type ItemJudgement } from "./necessity";
 import { localMoment, nameTokens, type LocalMoment } from "./signals";
-import { judgeReason, writeNarrative, type Narrative, type ReasonJudgement } from "./words";
+import { judgeReason, type ReasonJudgement } from "./words";
 
 export { BrainUnavailable } from "./claude";
 
 export type Source = "claude" | "fallback";
+
+/** Marks reasoning written by the templates because Claude was slow, failed or had no key. */
+export const FAST_FALLBACK = "(fast fallback) ";
+
+/** The live assess path answers within this, whatever the API does. */
+export const ASSESS_HARD_CAP_MS = 7500;
 
 export interface LiveContext {
   id: string;
@@ -161,46 +169,92 @@ function evalCtx(store: StoreState, ctx: LiveContext): Evaluation {
   return evaluate({ store, req: ctx.req, now: ctx.now, judgements: ctx.judgements, overrides: ctx.overrides });
 }
 
+/** For nudges, the cheapest way to a yes, from the arithmetic. */
+function nextStep(e: Evaluation): string {
+  const opt = e.negotiation[0];
+  if (!opt || (e.verdict !== "nudge" && e.verdict !== "strong_nudge")) return "";
+  return ` ${opt.text} and the risk drops to ${opt.resultRegretRisk}.`;
+}
+
+function fastFallback(reasoning: string): string {
+  return reasoning.startsWith(FAST_FALLBACK) ? reasoning : `${FAST_FALLBACK}${reasoning}`;
+}
+
+export interface AssessOptions {
+  /** false skips Claude entirely (the hard-cap path) */
+  claude?: boolean;
+}
+
 /** SPEC 5.1-5.6 for a fresh basket. Throws BrainUnavailable only if the engine itself cannot run. */
-export async function assessLive(req: AssessRequest, store: StoreState): Promise<Assessment> {
+export async function assessLive(req: AssessRequest, store: StoreState, opts: AssessOptions = {}): Promise<Assessment> {
   const now = momentFor(req, store);
-  const necessity = await judgeNecessity(store, req.items);
+  const heuristic = req.items.map((it) => heuristicJudgement(store, it));
   const ctx: LiveContext = {
     id: newId("asm"),
     createdAt: store.persona.demoNow,
     req: JSON.parse(JSON.stringify(req)) as AssessRequest,
     now,
-    judgements: necessity.items,
+    judgements: heuristic,
     overrides: {
-      essential: req.items.map((it, i) => recallEssential(it.name, necessity.items[i].category)),
+      essential: req.items.map((it, i) => recallEssential(it.name, heuristic[i].category)),
       dropped: [],
       delayed: [],
     },
-    sources: { necessity: necessity.source, narrative: "fallback", notes: necessity.note ? [necessity.note] : [] },
+    sources: { necessity: "fallback", narrative: "fallback", notes: [] },
   };
-  let e: Evaluation;
-  try {
-    e = evalCtx(store, ctx);
-  } catch (err) {
-    throw new BrainUnavailable(`engine: ${err instanceof Error ? err.message : "failed"}`, err);
-  }
+  const run = (): Evaluation => {
+    try {
+      return evalCtx(store, ctx);
+    } catch (err) {
+      throw new BrainUnavailable(`engine: ${err instanceof Error ? err.message : "failed"}`, err);
+    }
+  };
 
+  // the heuristic evaluation is both the money facts for the prompt and the fallback card
+  let e = run();
   let words: Words = {};
   if (req.items.length > 0) {
     try {
-      const n = await writeNarrative(store.persona, e, now, req.merchant, req.cues);
-      ctx.narrative = n;
+      if (opts.claude === false) throw new BrainUnavailable("judge: skipped (hard cap)");
+      const j = await judgeBasket(store, req, now, heuristic, e);
+      ctx.judgements = j.items;
+      ctx.overrides.essential = req.items.map((it, i) => recallEssential(it.name, j.items[i].category));
+      ctx.narrative = j.narrative;
+      ctx.sources.necessity = "claude";
       ctx.sources.narrative = "claude";
-      words = { headline: n.headline, spokenLine: n.spokenLine, reasoning: n.reasoning, topFactors: n.topFactors };
+      e = run();
+      words = { headline: j.narrative.headline, reasoning: `${j.narrative.reasoning}${nextStep(e)}` };
     } catch (err) {
       if (!(err instanceof BrainUnavailable)) throw err;
       ctx.sources.notes.push(err.message);
+      words = { reasoning: fastFallback(templateReasoning(e)) };
     }
   }
-  if (!ctx.narrative) ctx.narrative = { headline: "", spokenLine: "", reasoning: "", topFactors: [], reflectionDays: templateReflectionDays(e), cueNotes: {} };
+  if (!ctx.narrative) ctx.narrative = { headline: "", reasoning: "", reflectionDays: templateReflectionDays(e), cueNotes: {} };
   if (ctx.sources.notes.length) console.warn("[brain] fallback:", ctx.sources.notes.join("; "));
   contexts().set(ctx.id, ctx);
   return build(store, ctx, e, words, "none");
+}
+
+/**
+ * assessLive under a hard cap: if the Claude path has not answered by capMs (it has its
+ * own deadline, so this is the belt to its braces), answer from code instead.
+ */
+export async function assessLiveWithin(req: AssessRequest, store: StoreState, capMs = ASSESS_HARD_CAP_MS): Promise<Assessment> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const cap = new Promise<null>((resolve) => {
+    timer = setTimeout(() => resolve(null), capMs);
+  });
+  const live = assessLive(req, store);
+  try {
+    const a = await Promise.race([live, cap]);
+    if (a) return a;
+  } finally {
+    clearTimeout(timer);
+  }
+  live.catch(() => undefined);
+  console.warn(`[brain] fallback: assess passed the ${capMs} ms cap`);
+  return assessLive(req, store, { claude: false });
 }
 
 // ---------- re-judging a live assessment ----------
@@ -243,8 +297,11 @@ export function recomputeNegotiation(store: StoreState, current: Assessment, opt
   return build(store, ctx, e, { headline, spokenLine: headline }, "negotiated", current.reason);
 }
 
+/** More of the SPEC 5.4 reason kinds (replacement, course, health, work, gift) than logic.ts lists. */
+const MORE_REASON_WORDS = /\b(present|died|dead|lost|stolen|cracked|smashed|stopped working|replac\w*|worn out|dissertation|module|exams?|seminar|placement|university|uni|shift|job|doctor|dentist|medical|ill|sick)\b/i;
+
 function fallbackJudgement(text: string): ReasonJudgement {
-  const accepted = reasonAccepted(text);
+  const accepted = reasonAccepted(text) || MORE_REASON_WORDS.test(text);
   return {
     accepted,
     adjustment: accepted ? -30 : 0,
@@ -316,5 +373,7 @@ export async function judgeReasonLive(store: StoreState, current: Assessment, te
     verdictText: `${j.verdictText} ${riskSentence(j.accepted, current.regretRisk, e.regretRisk)}`,
   };
   ctx.overrides.reason = { ...reason, appliesTo };
-  return build(store, ctx, e, keptWords(current, e), current.decision, reason);
+  const words = keptWords(current, e);
+  if (source === "fallback") words.reasoning = fastFallback(words.reasoning ?? templateReasoning(e));
+  return build(store, ctx, e, words, current.decision, reason);
 }

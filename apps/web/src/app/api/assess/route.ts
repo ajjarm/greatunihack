@@ -1,5 +1,5 @@
 import { error, handle, isInt, isStr, json, readBody, uncached } from "@/lib/api";
-import { assessLive } from "@/lib/brain/assess";
+import { assessLiveWithin } from "@/lib/brain/assess";
 import { brainLive } from "@/lib/brain/mode";
 import { buildGenericAssessment, cloneAssessment, newId } from "@/lib/logic";
 import { findScenario, getStore, putAssessment } from "@/lib/store";
@@ -65,10 +65,11 @@ export async function POST(req: Request) {
     const parsed = parseRequest(body);
     if (typeof parsed === "string") return error(parsed, 400);
 
-    // live Brain: every request without a scenarioId is scored for real
+    // live Brain: every request without a scenarioId is scored for real, inside a hard cap
+    // (each Claude call has its own deadline and the words fall back to templates)
     if (brainLive()) {
       try {
-        return json(putAssessment(await assessLive(parsed, store)));
+        return json(putAssessment(await assessLiveWithin(parsed, store)));
       } catch (e) {
         console.error("[brain] assessLive failed, using the fixture builder:", e instanceof Error ? e.message : e);
         const a = buildGenericAssessment(store, parsed, id);
