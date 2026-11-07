@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Home, Report, SpendScore } from "@/lib/types";
 import { AssessmentFactors } from "@/components/dashboard/factors";
+import { ScoreExamples } from "@/components/dashboard/score-examples";
 import { Card, Chip, Label, PageState, ScoreDial, date, money, useApi } from "@/components/dashboard/shared";
 
 const shortDate = (value: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", day: "numeric", month: "short" }).format(new Date(`${value}T12:00:00Z`));
@@ -67,6 +68,7 @@ export default function HomePage() {
       <ScoreHistory score={score} selectedWeek={viewingPast ? selectedWeek : null} onSelect={setSelectedWeek} />
       <p className="mt-4 text-xs text-[var(--color-text-muted)]">The score reflects nudges, later feedback, weekly limits and your cash position. Spending alone does not lower it.</p>
     </Card>
+    <ScoreExamples />
 
     <div className="grid gap-5 lg:grid-cols-2">
       <Card><Label>Safe to spend until {date(data.nextIncome.date)}</Label><p className="mt-3 text-4xl font-bold">{money(data.safeToSpendPence)}</p><p className="mt-3 text-sm text-[var(--color-text-muted)]">{data.daysToNextIncome} day{data.daysToNextIncome === 1 ? "" : "s"} until {data.nextIncome.name} ({money(data.nextIncome.amountPence)})</p><div className="mt-6 border-t border-[var(--color-border)] pt-4"><Label>Current balance</Label><p className="mt-1 text-2xl font-semibold">{money(data.balancePence)}</p></div></Card>
