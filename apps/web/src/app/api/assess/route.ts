@@ -74,7 +74,6 @@ export async function POST(req: Request) {
       } catch (e) {
         console.error("[brain] assessLive failed, using the fixture builder:", e instanceof Error ? e.message : e);
         const a = buildGenericAssessment(store, parsed, id);
-        a.reasoning = `(fixture fallback) ${a.reasoning}`;
         return json(putAssessment(applyDemoRules(store, a)));
       }
     }

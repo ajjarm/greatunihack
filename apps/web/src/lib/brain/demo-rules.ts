@@ -218,7 +218,6 @@ export function applyDemoRules(store: StoreState, a: Assessment): Assessment {
         ...a.topFactors.filter((f) => f.key !== "want_level"),
       ].slice(0, 3);
       a.spokenLine = a.headline;
-      a.reasoning = a.reasoning.includes("(demo rule") ? a.reasoning : `(demo rule: basket) ${a.reasoning}`;
       hit = hit ?? RULES[0];
       hitItem = hitItem ?? big;
     }
@@ -239,7 +238,6 @@ export function applyDemoRules(store: StoreState, a: Assessment): Assessment {
       delayUntil: inc.date,
     });
   }
-  a.reasoning = `${a.reasoning}`.includes("(demo rule)") ? a.reasoning : `(demo rule: ${hitItem.name.slice(0, 30)}) ${a.reasoning}`;
   return a;
 }
 

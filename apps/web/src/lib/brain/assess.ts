@@ -29,7 +29,7 @@ export { BrainUnavailable } from "./claude";
 export type Source = "claude" | "fallback";
 
 /** Marks reasoning written by the templates because Claude was slow, failed or had no key. */
-export const FAST_FALLBACK = "(fast fallback) ";
+export const FAST_FALLBACK = ""; // never shown to the user; fallbacks are logged server-side
 
 /** The live assess path answers within this, whatever the API does. */
 export const ASSESS_HARD_CAP_MS = 7500;
