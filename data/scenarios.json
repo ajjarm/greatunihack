@@ -1883,7 +1883,7 @@
                 },
                 {
                   "key": "timing",
-                  "points": 6,
+                  "points": 2,
                   "max": 10,
                   "text": "It is late, but this is not a pattern buy"
                 },
@@ -1923,7 +1923,7 @@
                 },
                 {
                   "key": "timing",
-                  "points": 5,
+                  "points": 1,
                   "max": 10,
                   "text": "Late, but not a pattern buy"
                 },
