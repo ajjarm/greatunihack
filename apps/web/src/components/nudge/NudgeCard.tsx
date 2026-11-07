@@ -11,8 +11,6 @@ import type { DoneInfo } from "./NudgeClient";
 import { TimelineChart } from "./TimelineChart";
 
 type Props = {
-  /** 70+ on first load: no ✕, and Buying anyway stays locked until the user gives a reason */
-  locked?: boolean;
   /** 40-69 on first load: small corner card, detail behind "More" */
   compact?: boolean;
   assessment: Assessment;
@@ -35,8 +33,10 @@ const hours = (n: number) => (Number.isInteger(n) ? `${n}` : n.toFixed(1));
  */
 export function NudgeCard(props: Props) {
   const { assessment: a, busy, error, done } = props;
-  const locked = !!busy || !!done;
-  const needsReason = !!props.locked && !a.reason;
+  // buttons pause while a request is in flight or once a decision is made
+  const inactive = !!busy || !!done;
+  // 70+: suggest a reason (never required); the ✕ and Buying anyway are always available
+  const suggestReason = !done && !a.reason && band(a.regretRisk) === "stop";
   // 40-69 is a small corner card; everything but the essentials sits behind "More"
   const compact = !!props.compact;
   const [more, setMore] = useState(false);
@@ -47,7 +47,7 @@ export function NudgeCard(props: Props) {
     <div className="flex flex-col gap-3">
       <article className="nudge-card flex flex-col" data-busy={busy ? "true" : "false"} aria-busy={!!busy} aria-labelledby="nudge-headline">
         <div className={`flex flex-col ${compact ? "gap-3 p-4" : "gap-4 p-5"}`}>
-          {/* title row; the ✕ is hidden on a locked nudge until a reason has been given */}
+          {/* title row; the ✕ is there on every score */}
           <div className="flex items-start gap-3">
             <div className="flex-1 min-w-0 flex flex-col gap-1">
               <span className="text-xs nudge-muted">
@@ -57,13 +57,13 @@ export function NudgeCard(props: Props) {
                 {a.headline}
               </h1>
             </div>
-            {!done && !needsReason && (
+            {!done && (
               <button
                 type="button"
                 className="nudge-btn nudge-btn-ghost w-8 h-8 shrink-0 flex items-center justify-center"
                 aria-label="Dismiss (Esc)"
                 title="Dismiss (Esc)"
-                disabled={locked}
+                disabled={inactive}
                 onClick={() => props.onDecision("dismiss")}
               >
                 ✕
@@ -90,7 +90,7 @@ export function NudgeCard(props: Props) {
               <button
                 type="button"
                 className="nudge-btn nudge-btn-accent nudge-btn-small px-3 py-1.5 shrink-0"
-                disabled={locked}
+                disabled={inactive}
                 onClick={() => props.onNegotiate(best.id)}
               >
                 {busy === `neg:${best.id}` ? "Applying…" : "Apply"}
@@ -118,17 +118,18 @@ export function NudgeCard(props: Props) {
                   {more ? "Less ▴" : "More ▾"}
                 </button>
               )}
-              <div className="flex-1">
-                <Decisions a={a} busy={busy} disabled={locked} needsReason={needsReason} onDecision={props.onDecision} />
+              <div className="flex-1 flex flex-col gap-2">
+                {suggestReason && <p className="text-xs nudge-muted text-right">Tell me why and I’ll re-judge.</p>}
+                <Decisions a={a} busy={busy} disabled={inactive} onDecision={props.onDecision} />
               </div>
             </div>
           )}
         </div>
 
-        {full && <ShowMore a={a} disabled={locked} busy={busy} onEssential={props.onEssential} />}
+        {full && <ShowMore a={a} disabled={inactive} busy={busy} onEssential={props.onEssential} />}
       </article>
 
-      {full && !done && <ReasonBar a={a} disabled={locked} busy={busy === "reason"} prompt={needsReason} onSubmit={props.onReason} />}
+      {full && !done && <ReasonBar a={a} disabled={inactive} busy={busy === "reason"} highlight={suggestReason} onSubmit={props.onReason} />}
     </div>
   );
 }
@@ -224,13 +225,11 @@ function Decisions({
   a,
   busy,
   disabled,
-  needsReason,
   onDecision,
 }: {
   a: Assessment;
   busy: string | null;
   disabled: boolean;
-  needsReason: boolean;
   onDecision: (d: DecisionIn) => void;
 }) {
   const lowRisk = a.verdict === "essential_cover" || band(a.regretRisk) === "go";
@@ -250,25 +249,14 @@ function Decisions({
       key="buy"
       type="button"
       className={`nudge-btn ${lowRisk ? "nudge-btn-primary" : "nudge-btn-ghost"} px-4 py-2`}
-      disabled={disabled || needsReason}
-      aria-describedby={needsReason ? "nudge-unlock-hint" : undefined}
-      title={needsReason ? "Tell me why you’re buying it first" : undefined}
+      disabled={disabled}
       onClick={() => onDecision("buy_anyway")}
     >
-      {busy === "dec:buy_anyway" ? "Saving…" : needsReason ? "🔒 Buying anyway" : lowRisk ? "Buying it" : "Buying anyway"}
+      {busy === "dec:buy_anyway" ? "Saving…" : lowRisk ? "Buying it" : "Buying anyway"}
     </button>
   );
   // like "No, thanks · Clean up": the quiet option first, the recommended one last and filled
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="flex justify-end items-center gap-2">{lowRisk ? [wait, buy] : [buy, wait]}</div>
-      {needsReason && (
-        <p id="nudge-unlock-hint" className="text-xs nudge-muted text-right">
-          To buy anyway, tell me why below.
-        </p>
-      )}
-    </div>
-  );
+  return <div className="flex justify-end items-center gap-2">{lowRisk ? [wait, buy] : [buy, wait]}</div>;
 }
 
 /** The "Why are you buying it?" pill bar under the card, with the exchange as chat bubbles. */
@@ -276,13 +264,14 @@ function ReasonBar({
   a,
   disabled,
   busy,
-  prompt,
+  highlight,
   onSubmit,
 }: {
   a: Assessment;
   disabled: boolean;
   busy: boolean;
-  prompt: boolean;
+  /** 70+ with no reason yet: draw the eye to the box (a suggestion, not a gate) */
+  highlight: boolean;
   onSubmit: (t: string) => void;
 }) {
   const [text, setText] = useState("");
@@ -315,7 +304,7 @@ function ReasonBar({
         </p>
       )}
       <form
-        data-prompt={prompt ? "true" : "false"}
+        data-prompt={highlight ? "true" : "false"}
         className="nudge-pill flex items-center gap-2 pl-5 pr-1.5 py-1.5"
         onSubmit={(e) => {
           e.preventDefault();
@@ -342,7 +331,6 @@ function ReasonBar({
           }}
           disabled={disabled}
           maxLength={200}
-          autoFocus={prompt}
         />
         <button
           type="submit"
@@ -360,13 +348,9 @@ function ReasonBar({
 function DoneState({ a, done }: { a: Assessment; done: DoneInfo }) {
   let text: string;
   if (done.decision === "wait") {
-    text = done.waitingItem
-      ? `${done.waitingItem.itemName} is on your waiting list. I’ll ask again ${day(done.waitingItem.reconsiderAt)}.`
-      : "Saved to your waiting list.";
+    text = "Saved. I’ll ask you again tomorrow.";
   } else if (done.decision === "buy_anyway") {
-    text = done.purchase?.reflectionDueAt
-      ? `Fair enough. I’ll ask if you’re glad you bought it on ${day(done.purchase.reflectionDueAt)}.`
-      : `Fair enough. I’ll check in about it in ${a.reflectionDays} days.`;
+    text = `Fair enough. I’ll check in about it in ${a.reflectionDays} days.`;
   } else {
     text = "Dismissed. I won’t mention it again.";
   }

@@ -57,8 +57,8 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
   const isToast = mode === "banner";
   const isLock = mode === "lock";
   // the grey full-screen layer needs a frame that fills the viewport; in a narrow 400px frame
-  // (an extension that hasn't switched to full-screen yet) the locked nudge renders as a normal,
-  // still-locked card that reports its height
+  // (an extension that hasn't switched to full-screen yet) the 70+ nudge renders as a normal
+  // card that reports its height
   const [wide, setWide] = useState(false);
   const isOverlay = isLock && wide;
   const started = useRef(false);
@@ -118,15 +118,10 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
     [id, busy, done],
   );
 
-  // Escape = Dismiss (not on a locked nudge: there is no way to wave it away)
+  // Escape = Dismiss, on every score
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape" || !assessment || done || isToast) return;
-      // locked: Escape does nothing until a reason has been given (same rule as the ✕)
-      if (isLock && !assessment.reason) {
-        e.preventDefault();
-        return;
-      }
       e.preventDefault();
       // first Escape inside a text box just leaves the box; the next one dismisses
       const el = document.activeElement;
@@ -138,7 +133,7 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [assessment, done, isToast, isLock, onDecision]);
+  }, [assessment, done, isToast, onDecision]);
 
 
   // toast auto-closes after 3 seconds
@@ -152,7 +147,7 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
   }, [isToast, toastGone]);
 
   // tell the host our height after every render, and whenever layout changes (expand, animations)
-  // (a locked nudge fills the viewport, so it sends no resize)
+  // (the 70+ overlay fills the viewport, so it sends no resize)
   // Measures the nudge's own root, not document.body: the root layout gives body min-h-full,
   // so body.scrollHeight never drops below the iframe's current height and the card couldn't shrink.
   useLayoutEffect(() => {
@@ -181,7 +176,6 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
 
   const card = (
     <NudgeCard
-        locked={isLock}
         compact={mode === "card"}
         assessment={assessment}
         busy={busy}
