@@ -1,6 +1,7 @@
 # INTERFACES — the contract between lanes
 
-**Owned by Ajjar. Nobody else edits this file.** Change requests:
+**This is the shared contract every lane builds on.** Anyone can propose a change; the
+integrator (Ajjar) merges it so all three UIs stay consistent. Propose with:
 `./scripts/ask.sh ajjar "interface: ..."`. Every agent reads this before writing code.
 The TypeScript source of truth is `apps/web/src/lib/types.ts`; this file explains it.
 

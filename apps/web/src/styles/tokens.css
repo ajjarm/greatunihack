@@ -1,4 +1,5 @@
-/* Design tokens. OWNED BY AJJAR (design lane). Neutral defaults until docs/DESIGN.md lands.
+/* Design tokens: the shared palette every lane builds on. Neutral defaults until docs/DESIGN.md lands;
+   the design lane updates them in one place so both screens restyle together.
    UI lanes use these variables and nothing else for colour, radius, shadow, font, motion. */
 :root {
   --color-bg: #f7f7f5;

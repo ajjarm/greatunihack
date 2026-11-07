@@ -14,7 +14,7 @@ phones, left nav on desktop), all reading from the API, looking like an app on a
 
 1. `src/app/(dashboard)/layout.tsx` with the nav. Routes: `/home`, `/purchases`,
    `/waiting`, `/insights`, `/profile`. (Do not touch `src/app/page.tsx` or
-   `src/app/layout.tsx`; they are Ajjar's.)
+   `src/app/layout.tsx`; they are shared, so changes go through a handoff.)
 2. `/home` from `GET /api/home`: Spend Score dial (band colour + text label), trend,
    explanation on tap; balance; safe to spend; days to next income; next bill; the
    insight sentence; recent assessments; pending-reflections banner.
@@ -39,7 +39,7 @@ Every number on every tab comes from the API; giving feedback on a purchase chan
 the calibration shown on Insights; the chat shows changes; looks right at 375px and
 1280px; nothing hard-coded in colour.
 
-## Ask Ajjar for
+## Post a handoff for
 
 Missing fields; dependencies (prefer none; plain SVG for charts).
 
@@ -52,7 +52,9 @@ Missing fields; dependencies (prefer none; plain SVG for charts).
 > layout first. Use only the CSS variables in apps/web/src/styles/tokens.css for
 > colour, radius, shadow, font and motion; Tailwind for layout only. Never import from
 > data/ and never invent fields that are not in types.ts. Do not edit any file outside
-> your two directories; if you need something, stop and tell me what to ask Ajjar for.
+> your two directories; if you need something outside them (a field, a dependency, a
+> shared style), pause and tell me so we can post it as a contract change for the
+> integrator to merge, which keeps all three UIs consistent.
 > Commit with ./scripts/checkpoint.sh every 20 minutes.
 
 ## Status

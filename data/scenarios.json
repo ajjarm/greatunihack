@@ -1871,9 +1871,9 @@
               "factors": [
                 {
                   "key": "want_level",
-                  "points": 2,
+                  "points": 0,
                   "max": 25,
-                  "text": "Medicine, not a treat"
+                  "text": "You said it is essential"
                 },
                 {
                   "key": "history",
@@ -1883,9 +1883,9 @@
                 },
                 {
                   "key": "timing",
-                  "points": 6,
+                  "points": 4,
                   "max": 10,
-                  "text": "It is late, but this is not a pattern buy"
+                  "text": "Late, but not a pattern buy"
                 },
                 {
                   "key": "money_strain",
@@ -1911,9 +1911,9 @@
               "factors": [
                 {
                   "key": "want_level",
-                  "points": 1,
+                  "points": 0,
                   "max": 25,
-                  "text": "A prescription is a need"
+                  "text": "You said it is essential"
                 },
                 {
                   "key": "history",
@@ -1923,13 +1923,13 @@
                 },
                 {
                   "key": "timing",
-                  "points": 5,
+                  "points": 3,
                   "max": 10,
                   "text": "Late, but not a pattern buy"
                 },
                 {
                   "key": "money_strain",
-                  "points": 4,
+                  "points": 3,
                   "max": 15,
                   "text": "£14 leaves £398 before Friday's shift"
                 }
@@ -3477,22 +3477,22 @@
     }
   },
   {
-    "id": "scn_5_steam",
-    "title": "A Steam sale on a Friday night",
+    "id": "scn_5_deal",
+    "title": "Lightning deal game under a countdown",
     "trigger": {
-      "merchant": "Steam",
+      "merchant": "Amazon",
       "keywords": [
-        "Purchase"
+        "Place your order"
       ],
-      "urlPattern": "store.steampowered.com/checkout"
+      "urlPattern": "amazon.co.uk/gp/buy"
     },
     "request": {
       "source": "watcher",
-      "merchant": "Steam",
-      "url": "https://store.steampowered.com/checkout/",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
       "items": [
         {
-          "name": "Hollow Knight: Silksong",
+          "name": "Hollow Knight: Silksong (PS5)",
           "pricePence": 3999,
           "qty": 1,
           "category": "fun"
@@ -3503,32 +3503,28 @@
       "cues": [
         {
           "key": "countdown",
-          "text": "-40% ends in 2 days"
-        },
-        {
-          "key": "sale",
-          "text": "Save 40%"
+          "text": "Lightning deal ends in 2h 10m"
         }
       ],
       "capturedAt": "2026-11-06T22:30:00+00:00",
-      "basketHash": "steam|hollow knight: silksong:3999|3999"
+      "basketHash": "amazon|hollow knight: silksong (ps5):3999|3999"
     },
     "response": {
       "id": "asm_scn_5",
       "createdAt": "2026-11-08T23:40:00+00:00",
       "source": "watcher",
-      "merchant": "Steam",
-      "url": "https://store.steampowered.com/checkout/",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
       "totalPence": 3999,
       "verdict": "nudge",
-      "headline": "Friday after ten, and a sale timer.",
-      "spokenLine": "Friday after ten and a sale timer. Sure?",
+      "headline": "Friday after ten, and a deal timer.",
+      "spokenLine": "Friday after ten and a lightning deal timer. Sure?",
       "regretRisk": 64,
       "affordability": 72,
       "items": [
         {
           "index": 0,
-          "name": "Hollow Knight: Silksong",
+          "name": "Hollow Knight: Silksong (PS5)",
           "pricePence": 3999,
           "qty": 1,
           "category": "fun",
@@ -3556,7 +3552,7 @@
               "key": "pressure",
               "points": 9,
               "max": 10,
-              "text": "A countdown and a discount together"
+              "text": "A lightning deal timer is a countdown built to rush you"
             },
             {
               "key": "timing",
@@ -3608,7 +3604,7 @@
         },
         {
           "key": "pressure",
-          "text": "The timer ends in two days, which is after Friday's shift anyway"
+          "text": "The deal timer is there to make you decide tonight"
         },
         {
           "key": "money_strain",
@@ -3618,13 +3614,8 @@
       "cues": [
         {
           "key": "countdown",
-          "text": "-40% ends in 2 days",
-          "note": "Steam sales come round every few weeks. The timer is there to make you decide tonight."
-        },
-        {
-          "key": "sale",
-          "text": "Save 40%",
-          "note": "A discount only saves money on something you were going to buy anyway."
+          "text": "Lightning deal ends in 2h 10m",
+          "note": "Lightning deals come round all day. The timer is there to make you decide tonight."
         }
       ],
       "negotiation": [
@@ -3640,7 +3631,7 @@
         }
       ],
       "reflectionDays": 7,
-      "reasoning": "Friday after 10pm is your worst window: all five purchases you made then were regrets, and Hades II on 16 October was this exact setup, sale timer included. £40 is £10 over the fun limit. The discount still has two days on it, and Friday's shift pays before it ends, so waiting costs nothing.",
+      "reasoning": "Friday after 10pm is your worst window: all five purchases you made then were regrets, and Hades II on 16 October was this exact setup, timer included. £40 is £10 over the fun limit. Lightning deals on games come back most weeks, and Friday's shift pays in five days, so waiting costs very little.",
       "timeline": [
         {
           "date": "2026-11-08",

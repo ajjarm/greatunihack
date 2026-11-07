@@ -1,7 +1,7 @@
 /**
  * Fixture-mode logic: the deterministic edits the API applies when a scenario has no
  * variant, plus the money maths every route shares. Phase 2 replaces the scoring parts
- * with src/lib/brain/** and keeps the money maths. OWNED BY AJJAR.
+ * with src/lib/brain/** and keeps the money maths. Shared contract; change via a handoff so all lanes stay consistent.
  */
 import { randomBytes } from "node:crypto";
 import {
@@ -270,7 +270,8 @@ export function applyReasonFallback(a: Assessment, text: string): Assessment {
     : `Noted, but it does not change the picture. Risk stays at ${a.regretRisk}.`;
   a.reason = { text, accepted, adjustment, verdictText };
   if (accepted) {
-    a.topFactors = [{ key: "reason", text: "You gave a reason, so the want score drops" }, ...a.topFactors].slice(0, 3);
+    const reasonFactor: Assessment["topFactors"][number] = { key: "reason", text: "You gave a reason, so the want score drops" };
+    a.topFactors = [reasonFactor, ...a.topFactors].slice(0, 3);
   }
   return a;
 }

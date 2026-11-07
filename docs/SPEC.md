@@ -253,7 +253,7 @@ the neutral defaults and never hard-code a colour.
    A bug in someone else's lane → `./scripts/ask.sh <who> "bug: …"` with the repro.
 2. **The API is the only thing UIs talk to.** No imports from `data/`, no reading
    fixtures, no shared components between lanes.
-3. **Shared files are Ajjar's:** package.json, lockfile, root layout, globals.css,
+3. **Shared files are the contract everyone builds on:** package.json, lockfile, root layout, globals.css,
    tokens.css, types.ts, host.ts, INTERFACES.md. Dependency requests: `ask.sh ajjar
    "add dep: x because y"`; Ajjar lands it within minutes; everyone picks it up on the
    next `land.sh`.
@@ -270,7 +270,7 @@ the neutral defaults and never hard-code a colour.
    and waiting-list timers fire in seconds.
 9. **No secrets in git.** `.env.local` in `apps/web`; keys listed in `.env.example`.
 10. **Land one lane at a time.** If `land.sh` reports a conflict in a file you don't
-    own, stop and ask Ajjar.
+    own, leave it and post a handoff; the integrator resolves it so nothing is lost.
 
 ## 9. Per-person instructions
 

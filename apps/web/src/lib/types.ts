@@ -1,7 +1,8 @@
 /**
  * Shared types: the contract between the API (Ajjar), the nudge (Rayan), the dashboard
  * (Aarav) and the fixture data (Zack). Explained in docs/INTERFACES.md.
- * OWNED BY AJJAR. Request changes with ./scripts/ask.sh ajjar "interface: ...".
+ * Shared contract: anyone can propose a field; the integrator merges it so all three UIs
+ * stay in step. Post with ./scripts/ask.sh ajjar "interface: ..." and it lands within minutes.
  */
 
 export type Pence = number; // always an integer

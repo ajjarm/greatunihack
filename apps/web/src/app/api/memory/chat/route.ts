@@ -27,6 +27,12 @@ function guessCategory(text: string): Category | undefined {
   return undefined;
 }
 
+function ordinal(n: number): string {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return `${n}${s[(v - 20) % 10] ?? s[v] ?? s[0]}`;
+}
+
 function pence(amount: string): number {
   return Math.round(parseFloat(amount) * 100);
 }
@@ -62,12 +68,12 @@ export async function POST(req: Request) {
         if (existing) {
           existing.amountPence = amountPence;
           existing.dayOfMonth = dayOfMonth;
-          changes.push(`Updated ${label}: ${pounds(amountPence)} on the ${day}`);
+          changes.push(`Updated ${label}: ${pounds(amountPence)} on the ${ordinal(dayOfMonth)}`);
         } else {
           persona.outgoings.push({ id: newId("out"), name: label, amountPence, dayOfMonth, category });
-          changes.push(`Added ${label}: ${pounds(amountPence)} on the ${day}`);
+          changes.push(`Added ${label}: ${pounds(amountPence)} on the ${ordinal(dayOfMonth)}`);
         }
-        reply = `Got it. ${label} is ${pounds(amountPence)} on the ${day} of each month.`;
+        reply = `Got it. ${label} is ${pounds(amountPence)} on the ${ordinal(dayOfMonth)} of each month.`;
       }
     } else if (limit) {
       const [, what, amount] = limit;
