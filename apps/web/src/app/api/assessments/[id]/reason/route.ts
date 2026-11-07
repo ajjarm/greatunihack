@@ -21,7 +21,7 @@ export async function POST(req: Request, { params }: Params<"id">) {
     // Replacement of something that broke: a duplicate stops being a duplicate.
     const BROKE = /\b(broke|broken|died|dead|stopped working|snapped|lost|stolen|cracked|not working)\b/i;
     if (current.items.some((i) => i.duplicateOf) && BROKE.test(text)) {
-      await new Promise((r) => setTimeout(r, 1500));
+      await new Promise((r) => setTimeout(r, 2500));
       const before = current.regretRisk;
       const total = current.items.reduce((sum, i) => sum + i.pricePence * i.qty, 0) || 1;
       for (const it of current.items) {
@@ -55,7 +55,7 @@ export async function POST(req: Request, { params }: Params<"id">) {
     const quick = quickReasonVerdict(text);
     if (quick) {
       // a beat of "thinking" so the instant answer reads as considered, not canned
-      await new Promise((r) => setTimeout(r, 1500));
+      await new Promise((r) => setTimeout(r, 2500));
       return json(putAssessment(applyReasonFallback(current, text, quick)));
     }
 
