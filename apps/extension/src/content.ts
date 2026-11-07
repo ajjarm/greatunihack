@@ -228,9 +228,12 @@ async function judgeProduct(parsed: ParsedCheckout): Promise<boolean> {
   if (!req) return false;
   req.url = location.href;
   seen.add(req.basketHash);
-  await assessAndShow(req.totalPence, req.merchant, () => assessParsed(req));
-  return true;
+  return assessAndShow(req.totalPence, req.merchant, () => assessParsed(req));
 }
+
+/** Amazon's "added to basket" page often reloads itself once or twice; the captured product
+ *  must survive that, so it is only retired 25 s after it has actually been shown. */
+const SHOWN_GRACE_MS = 25_000;
 
 /** On a basket/checkout page: if a product was just added, judge that product first. */
 async function judgeStashed(): Promise<boolean> {
@@ -241,19 +244,32 @@ async function judgeStashed(): Promise<boolean> {
     return false;
   }
   if (!raw) return false;
+  let stash: { parsed: ParsedCheckout; at: number; shownAt?: number };
   try {
-    sessionStorage.removeItem(STASH_KEY);
-  } catch {
-    /* ignore */
-  }
-  try {
-    const { parsed, at } = JSON.parse(raw) as { parsed: ParsedCheckout; at: number };
-    if (Date.now() - at > STASH_TTL_MS) return false;
-    console.info("[st] judging the product that was just added to the basket");
-    return await judgeProduct(parsed);
+    stash = JSON.parse(raw) as { parsed: ParsedCheckout; at: number; shownAt?: number };
   } catch {
     return false;
   }
+  const now = Date.now();
+  const expired = now - stash.at > STASH_TTL_MS || (stash.shownAt != null && now - stash.shownAt > SHOWN_GRACE_MS);
+  if (expired) {
+    try {
+      sessionStorage.removeItem(STASH_KEY);
+    } catch {
+      /* ignore */
+    }
+    return false;
+  }
+  console.info("[st] judging the product that was just added to the basket");
+  const ok = await judgeProduct(stash.parsed);
+  if (ok) {
+    try {
+      sessionStorage.setItem(STASH_KEY, JSON.stringify({ ...stash, shownAt: stash.shownAt ?? now }));
+    } catch {
+      /* ignore */
+    }
+  }
+  return ok;
 }
 
 function isAddToBasketControl(target: EventTarget | null): boolean {
