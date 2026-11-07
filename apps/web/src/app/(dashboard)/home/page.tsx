@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Home } from "@/lib/types";
 import { Card, Chip, Label, PageState, ScoreDial, date, money, useApi } from "@/components/dashboard/shared";
+import { AssessmentFactors, FactorGuide } from "@/components/dashboard/factors";
 
 export default function HomePage() {
   const { data, error, loading, reload } = useApi<Home>("home");
@@ -21,6 +22,7 @@ export default function HomePage() {
     </div>
     <Card><Label>Next bill</Label><div className="mt-2 flex items-end justify-between gap-4"><div><p className="font-semibold">{data.nextBill.name}</p><p className="text-sm text-[var(--color-text-muted)]">{date(data.nextBill.date)}</p></div><p className="text-xl font-bold">{money(data.nextBill.amountPence)}</p></div></Card>
     <Card className="bg-[var(--color-accent-bg)]"><Label>Worth knowing</Label><p className="mt-2 text-lg font-medium leading-snug">{data.insight}</p></Card>
-    <section><div className="mb-3 flex items-center justify-between"><h2 className="text-xl font-bold">Recent checkouts</h2><Link href="/purchases" className="text-sm font-semibold text-[var(--color-accent)]">Purchases →</Link></div><div className="space-y-3">{data.recentAssessments.length ? data.recentAssessments.map(a => <Card key={a.id}><div className="flex items-start justify-between gap-3"><div><p className="font-semibold">{a.merchant}</p><p className="mt-1 text-sm text-[var(--color-text-muted)]">{a.headline}</p><p className="mt-2 text-xs text-[var(--color-text-muted)]">{date(a.createdAt)} · {a.decision.replaceAll("_", " ")}</p></div><div className="shrink-0 text-right"><p className="font-bold">{money(a.totalPence)}</p><p className="mt-1 text-xs text-[var(--color-text-muted)]">{a.regretRisk}% risk, experimental</p></div></div></Card>) : <Card><p className="text-sm text-[var(--color-text-muted)]">No checkouts yet.</p></Card>}</div></section>
+    <FactorGuide />
+    <section><div className="mb-3 flex items-center justify-between"><h2 className="text-xl font-bold">Recent checkouts</h2><Link href="/purchases" className="text-sm font-semibold text-[var(--color-accent)]">Purchases →</Link></div><div className="space-y-3">{data.recentAssessments.length ? data.recentAssessments.map(a => <Card key={a.id}><div className="flex items-start justify-between gap-3"><div><p className="font-semibold">{a.merchant}</p><p className="mt-1 text-sm text-[var(--color-text-muted)]">{a.headline}</p><p className="mt-2 text-xs text-[var(--color-text-muted)]">{date(a.createdAt)} · {a.decision.replaceAll("_", " ")}</p></div><div className="shrink-0 text-right"><p className="font-bold">{money(a.totalPence)}</p><p className="mt-1 text-xs text-[var(--color-text-muted)]">{a.regretRisk}% risk, experimental</p></div></div><AssessmentFactors id={a.id} /></Card>) : <Card><p className="text-sm text-[var(--color-text-muted)]">No checkouts yet.</p></Card>}</div></section>
   </div>;
 }
