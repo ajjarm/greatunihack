@@ -68,7 +68,7 @@ something serious is happening.
 - Use the browser pane to check the UI, not just unit output.
 - Keep a `plan/active/<feature>.md` per lane so any agent can pick it up.
 
-**Codex (teammate's subscription, and Ajjar's).**
+**Codex (Zack's subscription and Ajjar's; anyone can install it).**
 - Install the CLI: `npm i -g @openai/codex` then `codex` once to log in.
 - Role: **reviewer and second lane**, not primary builder. Prompts that work:
   "Adversarial review of `plan/active/*.md`: what will break in a live demo?" and
