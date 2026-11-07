@@ -1,0 +1,19 @@
+{
+  "name": "st-extension",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Chrome extension (MV3): Amazon checkout -> /api/assess -> nudge iframe",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/parser.test.mjs"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.3.7",
+    "esbuild": "^0.28.2",
+    "jsdom": "^31.0.0",
+    "typescript": "^7.0.2"
+  }
+}

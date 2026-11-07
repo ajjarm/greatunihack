@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout (test page)</title>
+<!--
+  Stage safety net for the Chrome extension. A static, simplified UK-style checkout the
+  content script runs on (http://localhost:3000/test-checkout.html). The default basket
+  total matches scn_1_impulse (13000p); the switcher at the bottom swaps to the scn_2,
+  scn_3 and scn_5 baskets with their exact totals from data/scenarios.json.
+  ?basket=1|2|3|5 preselects a basket. Nothing here is submitted anywhere.
+-->
+<style>
+  :root {
+    --bg: #eaeded; --surface: #ffffff; --text: #0f1111; --muted: #565959; --border: #d5d9d9;
+    --header: #131921; --header-2: #232f3e; --button: #ffd814; --button-border: #fcd200;
+    --link: #007185; --price: #b12704; --stock: #c45500;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 "Amazon Ember", Arial, sans-serif; }
+  header { background: var(--header); color: #fff; display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; }
+  .wordmark { font-weight: 700; font-size: 20px; letter-spacing: -0.02em; }
+  .wordmark small { font-weight: 400; font-size: 12px; opacity: 0.7; margin-left: 6px; }
+  header h1 { margin: 0; font-size: 22px; font-weight: 400; }
+  .lock { font-size: 12px; opacity: 0.8; }
+  main { max-width: 1100px; margin: 20px auto 120px; padding: 0 16px; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; }
+  @media (max-width: 820px) { main { grid-template-columns: 1fr; } }
+  section.step { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 14px; display: grid; grid-template-columns: 28px 160px 1fr; gap: 8px; }
+  section.step h2 { margin: 0; font-size: 16px; }
+  .num { font-weight: 700; font-size: 16px; }
+  .muted { color: var(--muted); }
+  a { color: var(--link); text-decoration: none; }
+  .delivery-note { color: #007600; font-weight: 700; }
+  aside { position: sticky; top: 16px; }
+  .box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .place { width: 100%; padding: 9px 10px; border-radius: 100px; border: 1px solid var(--button-border); background: var(--button); font: inherit; font-size: 14px; cursor: pointer; box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5); }
+  .place:hover { background: #f7ca00; }
+  .terms { font-size: 11px; color: var(--muted); text-align: center; margin: 8px 0 12px; }
+  #order-summary h3 { font-size: 18px; margin: 12px 0 8px; font-weight: 700; }
+  .stock-banner { color: var(--stock); font-weight: 700; margin: 0 0 8px; }
+  .line-item { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); align-items: start; }
+  .thumb { width: 44px; height: 44px; border-radius: 4px; background: linear-gradient(135deg, #dfe3e6, #f3f4f5); }
+  .item-title { font-weight: 700; font-size: 13px; line-height: 1.3; }
+  .item-qty { font-size: 12px; color: var(--muted); }
+  .item-price { font-weight: 700; white-space: nowrap; }
+  table.totals { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  table.totals td { padding: 3px 0; font-size: 13px; }
+  table.totals td:last-child { text-align: right; white-space: nowrap; }
+  tr.grand td { border-top: 1px solid var(--border); padding-top: 10px; font-size: 18px; font-weight: 700; color: var(--price); }
+  .devbar { position: fixed; left: 16px; bottom: 16px; background: #fff; border: 1px dashed #8c9196; border-radius: 10px; padding: 8px 10px; font-size: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12); max-width: calc(100vw - 32px); }
+  .devbar strong { margin-right: 4px; }
+  .devbar button { font: inherit; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); background: #f7f8f8; cursor: pointer; }
+  .devbar button[aria-pressed="true"] { background: var(--header-2); color: #fff; border-color: var(--header-2); }
+  .devbar .sep { width: 1px; height: 18px; background: var(--border); margin: 0 2px; }
+</style>
+</head>
+<body>
+  <header>
+    <div class="wordmark">shop<small>test page</small></div>
+    <h1>Secure checkout</h1>
+    <div class="lock">Local test fixture</div>
+  </header>
+
+  <main>
+    <div>
+      <section class="step">
+        <div class="num">1</div>
+        <h2>Delivery address</h2>
+        <div>Sam Student<br>Flat 4, 12 College Road<br>Leeds LS2 9JT</div>
+      </section>
+      <section class="step">
+        <div class="num">2</div>
+        <h2>Payment method</h2>
+        <div>Debit card (test)<br><a href="#" onclick="return false">Change</a></div>
+      </section>
+      <section class="step">
+        <div class="num">3</div>
+        <h2>Review items and delivery</h2>
+        <div><span class="delivery-note">Arriving Tuesday 10 Nov</span><br><span class="muted">Standard delivery, no charge</span></div>
+      </section>
+    </div>
+
+    <aside>
+      <div class="box">
+        <button class="place" type="button" id="placeOrder">Place your order</button>
+        <p class="terms">This is a local test page. The button does nothing.</p>
+        <div id="order-summary">
+          <h3>Order Summary</h3>
+          <p class="stock-banner" id="banner">Only 2 left in stock</p>
+          <div id="summary-items">
+            <div class="line-item">
+              <div class="thumb" aria-hidden="true"></div>
+              <div><div class="item-title">Nike Air Max 90 Trainers</div><div class="item-qty">Qty: 1</div></div>
+              <div class="item-price">£85.00</div>
+            </div>
+            <div class="line-item">
+              <div class="thumb" aria-hidden="true"></div>
+              <div><div class="item-title">Carhartt Hoodie</div><div class="item-qty">Qty: 1</div></div>
+              <div class="item-price">£45.00</div>
+            </div>
+          </div>
+          <table class="totals">
+            <tbody>
+              <tr><td>Items:</td><td id="itemsTotal">£130.00</td></tr>
+              <tr><td>Postage &amp; Packing:</td><td id="delivery">£0.00</td></tr>
+              <tr class="grand"><td>Order total:</td><td id="orderTotal">£130.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <div class="devbar" role="group" aria-label="Test basket switcher">
+    <strong>Test basket</strong>
+    <button type="button" data-basket="1" aria-pressed="true">1 Trainers and hoodie</button>
+    <button type="button" data-basket="2" aria-pressed="false">2 Paracetamol</button>
+    <button type="button" data-basket="3" aria-pressed="false">3 Headphones and case</button>
+    <button type="button" data-basket="5" aria-pressed="false">5 Game</button>
+    <span class="sep" aria-hidden="true"></span>
+    <button type="button" id="resetNudges" title="Forget which baskets were already judged in this tab">Reset nudges</button>
+  </div>
+
+<script>
+(function () {
+  // Exact baskets and totals from data/scenarios.json (scn_1, scn_2, scn_3, scn_5).
+  var BASKETS = {
+    "1": { scenario: "scn_1_impulse", banner: "Only 2 left in stock", delivery: 0, items: [
+      { name: "Nike Air Max 90 Trainers", pence: 8500, qty: 1 },
+      { name: "Carhartt Hoodie", pence: 4500, qty: 1 }
+    ] },
+    "2": { scenario: "scn_2_essential", banner: "", delivery: 0, items: [
+      { name: "Paracetamol 500mg, 32 tablets", pence: 349, qty: 1 },
+      { name: "Prescription prepayment top-up", pence: 1050, qty: 1 }
+    ] },
+    "3": { scenario: "scn_3_duplicate", banner: "", delivery: 0, items: [
+      { name: "Anker Soundcore Q20i noise-cancelling headphones", pence: 5400, qty: 1 },
+      { name: "Spigen phone case, clear", pence: 3500, qty: 1 }
+    ] },
+    "5": { scenario: "scn_5_deal", banner: "Lightning deal ends in 2h 10m", delivery: 0, items: [
+      { name: "Hollow Knight: Silksong (PS5)", pence: 3999, qty: 1 }
+    ] }
+  };
+
+  function gbp(p) { return "£" + (p / 100).toFixed(2); }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function render(key) {
+    var b = BASKETS[key];
+    if (!b) return;
+    var list = document.getElementById("summary-items");
+    list.textContent = "";
+    var itemsTotal = 0;
+    b.items.forEach(function (it) {
+      itemsTotal += it.pence * it.qty;
+      var row = el("div", "line-item");
+      var thumb = el("div", "thumb");
+      thumb.setAttribute("aria-hidden", "true");
+      var body = el("div");
+      body.appendChild(el("div", "item-title", it.name));
+      body.appendChild(el("div", "item-qty", "Qty: " + it.qty));
+      row.appendChild(thumb);
+      row.appendChild(body);
+      row.appendChild(el("div", "item-price", gbp(it.pence)));
+      list.appendChild(row);
+    });
+    var banner = document.getElementById("banner");
+    banner.textContent = b.banner;
+    banner.hidden = !b.banner;
+    document.getElementById("itemsTotal").textContent = gbp(itemsTotal);
+    document.getElementById("delivery").textContent = gbp(b.delivery);
+    document.getElementById("orderTotal").textContent = gbp(itemsTotal + b.delivery);
+    document.body.setAttribute("data-scenario", b.scenario);
+    Array.prototype.forEach.call(document.querySelectorAll("[data-basket]"), function (btn) {
+      btn.setAttribute("aria-pressed", String(btn.getAttribute("data-basket") === key));
+    });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-basket]"), function (btn) {
+    btn.addEventListener("click", function () { render(btn.getAttribute("data-basket")); });
+  });
+
+  document.getElementById("resetNudges").addEventListener("click", function () {
+    try {
+      for (var i = sessionStorage.length - 1; i >= 0; i--) {
+        var k = sessionStorage.key(i);
+        if (k && k.indexOf("st-ext:") === 0) sessionStorage.removeItem(k);
+      }
+    } catch (e) { /* storage blocked */ }
+    var frame = document.getElementById("st-nudge-frame");
+    if (frame) frame.remove();
+  });
+
+  var initial = new URLSearchParams(location.search).get("basket");
+  if (initial && BASKETS[initial] && initial !== "1") render(initial);
+  else document.body.setAttribute("data-scenario", "scn_1_impulse");
+})();
+</script>
+</body>
+</html>
