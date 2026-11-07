@@ -39,7 +39,6 @@ add dependencies on request; keep INTERFACES.md and types.ts in sync.
    `BRAIN_MODE=live`; `scenarioId` still works for safety.
 4. **Real basket parsing** in the extension (replace the total-matching shortcut).
 5. **Spend Score + report** via Claude with deterministic fallback.
-6. n8n reflection delivery only if everything else is done.
 
 ## Done when
 
