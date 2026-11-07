@@ -11,7 +11,8 @@ echo "== You are @$(me) on branch $(git branch --show-current)"
 echo
 echo "== Remote branches, newest first"
 git for-each-ref --sort=-committerdate refs/remotes/origin \
-  --format='%(committerdate:relative)%09%(authorname)%09%(refname:short)%09%(subject)' | head -15
+  --format='%(committerdate:relative)%09%(authorname)%09%(refname:short)%09%(subject)' \
+  | grep -v $'\torigin\t' | head -15
 echo
 if git rev-parse --verify -q origin/main >/dev/null; then
   git rev-list --left-right --count origin/main...HEAD \

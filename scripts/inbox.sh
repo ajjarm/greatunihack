@@ -5,7 +5,10 @@ cd "$(git rev-parse --show-toplevel)"
 
 git fetch --all --prune -q
 echo "== Open handoff requests for @$(gh api user --jq .login)"
-nums="$(gh issue list --label handoff --assignee @me --state open --json number --jq '.[].number')"
+list() { gh issue list --label handoff --assignee @me --state open --json number --jq '.[].number'; }
+nums="$(list)"
+# GitHub's search index lags a few seconds after an issue is created; try once more.
+if [ -z "$nums" ]; then sleep 4; nums="$(list)"; fi
 if [ -z "$nums" ]; then
   echo "Inbox empty."
   exit 0
