@@ -16,6 +16,11 @@ export async function POST(req: Request, { params }: Params<"id">) {
     const text = body.text.trim();
     if (!text) return error("text is required", 400);
 
+    // live Brain first: Claude judges the actual words; the canned variant is only a fixture-mode shortcut
+    if (brainLive()) {
+      const judged = await judgeReasonLive(getStore(), current, text);
+      if (judged) return json(putAssessment(judged));
+    }
     const variant = scenarioOf(id)?.variants?.reason;
     if (variant && current.decision === "none" && current.items.length === variant.response.items.length) {
       const next = JSON.parse(JSON.stringify(variant.response)) as Assessment;
@@ -24,11 +29,6 @@ export async function POST(req: Request, { params }: Params<"id">) {
       next.decision = current.decision;
       next.reason = { ...(next.reason ?? { accepted: true, adjustment: -30, verdictText: next.headline }), text };
       return json(putAssessment(next));
-    }
-    // live Brain: Claude judges the reason, risk and verdict are re-derived, money is untouched
-    if (brainLive()) {
-      const judged = await judgeReasonLive(getStore(), current, text);
-      if (judged) return json(putAssessment(judged));
     }
     return json(putAssessment(applyReasonFallback(current, text)));
   });
