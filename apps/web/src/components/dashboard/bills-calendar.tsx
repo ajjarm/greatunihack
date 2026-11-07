@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CATEGORY_LABELS, type Category, type MoneyEvent, type Persona } from "@/lib/types";
 import { api, Card, Label, date, money } from "@/components/dashboard/shared";
 
@@ -50,7 +50,7 @@ function buildUpcomingIncomes(persona: Persona, demoDate: string): IncomeOccurre
 export function BillsCalendar({ nextBill, demoNow }: { nextBill: MoneyEvent; demoNow: string }) {
   const demoDate = demoNow.slice(0, 10);
   const nextBillMonthOffset = (Number(nextBill.date.slice(0, 4)) - Number(demoDate.slice(0, 4))) * 12 + Number(nextBill.date.slice(5, 7)) - Number(demoDate.slice(5, 7));
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [persona, setPersona] = useState<Persona | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -64,6 +64,8 @@ export function BillsCalendar({ nextBill, demoNow }: { nextBill: MoneyEvent; dem
     catch (cause) { setError(cause instanceof Error ? cause.message : "Could not load bills"); }
     finally { setLoading(false); }
   }
+
+  useEffect(() => { void loadBills(); }, []);
 
   function toggle() {
     setOpen(!open);
