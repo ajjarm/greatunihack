@@ -228,3 +228,13 @@ body:has(.nudge-root) { background: transparent; }
 @media (prefers-reduced-motion: reduce) {
   .nudge-bubble-reply, .nudge-thinking { animation: none; }
 }
+
+/* 70+: grey the page behind a centred card (the iframe fills the viewport in this mode) */
+.nudge-backdrop {
+  background: color-mix(in srgb, var(--color-text) 55%, transparent);
+  backdrop-filter: blur(3px);
+  animation: nudge-fade-in var(--motion-slow) var(--ease-out) both;
+}
+@keyframes nudge-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.nudge-pill[data-prompt="true"] { border: 2px solid var(--color-stop); }
+@media (prefers-reduced-motion: reduce) { .nudge-backdrop { animation: none; } }

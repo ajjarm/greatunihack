@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { hostClose, hostResize } from "@/lib/host";
 import type { Assessment, Purchase, WaitingItem } from "@/lib/types";
 import * as api from "./api";
+import { nudgeMode, type NudgeMode } from "./format";
 import { NudgeCard } from "./NudgeCard";
 import { NudgeToast } from "./NudgeToast";
 
@@ -46,8 +47,10 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<DoneInfo | null>(null);
   const [toastGone, setToastGone] = useState(false);
-  // the toast is decided by the first verdict only; a later re-judge to go_ahead stays in the card
-  const [isToast, setIsToast] = useState(false);
+  // decided by the FIRST score only, so the popup never changes shape mid-interaction
+  const [mode, setMode] = useState<NudgeMode>("card");
+  const isToast = mode === "banner";
+  const isLock = mode === "lock";
   const started = useRef(false);
 
   // load once (guarded so dev StrictMode does not create two assessments)
@@ -57,7 +60,7 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
     (assessmentId ? api.getAssessment(assessmentId) : api.assessScenario(scenario!))
       .then((a) => {
         setAssessment(a);
-        setIsToast(a.verdict === "go_ahead");
+        setMode(a.verdict === "go_ahead" ? "banner" : nudgeMode(a.regretRisk));
         if ((FINAL as readonly string[]).includes(a.decision)) setDone({ decision: a.decision as api.DecisionIn });
       })
       .catch((e: Error) => setError(e.message));
@@ -104,10 +107,14 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
     [id, busy, done],
   );
 
-  // Escape = Dismiss
+  // Escape = Dismiss (not on a locked nudge: there is no way to wave it away)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape" || !assessment || done || isToast) return;
+      if (isLock) {
+        e.preventDefault();
+        return;
+      }
       e.preventDefault();
       // first Escape inside a text box just leaves the box; the next one dismisses
       const el = document.activeElement;
@@ -119,7 +126,7 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [assessment, done, isToast, onDecision]);
+  }, [assessment, done, isToast, isLock, onDecision]);
 
 
   // toast auto-closes after 3 seconds
@@ -133,16 +140,17 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
   }, [isToast, toastGone]);
 
   // tell the host our height after every render, and whenever layout changes (expand, animations)
+  // (a locked nudge fills the viewport, so it sends no resize)
   useLayoutEffect(() => {
     if (isToast) hostResize(72);
-    else hostResize(document.body.scrollHeight);
+    else if (!isLock) hostResize(document.body.scrollHeight);
   });
   useEffect(() => {
-    if (isToast || typeof ResizeObserver === "undefined") return;
+    if (isToast || isLock || typeof ResizeObserver === "undefined") return;
     const ro = new ResizeObserver(() => hostResize(document.body.scrollHeight));
     ro.observe(document.body);
     return () => ro.disconnect();
-  }, [isToast]);
+  }, [isToast, isLock]);
 
   if (!assessment) return <Message error={error} />;
 
@@ -156,9 +164,9 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
     );
   }
 
-  return (
-    <div className="p-3">
-      <NudgeCard
+  const card = (
+    <NudgeCard
+        locked={isLock}
         assessment={assessment}
         busy={busy}
         error={error}
@@ -168,6 +176,14 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
         onEssential={onEssential}
         onDecision={onDecision}
       />
-    </div>
   );
+
+  if (isLock && !done) {
+    return (
+      <div className="nudge-backdrop fixed inset-0 overflow-y-auto flex justify-center items-start p-6" role="dialog" aria-modal="true" aria-labelledby="nudge-headline">
+        <div className="w-full max-w-[440px] my-auto">{card}</div>
+      </div>
+    );
+  }
+  return <div className="p-3">{card}</div>;
 }

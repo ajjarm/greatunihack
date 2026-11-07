@@ -1,11 +1,11 @@
 "use client";
 import "./nudge.css";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Assessment, HostMessage } from "@/lib/types";
 import { CATEGORY_LABELS } from "@/lib/types";
 import { assessScenario } from "./api";
-import { money } from "./format";
+import { money, nudgeMode } from "./format";
 
 type ScenarioRow = { id: string; title: string; merchant: string; totalPence: number };
 
@@ -82,6 +82,16 @@ export function CheckoutPreview() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [scenarios, scenario, router]);
+
+  // where the extension puts the iframe, from the first score (same rule the nudge page uses)
+  const mode = assessment ? (assessment.verdict === "go_ahead" ? "banner" : nudgeMode(assessment.regretRisk)) : "card";
+  const TOOLBAR = 40; // preview-only bar; the real extension starts at the top of the page
+  const frameStyle: CSSProperties =
+    mode === "lock"
+      ? { top: TOOLBAR, left: 0, width: "100vw", height: `calc(100vh - ${TOOLBAR}px)` }
+      : mode === "banner"
+        ? { top: TOOLBAR + 12, left: "50%", transform: "translateX(-50%)", width: 400, height }
+        : { top: TOOLBAR + 4, right: 16, width: 400, height, maxHeight: `calc(100vh - ${TOOLBAR + 20}px)` };
 
   const items = assessment?.items ?? [];
   const subtotal = items.reduce((s, it) => s + it.pricePence * it.qty, 0);
@@ -201,12 +211,7 @@ export function CheckoutPreview() {
           title="Spending nudge"
           className="fixed z-50"
           style={{
-            // the real extension pins it 16px from the top; here it sits below the preview toolbar
-            top: 44,
-            right: 16,
-            width: 400,
-            height,
-            maxHeight: "calc(100vh - 60px)",
+            ...frameStyle,
             border: 0,
             background: "transparent",
             colorScheme: "normal",

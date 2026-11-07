@@ -6,11 +6,13 @@ import { hostOpenDashboard, isHosted } from "@/lib/host";
 import { CATEGORY_LABELS, type AssessedItem, type Assessment } from "@/lib/types";
 import type { DecisionIn } from "./api";
 import { AnimatedNumber } from "./AnimatedNumber";
-import { BAND_LABEL, FACTOR_LABEL, band, day, money, monthOf, pounds } from "./format";
+import { BAND_LABEL, FACTOR_LABEL, band, day, money, monthOf, pounds, vagueReason } from "./format";
 import type { DoneInfo } from "./NudgeClient";
 import { TimelineChart } from "./TimelineChart";
 
 type Props = {
+  /** 70+ on first load: no ✕, and Buying anyway stays locked until the user gives a reason */
+  locked?: boolean;
   assessment: Assessment;
   busy: string | null;
   error: string | null;
@@ -32,6 +34,7 @@ const hours = (n: number) => (Number.isInteger(n) ? `${n}` : n.toFixed(1));
 export function NudgeCard(props: Props) {
   const { assessment: a, busy, error, done } = props;
   const locked = !!busy || !!done;
+  const needsReason = !!props.locked && !a.reason;
   const best = [...a.negotiation].sort((x, y) => x.resultRegretRisk - y.resultRegretRisk)[0];
 
   return (
@@ -48,7 +51,7 @@ export function NudgeCard(props: Props) {
                 {a.headline}
               </h1>
             </div>
-            {!done && (
+            {!done && !props.locked && (
               <button
                 type="button"
                 className="nudge-btn nudge-btn-ghost w-8 h-8 shrink-0 flex items-center justify-center"
@@ -94,13 +97,13 @@ export function NudgeCard(props: Props) {
             </p>
           )}
 
-          {done ? <DoneState a={a} done={done} /> : <Decisions a={a} busy={busy} disabled={locked} onDecision={props.onDecision} />}
+          {done ? <DoneState a={a} done={done} /> : <Decisions a={a} busy={busy} disabled={locked} needsReason={needsReason} onDecision={props.onDecision} />}
         </div>
 
         <ShowMore a={a} disabled={locked} busy={busy} onEssential={props.onEssential} />
       </article>
 
-      {!done && <ReasonBar a={a} disabled={locked} busy={busy === "reason"} onSubmit={props.onReason} />}
+      {!done && <ReasonBar a={a} disabled={locked} busy={busy === "reason"} prompt={needsReason} onSubmit={props.onReason} />}
     </div>
   );
 }
@@ -192,7 +195,19 @@ function MoneyRow({ label, sub, value, tone }: { label: ReactNode; sub?: string;
   );
 }
 
-function Decisions({ a, busy, disabled, onDecision }: { a: Assessment; busy: string | null; disabled: boolean; onDecision: (d: DecisionIn) => void }) {
+function Decisions({
+  a,
+  busy,
+  disabled,
+  needsReason,
+  onDecision,
+}: {
+  a: Assessment;
+  busy: string | null;
+  disabled: boolean;
+  needsReason: boolean;
+  onDecision: (d: DecisionIn) => void;
+}) {
   const lowRisk = a.verdict === "essential_cover" || band(a.regretRisk) === "go";
   const wait = (
     <button
@@ -210,19 +225,43 @@ function Decisions({ a, busy, disabled, onDecision }: { a: Assessment; busy: str
       key="buy"
       type="button"
       className={`nudge-btn ${lowRisk ? "nudge-btn-primary" : "nudge-btn-ghost"} px-4 py-2`}
-      disabled={disabled}
+      disabled={disabled || needsReason}
+      aria-describedby={needsReason ? "nudge-unlock-hint" : undefined}
+      title={needsReason ? "Tell me why you’re buying it first" : undefined}
       onClick={() => onDecision("buy_anyway")}
     >
-      {busy === "dec:buy_anyway" ? "Saving…" : lowRisk ? "Buying it" : "Buying anyway"}
+      {busy === "dec:buy_anyway" ? "Saving…" : needsReason ? "🔒 Buying anyway" : lowRisk ? "Buying it" : "Buying anyway"}
     </button>
   );
   // like "No, thanks · Clean up": the quiet option first, the recommended one last and filled
-  return <div className="flex justify-end items-center gap-2">{lowRisk ? [wait, buy] : [buy, wait]}</div>;
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-end items-center gap-2">{lowRisk ? [wait, buy] : [buy, wait]}</div>
+      {needsReason && (
+        <p id="nudge-unlock-hint" className="text-xs nudge-muted text-right">
+          To buy anyway, tell me why below.
+        </p>
+      )}
+    </div>
+  );
 }
 
 /** The "Why are you buying it?" pill bar under the card, with the exchange as chat bubbles. */
-function ReasonBar({ a, disabled, busy, onSubmit }: { a: Assessment; disabled: boolean; busy: boolean; onSubmit: (t: string) => void }) {
+function ReasonBar({
+  a,
+  disabled,
+  busy,
+  prompt,
+  onSubmit,
+}: {
+  a: Assessment;
+  disabled: boolean;
+  busy: boolean;
+  prompt: boolean;
+  onSubmit: (t: string) => void;
+}) {
   const [text, setText] = useState("");
+  const [hint, setHint] = useState<string | null>(null);
   const inputId = useId();
   return (
     <section className="flex flex-col gap-2" aria-label="Your reason">
@@ -245,15 +284,23 @@ function ReasonBar({ a, disabled, busy, onSubmit }: { a: Assessment; disabled: b
         </>
       )}
       {busy && <p className="nudge-bubble-reply nudge-thinking px-4 py-2 text-sm nudge-muted self-start">Thinking…</p>}
+      {hint && (
+        <p className="nudge-bubble-reply px-4 py-2 text-sm self-start" role="alert">
+          {hint}
+        </p>
+      )}
       <form
+        data-prompt={prompt ? "true" : "false"}
         className="nudge-pill flex items-center gap-2 pl-5 pr-1.5 py-1.5"
         onSubmit={(e) => {
           e.preventDefault();
           const t = text.trim();
-          if (t) {
-            onSubmit(t);
-            setText("");
-          }
+          if (!t) return;
+          const problem = vagueReason(t);
+          setHint(problem);
+          if (problem) return;
+          onSubmit(t);
+          setText("");
         }}
       >
         <label htmlFor={inputId} className="sr-only">
@@ -264,9 +311,13 @@ function ReasonBar({ a, disabled, busy, onSubmit }: { a: Assessment; disabled: b
           className="nudge-pill-input flex-1 min-w-0 py-2"
           placeholder={a.reason ? "Try another reason…" : "Why are you buying it?"}
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => {
+            setText(e.target.value);
+            if (hint) setHint(null);
+          }}
           disabled={disabled}
           maxLength={200}
+          autoFocus={prompt}
         />
         <button
           type="submit"

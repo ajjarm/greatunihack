@@ -51,3 +51,23 @@ export const FACTOR_LABEL: Record<string, string> = {
   money_strain: "Money strain",
   reason: "Your reason",
 };
+
+/**
+ * How intrusive the nudge is, from the FIRST regret score (later re-judges don't change it):
+ *  lock   70+    greyed screen, centred card, no ✕/Escape; Buying anyway unlocks after a reason
+ *  card   40–69  the top-right card, dismissable
+ *  banner <40    a tiny notification at the top that closes itself
+ */
+export type NudgeMode = "lock" | "card" | "banner";
+export function nudgeMode(regretRisk: number): NudgeMode {
+  return regretRisk >= 70 ? "lock" : regretRisk >= 40 ? "card" : "banner";
+}
+
+/** Client-side check before a reason is sent: null when fine, else a hint. Stops "asdf" or "because". */
+export function vagueReason(text: string): string | null {
+  const words = text.toLowerCase().match(/[a-z']+/g) ?? [];
+  const real = words.filter((w) => /[aeiouy]/.test(w) && !/(.)\1\1/.test(w));
+  if (real.length < 4) return "Say a bit more: who it’s for, or why now. At least 4 words.";
+  if (new Set(real).size < 3) return "That reads like filler. What’s the actual reason?";
+  return null;
+}
