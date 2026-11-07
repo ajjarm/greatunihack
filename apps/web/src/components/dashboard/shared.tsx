@@ -32,13 +32,13 @@ export function useApi<T>(path: string) {
   return { data, setData, error, loading, reload };
 }
 
-export function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <section className={`border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-card)] ${className}`} style={{ borderRadius: "var(--radius-lg)" }}>{children}</section>;
+export function Card({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
+  return <section id={id} className={`scroll-mt-6 border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-card)] ${className}`} style={{ borderRadius: "var(--radius-lg)" }}>{children}</section>;
 }
 export function Label({ children }: { children: React.ReactNode }) { return <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">{children}</p>; }
 export function Button({ children, onClick, disabled, variant = "default", type = "button" }: { children: React.ReactNode; onClick?: () => void; disabled?: boolean; variant?: "default" | "quiet" | "danger"; type?: "button" | "submit" }) {
   const colors = variant === "danger" ? "bg-[var(--color-stop-bg)] text-[var(--color-stop)]" : variant === "quiet" ? "bg-[var(--color-surface-2)] text-[var(--color-text)]" : "bg-[var(--color-accent)] text-[var(--color-surface)]";
-  return <button type={type} onClick={onClick} disabled={disabled} className={`min-h-11 px-4 py-2 text-sm font-semibold transition-opacity duration-[var(--motion-fast)] disabled:opacity-50 ${colors}`} style={{ borderRadius: "var(--radius-sm)" }}>{children}</button>;
+  return <button type={type} onClick={onClick} disabled={disabled} className={`min-h-11 px-4 py-2 text-sm font-semibold transition-opacity duration-[var(--motion-fast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] disabled:opacity-50 ${colors}`} style={{ borderRadius: "var(--radius-sm)" }}>{children}</button>;
 }
 export function Chip({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | "go" | "think" | "stop" }) {
   const colors = tone === "go" ? "bg-[var(--color-go-bg)] text-[var(--color-go)]" : tone === "think" ? "bg-[var(--color-think-bg)] text-[var(--color-think)]" : tone === "stop" ? "bg-[var(--color-stop-bg)] text-[var(--color-stop)]" : "bg-[var(--color-surface-2)] text-[var(--color-text-muted)]";
