@@ -6,7 +6,7 @@ import { hostOpenDashboard, isHosted } from "@/lib/host";
 import { CATEGORY_LABELS, type AssessedItem, type Assessment } from "@/lib/types";
 import type { DecisionIn } from "./api";
 import { AnimatedNumber } from "./AnimatedNumber";
-import { BAND_LABEL, FACTOR_LABEL, VERDICT_LABEL, band, day, money, monthOf } from "./format";
+import { BAND_LABEL, FACTOR_LABEL, VERDICT_LABEL, band, day, money, monthOf, pounds } from "./format";
 import type { DoneInfo } from "./NudgeClient";
 import { TimelineChart } from "./TimelineChart";
 
@@ -115,7 +115,7 @@ export function NudgeCard(props: Props) {
                     <div className="flex-1 min-w-0 text-sm">
                       <p className="font-semibold">{n.text}</p>
                       <p className="text-xs nudge-muted mt-0.5">
-                        Risk <span className={`nudge-band-text nudge-band-${nb} font-semibold`}>{n.resultRegretRisk}%</span> · {money(n.resultSafeToSpendAfterPence)} safe after
+                        Risk <span className={`nudge-band-text nudge-band-${nb} font-semibold`}>{n.resultRegretRisk}%</span> · {pounds(n.resultSafeToSpendAfterPence)} safe after
                         {n.delayUntil ? ` · until ${day(n.delayUntil)}` : ""}
                       </p>
                     </div>
@@ -182,7 +182,7 @@ function Impact({ a }: { a: Assessment }) {
   return (
     <section className="nudge-impact flex flex-col gap-3" aria-label="What it does to your money">
       <ImpactLine
-        figure={<AnimatedNumber value={im.safeToSpendAfterPence} format={money} />}
+        figure={<AnimatedNumber value={im.safeToSpendAfterPence} format={pounds} />}
         tone={im.safeToSpendAfterPence < 0 ? "stop" : undefined}
         text={
           <>
@@ -192,10 +192,10 @@ function Impact({ a }: { a: Assessment }) {
             </span>
           </>
         }
-        sub={`was ${money(im.safeToSpendBeforePence)}`}
+        sub={`was ${pounds(im.safeToSpendBeforePence)}`}
       />
       <ImpactLine
-        figure={money(im.nextBill.amountPence)}
+        figure={pounds(im.nextBill.amountPence)}
         tone={im.nextBill.coveredAfter ? undefined : "stop"}
         text={
           <>
@@ -208,7 +208,7 @@ function Impact({ a }: { a: Assessment }) {
       />
       {im.limit && (
         <ImpactLine
-          figure={<AnimatedNumber value={im.limit.overByPence > 0 ? im.limit.overByPence : im.limit.remainingAfterPence} format={money} />}
+          figure={<AnimatedNumber value={im.limit.overByPence > 0 ? im.limit.overByPence : im.limit.remainingAfterPence} format={pounds} />}
           tone={im.limit.overByPence > 0 ? "stop" : "go"}
           text={
             im.limit.overByPence > 0 ? (
@@ -217,7 +217,7 @@ function Impact({ a }: { a: Assessment }) {
               <>left of your {CATEGORY_LABELS[im.limit.category].toLowerCase()} limit this week</>
             )
           }
-          sub={`${money(im.limit.spentThisWeekPence)} of ${money(im.limit.weeklyLimitPence)} spent so far`}
+          sub={`${pounds(im.limit.spentThisWeekPence)} of ${pounds(im.limit.weeklyLimitPence)} spent so far`}
         />
       )}
       <p className="text-sm nudge-muted">

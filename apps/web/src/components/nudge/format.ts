@@ -8,6 +8,11 @@ export function money(pence: number): string {
   return `${neg ? "−" : ""}£${s}`;
 }
 
+/** Whole pounds for the big impact figures (£82.99 → £83). Item prices keep pence. */
+export function pounds(pence: number): string {
+  return money(Math.round(pence / 100) * 100);
+}
+
 /** "Fri 13 Nov" from "YYYY-MM-DD" (or an ISO date-time), Europe/London. */
 export function day(date: string, withWeekday = true): string {
   const d = date.length === 10 ? new Date(`${date}T12:00:00Z`) : new Date(date);
