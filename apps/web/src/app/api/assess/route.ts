@@ -1,4 +1,6 @@
 import { error, handle, isInt, isStr, json, readBody, uncached } from "@/lib/api";
+import { assessLive } from "@/lib/brain/assess";
+import { brainLive } from "@/lib/brain/mode";
 import { buildGenericAssessment, cloneAssessment, newId } from "@/lib/logic";
 import { findScenario, getStore, putAssessment } from "@/lib/store";
 import { CUE_KEYS, type AssessRequest, type BasketItem, type CueInput } from "@/lib/types";
@@ -62,6 +64,18 @@ export async function POST(req: Request) {
 
     const parsed = parseRequest(body);
     if (typeof parsed === "string") return error(parsed, 400);
+
+    // live Brain: every request without a scenarioId is scored for real
+    if (brainLive()) {
+      try {
+        return json(putAssessment(await assessLive(parsed, store)));
+      } catch (e) {
+        console.error("[brain] assessLive failed, using the fixture builder:", e instanceof Error ? e.message : e);
+        const a = buildGenericAssessment(store, parsed, id);
+        a.reasoning = `(fixture fallback) ${a.reasoning}`;
+        return json(putAssessment(a));
+      }
+    }
 
     // 2. exact basketHash
     const byHash = parsed.basketHash ? store.scenarios.find((s) => s.request.basketHash === parsed.basketHash) : undefined;
