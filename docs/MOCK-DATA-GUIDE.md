@@ -5,7 +5,10 @@ and the dashboard show comes from these files through the API. Write them as if 
 system produced them. Shapes are fixed in `docs/INTERFACES.md` and
 `apps/web/src/lib/types.ts`; the starter files in `data/` already validate, so extend
 them rather than starting from scratch. Run `npm run check:data` in `apps/web` after
-every change; it fails loudly on shape or consistency errors.
+every change; it fails loudly on shape or consistency errors. The starter data already
+passes 25/25; the numbers in it (safe-to-spend, limits, overdraft dates) are the truth,
+so when this guide and the data disagree, keep the data consistent and update the
+guide.
 
 Deadlines: v1 (enough for UIs to look real) by 1:30. Final by 2:30. Then you move to
 pitch, README, video and QA.
@@ -17,7 +20,8 @@ pitch, README, video and QA.
 - Balance on demo day: £412.
 - Incomes: maintenance loan £2,140 on 12 January (previous instalment in September,
   visible in history); part-time job £9.50 an hour, paid every other Friday, amounts
-  vary £180–£220, next one 14 days after demo day.
+  vary £180–£220, next one Friday 13 November (demo day is a Sunday, so the next
+  shift pay is 5 days out).
 - Fixed outgoings: rent £650 on the 1st; phone £18 on the 14th; gym £24 on the 20th;
   Spotify £11 on the 5th.
 - Weekly limits: eating out £40, clothes £60, fun £30, groceries £45.
@@ -78,7 +82,7 @@ calibration for the category.
 
 | id | Basket | Expected response |
 |---|---|---|
-| `scn_1_impulse` | Amazon, 23:40: hoodie £45 + Nike trainers £85, "Only 2 left in stock" | `strong_nudge`, regret 78 (trainers 89, hoodie 41). Factors: rule "no trainers until exams", late-night history, scarcity cue. Impact: £38 safe until the next shift, rent still covered, £35 over clothes limit. Negotiation: drop trainers → risk 34, verdict `nudge`→ green-ish; delay trainers 14 days. reflectionDays 3. Variants: `reason` ("they're for my sister's birthday") → gift accepted, risk 44, impact unchanged; `negotiated` (drop trainers). |
+| `scn_1_impulse` | Amazon, 23:40: hoodie £45 + Nike trainers £85, "Only 2 left in stock" | `strong_nudge`, regret 78 (trainers 89, hoodie 41). Factors: rule "no trainers until exams", late-night history, scarcity cue. Impact: safe-to-spend £412 → £282 until Friday's shift; rent on 1 Dec then dips to −£6 until the 11 Dec shift (`overdraftUntil`); £83 over the clothes limit. Negotiation: drop trainers → risk 41 `nudge`; delay trainers to payday. reflectionDays 3. Variants: `reason` ("they're for my sister's birthday") → gift accepted, risk 44, impact unchanged; `negotiated` (drop trainers). |
 | `scn_2_essential` | Amazon, 2 days before rent: paracetamol £3.49 + prescription top-up £10.50 | Item necessity 92, `essentialPrompt: true`. Before the answer: verdict `nudge` with headline "Looks essential. Is it?". Variant `essentialYes` → `essential_cover`, headline "Buy it. Skip one takeaway this week and you're covered.", regret 8. |
 | `scn_3_duplicate` | Amazon: noise-cancelling headphones £54 + phone case £35 | `nudge`, regret 58 (headphones 22 `useful`, case 81 `want`). Factors: duplicateOf the phone case from 6 weeks ago ("you own two"), accessories regret 75%. Negotiation: drop case → risk 22, `go_ahead`. reflectionDays 7 for headphones, 3 for the case (use 7 at basket level). Variant `negotiated`. This is the one Sam "buys anyway" in the demo, so `assessments-history.json` must not already contain it. |
 | `scn_4_fine` | Amazon: course reader £6 | `go_ahead`, regret 6, headline "Looks fine. £406 safe after this." Rule "course books are always fine" matched. Toast only. |
@@ -94,7 +98,7 @@ must match `calibration.json`.
 - Spend Score this week 72, amber, trend up; eight weeks of history that start around
   58 and climb unevenly. Explanation three sentences, friendly, specific to Sam.
 - Insight sentence on Home: "You've regretted 3 of your last 4 late-night clothes
-  orders. Tonight's a Friday."
+  orders. It's 11:40pm."
 - Insights sentences (at least six): regret by category; the late-night window; the
   payday window; pressure sensitivity with the percentage; the duplicates; the
   calibration change ("I'm 81% tuned to you, up from 64% a month ago"). Each with an

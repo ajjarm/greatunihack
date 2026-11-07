@@ -1,5 +1,5 @@
 /**
- * In-memory store seeded from data/*.json on first access. OWNED BY AJJAR.
+ * In-memory store seeded from data/*.json on first access. Shared contract; change via a handoff so all lanes stay consistent.
  *
  * Fixture mode: every route reads and mutates this object. It lives on globalThis so
  * `next dev` hot reloads do not reseed it on every request. Mutations last for the
