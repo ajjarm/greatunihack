@@ -8,7 +8,7 @@ Agents read this first. If a section is still a template, agents must stop and a
 - [ ] Idea chosen
 - [ ] Stack locked
 - [ ] Ownership assigned
-- [ ] All four GitHub handles in `scripts/team.sh` (ajjarm and Zack-Aftab done; two to add) and invited to the repo
+- [x] All four GitHub handles in `scripts/team.sh` and invited to the repo (everyone must accept the invite)
 - [ ] `docs/INTERFACES.md` has the shared shapes (routes, types, data formats)
 
 ## Tracks (fill from the brief)
@@ -51,8 +51,8 @@ Agents read this first. If a section is still a template, agents must stop and a
 |---|---|---|
 | Ajjar (integrator) | | package.json, lockfile, schema, router, .env.example, shared types, docs/INTERFACES.md |
 | Zack | | none (ask the integrator) |
-| Person 3 | | none (ask the integrator) |
-| Person 4 | docs/, README, pitch assets | none (ask the integrator) |
+| Rayan | | none (ask the integrator) |
+| Aarav | docs/, README, pitch assets | none (ask the integrator) |
 
 ## Decision log (append, newest last)
 

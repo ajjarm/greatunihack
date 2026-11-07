@@ -6,8 +6,8 @@ Codex and any other agent all follow the same rules.
 ## Context
 
 Great Uni Hack, Manchester, **8 November 2026**, a **6-hour** build. Team of four:
-**Ajjar** (GitHub `ajjarm`, integrator), **Zack** (GitHub `Zack-Aftab`), and two more
-(handles in `scripts/team.sh`). Goal: **win a sponsor sub-track**, not the main theme.
+**Ajjar** (GitHub `ajjarm`, integrator), **Zack** (GitHub `Zack-Aftab`), **Rayan** (GitHub `RayanDeputy`) and
+**Aarav** (GitHub `aarav-bhatnagar`). Goal: **win a sponsor sub-track**, not the main theme.
 Idea, track and stack are decided on the day and written in `docs/DECISIONS.md`.
 
 With four people the main risk is collisions, not speed. One person (the integrator)
@@ -77,8 +77,8 @@ own branch and lands through `./scripts/land.sh`.
 |---|---|---|
 | Integrator + core | Ajjar | Architecture, scaffold, shared files, `main`, core feature, conflict resolution, pitch delivery |
 | Under-the-hood | Zack | The live "show the complexity" panel (trace, numbers, pipeline), demo data and scenarios, demo driving in the pitch |
-| Second feature | Person 3 | A self-contained feature in its own directory (sponsor API integration, export, second screen), QA on every landing |
-| Track + pitch | Person 4 | Track criteria owner (re-reads the brief, flags drift), deck, script timing, rehearsal, submission form, README, screenshots, backup video, Codex adversarial review |
+| Second feature | Rayan | A self-contained feature in its own directory (sponsor API integration, export, second screen), QA on every landing |
+| Track + pitch | Aarav | Track criteria owner (re-reads the brief, flags drift), deck, script timing, rehearsal, submission form, README, screenshots, backup video, Codex adversarial review |
 
 Lanes are directories, not just topics. Four agents editing four directories do not
 collide; four agents editing one `app/` folder will.

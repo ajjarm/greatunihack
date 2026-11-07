@@ -13,8 +13,8 @@ Fill the brackets by hour 1. Keep sentences short; they are easier to say under 
 |---|---|---|
 | Lead voice | Ajjar | Problem, the one sentence, the hard part, close. Fields Q&A first. |
 | Demo driver | Zack | Hands on the laptop. Narrates the demo in short lines while clicking. |
-| Support | Person 3 | Holds the backup video and QR code ready; starts the timer; answers questions on their feature. |
-| Track voice | Person 4 | The track-fit line; answers "why this track" and "how we used the sponsor's tool". |
+| Support | Rayan | Holds the backup video and QR code ready; starts the timer; answers questions on their feature. |
+| Track voice | Aarav | The track-fit line; answers "why this track" and "how we used the sponsor's tool". |
 
 Everyone gets at least one line, so judges see a team, but only two people carry the
 story. Nobody adds to someone else's line.
@@ -32,7 +32,7 @@ story. Nobody adds to someone else's line.
 | 2 | Ajjar | The one sentence above. | 7 |
 | 3 | Zack | [What the demo shows: "Watch: I enter X, the system does Y, here is Z."] Point at the under-the-hood panel. | 20 |
 | 4 | Ajjar | [Why it is hard / what is actually happening behind the panel, one sentence.] | 10 |
-| 5 | Person 4 | [Track fit: "We built this for the [sponsor] track because [criterion]."] | 8 |
+| 5 | Aarav | [Track fit: "We built this for the [sponsor] track because [criterion]."] | 8 |
 | 6 | Ajjar | [Ask / close: "Try it, the QR code is on the laptop."] | 5 |
 
 ## 2-minute version (table judging)
@@ -43,8 +43,8 @@ story. Nobody adds to someone else's line.
 | 2 | Ajjar | The one sentence. | 7 |
 | 3 | Zack | Demo part 1: the normal user flow. | 30 |
 | 4 | Ajjar | Demo part 2: the under-the-hood panel. What the judge is seeing and why it is non-trivial. | 30 |
-| 5 | Person 4 | Track fit and what we used from the sponsor. | 15 |
-| 6 | Person 3 | [Second feature in one sentence, pointing at it on screen.] | 8 |
+| 5 | Aarav | Track fit and what we used from the sponsor. | 15 |
+| 6 | Rayan | [Second feature in one sentence, pointing at it on screen.] | 8 |
 | 7 | Ajjar | Close and invite questions. | 5 |
 | | | Buffer | 10 |
 
@@ -57,7 +57,7 @@ boxes, which parts are real and which are mocked, honestly.
 
 - Owned lines only. When your line ends, stop. The other person starts immediately.
 - Never explain what you are about to show. Show it, then say one sentence about it.
-- If something breaks, Person 3 says "that is the live system, here is the recorded
+- If something breaks, Rayan says "that is the live system, here is the recorded
   run" and plays the backup video. Zack records the backup video at 4:30.
 - No "um, so basically". Start lines with a noun or a verb.
 
@@ -69,10 +69,10 @@ boxes, which parts are real and which are mocked, honestly.
 | Where does the data come from? | Zack | |
 | How is this different from [obvious competitor]? | Ajjar | |
 | What is mocked? | Ajjar | Honest list from DECISIONS.md. |
-| How would this scale / be deployed? | Person 3 | |
-| Why this track? | Person 4 | |
+| How would this scale / be deployed? | Rayan | |
+| Why this track? | Aarav | |
 | What was the hardest part? | Zack | |
-| How did four of you split the work? | Person 4 | Four lanes, one integrator, one repo. |
+| How did four of you split the work? | Aarav | Four lanes, one integrator, one repo. |
 
 ## Backup assets (ready by 5:00)
 

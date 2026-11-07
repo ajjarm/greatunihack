@@ -10,8 +10,8 @@ Owned by the integrator. To change something, open a handoff issue to the integr
 |---|---|---|
 | `app/` or `src/core/` | core | Ajjar |
 | `src/under-the-hood/` (or similar) | under-the-hood panel | Zack |
-| `src/<feature>/` | second feature | Person 3 |
-| `docs/`, `public/pitch/` | pitch | Person 4 |
+| `src/<feature>/` | second feature | Rayan |
+| `docs/`, `public/pitch/` | pitch | Aarav |
 | `data/` or `fixtures/` | demo data | Zack |
 
 ## API routes

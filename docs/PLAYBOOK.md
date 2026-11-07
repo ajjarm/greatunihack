@@ -30,14 +30,14 @@ strategy. Agents read it too, so keep it current.
 
 ## Six-hour timeline (four lanes)
 
-| Time | Ajjar (integrator + core) | Zack (under-the-hood + demo data) | Person 3 (second feature + QA) | Person 4 (track + pitch) |
+| Time | Ajjar (integrator + core) | Zack (under-the-hood + demo data) | Rayan (second feature + QA) | Aarav (track + pitch) |
 |---|---|---|---|---|
 | 0:00–0:30 | All four: read every track, score, pick. Ajjar writes `docs/DECISIONS.md`. | Same. | Same. | Same, and starts the pitch skeleton. |
 | 0:30–0:50 | Scaffold app, push to main, fill `.env.example`, write `docs/INTERFACES.md` (directory map, route shapes, shared types). | Design demo scenarios; build `data/` fixtures on branch `zack/demo-data`. | Read INTERFACES.md; plan the second feature in `plan/active/`. | Write the one sentence; set up submission page; collect sponsor logos/criteria. |
 | 0:50–3:30 | Core feature in parallel subagents. Land every 45 min. Resolve anyone's shared-file conflicts. | Build the live "under the hood" panel against the interfaces, with fixture data first, real events once core lands. | Build the second feature in its own directory. After every landing on main: run the demo path, file bugs with `ask.sh`. | Deck, script, screenshots as screens appear. Re-read judging criteria at 1:30 and 2:30, flag drift with `ask.sh all`. |
 | 3:30–4:30 | Wire core → panel for real. Fix integration bugs. | Polish panel: timing, labels, the "naive vs ours" toggle. | Codex adversarial review of the demo path; fix own lane. | Rehearsal 1 with a timer. Cut lines. |
 | 4:30–5:00 | **Feature freeze.** Demo path only. | Record backup video of the demo. | QA on the frozen build; report only crashes. | Rehearsal 2. Q&A bank. |
-| 5:00–5:30 | Repo public, README final. | Screenshots into README. | Submission form filled with Person 4. | Submit. Confirm it went through. |
+| 5:00–5:30 | Repo public, README final. | Screenshots into README. | Submission form filled with Aarav. | Submit. Confirm it went through. |
 | 5:30–6:00 | Buffer. Nothing new. | Buffer. | Buffer. | Buffer. |
 
 Hard freezes: no new feature after 4:30. No code change at all after 5:30 except a
@@ -89,10 +89,10 @@ directories, with one integrator holding `main` and the shared files:
 2. **Under-the-hood + demo data (Zack).** The panel that makes the clever part visible,
    built first against fixtures so it never blocks on core. Demo scenarios: realistic,
    specific, a little dramatic. Drives the demo in the pitch.
-3. **Second feature + QA (Person 3).** One self-contained feature in its own directory
+3. **Second feature + QA (Rayan).** One self-contained feature in its own directory
    (sponsor API integration, export, a second screen). After every landing on main,
    runs the demo path and files bugs with exact repro via `ask.sh`.
-4. **Track + pitch (Person 4).** Owns the judging criteria and re-reads them on the hour.
+4. **Track + pitch (Aarav).** Owns the judging criteria and re-reads them on the hour.
    Deck, script timing, rehearsals, Q&A bank, submission form, README, screenshots,
    backup video, Codex adversarial review before freeze.
 

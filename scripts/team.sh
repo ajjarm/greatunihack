@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Team roster: short-name:GitHub-handle. Fill in the two blank handles tomorrow.
+# Team roster: short-name:GitHub-handle. All four handles set.
 # ask.sh uses the short names: ./scripts/ask.sh zack "title" "details"
-TEAM="ajjar:ajjarm zack:Zack-Aftab person3: person4:"
+TEAM="ajjar:ajjarm zack:Zack-Aftab rayan:RayanDeputy aarav:aarav-bhatnagar"
 
 me() { gh api user --jq .login 2>/dev/null; }
 
