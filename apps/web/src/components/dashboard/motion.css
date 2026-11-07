@@ -1,0 +1,93 @@
+.dashboard-page {
+  animation: dashboard-page-in var(--motion-slow) var(--ease-out) both;
+}
+
+.dashboard-card {
+  animation: dashboard-card-in var(--motion-slow) var(--ease-out) both;
+  transition: transform var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-out);
+}
+
+.dashboard-chip,
+.dashboard-score-dial {
+  animation: dashboard-pop var(--motion-base) var(--ease-out) both;
+}
+
+.dashboard-bar-fill {
+  transform-origin: left;
+  animation: dashboard-bar-in var(--motion-slow) var(--ease-out) both;
+  transition: width var(--motion-slow) var(--ease-out);
+}
+
+.dashboard-timeline-line {
+  animation: dashboard-chart-in var(--motion-slow) var(--ease-out) both;
+}
+
+.dashboard-insight-row {
+  animation: dashboard-card-in var(--motion-slow) var(--ease-out) both;
+  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-out);
+}
+
+.dashboard-shell button,
+.dashboard-shell a,
+.dashboard-shell input,
+.dashboard-shell select {
+  transition: transform var(--motion-fast) var(--ease-out), filter var(--motion-fast) var(--ease-out), box-shadow var(--motion-fast) var(--ease-out);
+}
+
+.dashboard-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) var(--color-surface-2);
+}
+
+.dashboard-scrollbar::-webkit-scrollbar { width: 8px; }
+.dashboard-scrollbar::-webkit-scrollbar-track { background: var(--color-surface-2); border-radius: var(--radius-sm); }
+.dashboard-scrollbar::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: var(--radius-sm); }
+
+@media (hover: hover) {
+  .dashboard-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-float); border-color: var(--color-accent); }
+  .dashboard-insight-row:hover { transform: translateX(3px); }
+  .dashboard-shell button:hover:not(:disabled),
+  .dashboard-shell a:hover { transform: translateY(-1px); filter: brightness(1.08); }
+}
+
+.dashboard-shell button:active:not(:disabled),
+.dashboard-shell a:active { transform: scale(0.98); }
+
+.dashboard-shell input:focus-visible,
+.dashboard-shell select:focus-visible { box-shadow: 0 0 0 3px var(--color-accent-bg); }
+
+@keyframes dashboard-page-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dashboard-card-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dashboard-pop {
+  from { opacity: 0.5; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes dashboard-bar-in {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes dashboard-chart-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-shell *,
+  .dashboard-shell *::before,
+  .dashboard-shell *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
