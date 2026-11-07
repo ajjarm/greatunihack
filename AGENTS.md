@@ -40,7 +40,7 @@ own branch and lands through `./scripts/land.sh`.
   repo and their branch, do the work or write the answer, then
   `./scripts/answer.sh <issue-number> "answer or path/to/file"`. That closes the issue.
 - **Stay in your lane.** `docs/DECISIONS.md` names the directory each person owns and
-  `plan/active/` names the feature in it. Never edit a file in another lane; ask instead.
+  `plan/active/` names the feature in it. Never edit a file in another lane; post a handoff so the owner can fold it in.
   Shared files (package manifest, lockfile, schema, router, env example, shared types)
   are changed only by the integrator, or after a handoff issue to the integrator says so.
 - **Interfaces first.** Anything two lanes share (an API route shape, a type, a data
@@ -83,4 +83,6 @@ own branch and lands through `./scripts/land.sh`.
 Lanes are directories. UI lanes talk only to the API (`docs/INTERFACES.md`), never to
 `data/`. Colours, radii, shadows, fonts and motion come only from
 `apps/web/src/styles/tokens.css`. Shared files (package.json, lockfile, root layout,
-globals.css, tokens.css, types.ts, INTERFACES.md) are Ajjar's; ask for changes.
+globals.css, tokens.css, types.ts, INTERFACES.md) are the shared contract every lane
+builds on. Anyone can propose a change; the integrator (Ajjar) merges it so all three UIs
+stay consistent. Post it with `ask.sh ajjar` and it lands within minutes.

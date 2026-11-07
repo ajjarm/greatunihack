@@ -13,4 +13,4 @@ Manifest V3, host permission for `https://www.amazon.co.uk/*` only. See `docs/SP
 - Keyboard shortcut (`Alt+Shift+N`) forces an assessment of the current page; in
   phase 1 it cycles the fixture scenarios.
 
-Nobody else edits this directory.
+This directory is one lane; changes from other lanes come in as handoffs.

@@ -38,7 +38,7 @@ All five scenarios render correctly; negotiate, reason, essential and decisions 
 round-trip through the API and update the card; the toast variant works; the page
 works with and without the bridge; Escape closes; nothing is hard-coded in colour.
 
-## Ask Ajjar for
+## Post a handoff for
 
 Any field missing from `Assessment`; any dependency (charts libs etc. — prefer plain
 SVG); any change to the bridge.
@@ -53,7 +53,8 @@ SVG); any change to the bridge.
 > and motion; Tailwind for layout only. Start with /nudge?scenario=scn_1_impulse, then
 > make all five scenarios work. Every button must call the API and re-render from the
 > response. Do not edit any file outside your two directories; if you need something,
-> stop and tell me what to ask Ajjar for. Commit with ./scripts/checkpoint.sh every 20
+> pause and tell me so we can post it as a contract change for the integrator to merge,
+> which keeps all three UIs consistent. Commit with ./scripts/checkpoint.sh every 20
 > minutes.
 
 ## Status

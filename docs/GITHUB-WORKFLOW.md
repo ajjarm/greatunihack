@@ -96,10 +96,11 @@ above do not depend on it.
 
 - Directories are owned (see `docs/INTERFACES.md`). Stay in yours.
 - Shared files (package manifest, lockfile, schema, router, `.env.example`, shared types)
-  are owned by Ajjar. Need a dependency? `./scripts/ask.sh ajjar "add dep: <name>"` and
+  are the shared contract, merged by the integrator so the app stays consistent. Need a
+  dependency? `./scripts/ask.sh ajjar "add dep: <name>"` and
   Ajjar lands it within minutes; everyone picks it up on the next `land.sh` or `sync.sh`.
 - Land small and often. A 45-minute branch merges in seconds; a 3-hour branch does not.
-- If `land.sh` shows a conflict in a file you do not own, stop and ask the integrator.
+- If `land.sh` shows a conflict in a shared file, leave it and post a handoff; the integrator resolves it so nothing is lost.
 - Never force-push main.
 
 ## Admin (Ajjar)

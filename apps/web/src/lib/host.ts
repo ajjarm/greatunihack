@@ -1,6 +1,6 @@
 /**
  * Helpers the nudge page uses to talk to whatever hosts it (the Chrome extension's
- * iframe). In a plain browser tab they are harmless no-ops. OWNED BY AJJAR.
+ * iframe). In a plain browser tab they are harmless no-ops. Shared contract; change via a handoff.
  */
 import type { HostMessage } from "./types";
 

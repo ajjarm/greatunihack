@@ -99,7 +99,7 @@ directories, with one integrator holding `main` and the shared files:
 Rules that keep four lanes from colliding:
 
 - Shared shapes go in `docs/INTERFACES.md` before anyone builds against them.
-- Nobody edits another lane's directory. Ask instead; it takes 30 seconds.
+- Nobody edits another lane's directory. Post a handoff instead; it takes 30 seconds and the owner keeps their lane coherent.
 - Land one lane at a time, every 45 minutes, smallest branch first.
 - A lane that is blocked on another lane builds against fixtures, never waits.
 
