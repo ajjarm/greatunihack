@@ -30,6 +30,7 @@ npm run dev
 | `docs/PITCH.md` | Timed, owned pitch script and Q&A bank. |
 | `docs/GITHUB-WORKFLOW.md` | How four people and their agents share this repo. |
 | `docs/INTERFACES.md` | Directory map and the shapes shared between lanes. |
+| `docs/TRACK-ANALYSIS.md` | Every track and idea scored, with the recommendation. |
 | `plan/active/` | One file per feature in flight: owner, files, done-when. |
 | `scripts/` | `sync`, `checkpoint`, `land`, `ask`, `inbox`, `answer`. |
 | `AGENTS.md` / `CLAUDE.md` | Rules every agent follows. |
