@@ -1,6 +1,6 @@
 import { error, handle, json, readBody, uncached, type Params } from "@/lib/api";
 import { newId } from "@/lib/logic";
-import { MS_HOUR, MS_MINUTE, demoNowMs, fastTimers, findWaiting, getAssessment, getStore, toIso } from "@/lib/store";
+import { MS_HOUR, demoNowMs, fastTimers, findWaiting, getAssessment, getStore, toIso } from "@/lib/store";
 import type { Purchase } from "@/lib/types";
 
 const DECISIONS = ["buy", "wait", "remove"] as const;
@@ -39,7 +39,7 @@ export async function PATCH(req: Request, { params }: Params<"id">) {
       store.purchases.unshift(purchase);
     } else if (decision === "wait") {
       item.status = "extended";
-      item.reconsiderAt = toIso(Math.max(now, Date.parse(item.reconsiderAt)) + (fastTimers() ? 2 * MS_MINUTE : 24 * MS_HOUR));
+      item.reconsiderAt = toIso(Math.max(now, Date.parse(item.reconsiderAt)) + (24 * MS_HOUR));
     } else {
       item.status = "removed";
     }
