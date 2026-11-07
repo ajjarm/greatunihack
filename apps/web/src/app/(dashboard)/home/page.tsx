@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Home } from "@/lib/types";
 import { Card, Chip, Label, PageState, date, money, useApi } from "@/components/dashboard/shared";
 
 export default function HomePage() {
   const { data, error, loading, reload } = useApi<Home>("home");
   const [explain, setExplain] = useState(false);
+  useEffect(() => { const timer = setInterval(() => { void reload(); }, 10000); return () => clearInterval(timer); }, [reload]);
   if (!data) return <PageState loading={loading} error={error} retry={reload} />;
   const score = data.spendScore;
   const tone = score.band === "green" ? "go" : score.band === "amber" ? "think" : "stop";

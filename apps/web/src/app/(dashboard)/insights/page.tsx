@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import type { Home, Insights, TimelineResponse } from "@/lib/types";
 import { Bar, Card, Chip, Label, PageState, category, date, money, useApi } from "@/components/dashboard/shared";
 import { Timeline } from "@/components/dashboard/timeline";
@@ -8,6 +9,7 @@ export default function InsightsPage() {
   const insights = useApi<Insights>("insights");
   const timeline = useApi<TimelineResponse>("timeline");
   const home = useApi<Home>("home");
+  useEffect(() => { const timer = setInterval(() => { void home.reload(); }, 10000); return () => clearInterval(timer); }, [home.reload]);
   if (!insights.data || !timeline.data) return <PageState loading={insights.loading || timeline.loading} error={insights.error || timeline.error} retry={() => { void insights.reload(); void timeline.reload(); }} />;
   const data = insights.data;
   return <div className="space-y-5"><header><Label>Patterns</Label><h1 className="mt-1 text-3xl font-bold">Insights</h1><p className="mt-2 text-sm text-[var(--color-text-muted)]">What your spending has been telling us.</p></header>
