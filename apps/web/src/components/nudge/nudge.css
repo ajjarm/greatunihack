@@ -172,6 +172,10 @@
 /* inside the extension's iframe the page around the card must be see-through */
 html:has(.nudge-root),
 body:has(.nudge-root) { background: transparent; }
+/* tokens.css sets color-scheme: dark; if the popup's scheme differs from the host page's iframe
+   (Amazon is light), the browser paints an opaque box behind the frame. Colours all come from the
+   tokens, so the scheme only affects browser defaults; keep it "normal" to stay see-through. */
+html:has(.nudge-root) { color-scheme: normal; }
 
 /* cost in working hours: the line meant to stop you */
 .nudge-hours {
@@ -231,7 +235,8 @@ body:has(.nudge-root) { background: transparent; }
 
 /* 70+: grey the page behind a centred card (the iframe fills the viewport in this mode) */
 .nudge-backdrop {
-  background: color-mix(in srgb, var(--color-text) 55%, transparent);
+  /* dim with the page background colour so it darkens in any palette */
+  background: color-mix(in srgb, var(--color-bg) 65%, transparent);
   backdrop-filter: blur(3px);
   animation: nudge-fade-in var(--motion-slow) var(--ease-out) both;
 }
