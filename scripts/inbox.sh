@@ -16,7 +16,11 @@ fi
 for n in $nums; do
   echo
   echo "----- #$n -----"
-  gh issue view "$n" --comments
+  gh issue view "$n" --json number,title,author,body,comments --template '#{{.number}} {{.title}} (from @{{.author.login}})
+{{.body}}
+{{range .comments}}
+> @{{.author.login}}: {{.body}}
+{{end}}'
 done
 echo
 echo "Answer with: ./scripts/answer.sh <number> \"answer text or path/to/file\""
