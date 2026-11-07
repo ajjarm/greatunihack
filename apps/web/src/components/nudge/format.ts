@@ -54,7 +54,7 @@ export const FACTOR_LABEL: Record<string, string> = {
 
 /**
  * How intrusive the nudge is, from the FIRST regret score (later re-judges don't change it):
- *  lock   70+    greyed screen, centred card, no ✕/Escape; Buying anyway unlocks after a reason
+ *  lock   70+    greyed screen, centred card; ✕, Escape and Buying anyway always work, a reason is suggested
  *  card   40–69  the top-right card, dismissable
  *  banner <40    a tiny notification at the top that closes itself
  */

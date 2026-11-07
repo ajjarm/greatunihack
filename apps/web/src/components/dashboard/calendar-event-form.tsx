@@ -1,0 +1,77 @@
+"use client";
+
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { CATEGORIES, CATEGORY_LABELS, type Category, type IncomeSchedule, type Persona } from "@/lib/types";
+import { api, date } from "@/components/dashboard/shared";
+
+type EventKind = "income" | "bill";
+type Frequency = "once" | "monthly" | "fortnightly";
+
+export function CalendarEventForm({ initialDate, demoDate, endDate, onSaved, onCancel }: {
+  initialDate: string;
+  demoDate: string;
+  endDate: string;
+  onSaved: (persona: Persona, eventDate: string) => void;
+  onCancel: () => void;
+}) {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [kind, setKind] = useState<EventKind>("income");
+  const [name, setName] = useState("");
+  const [amount, setAmount] = useState("");
+  const [eventDate, setEventDate] = useState(initialDate);
+  const [billDay, setBillDay] = useState(String(Number(initialDate.slice(-2))));
+  const [frequency, setFrequency] = useState<Frequency>("once");
+  const [category, setCategory] = useState<Category>("other");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const earliestDate = new Date(Date.parse(`${demoDate}T00:00:00Z`) + 86400000).toISOString().slice(0, 10);
+  const latestDate = new Date(Date.parse(`${endDate}T00:00:00Z`) - 86400000).toISOString().slice(0, 10);
+  const fieldClass = "mt-1 min-h-11 w-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 text-sm text-[var(--color-text)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]";
+  useEffect(() => { formRef.current?.scrollIntoView({ block: "center" }); }, []);
+
+  async function save(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const amountPence = Math.round(Number(amount) * 100);
+    const dueDay = Number(billDay);
+    const validDate = /^\d{4}-\d{2}-\d{2}$/.test(eventDate) && eventDate > demoDate && eventDate < endDate;
+    if (!name.trim() || !Number.isSafeInteger(amountPence) || amountPence <= 0 || (kind === "income" && !validDate) || (kind === "bill" && (!Number.isInteger(dueDay) || dueDay < 1 || dueDay > 31))) {
+      setError("Enter a name, an amount above £0, and a valid payday or bill day.");
+      return;
+    }
+    setBusy(true);
+    setError("");
+    try {
+      const current = await api<Persona>("memory");
+      const id = `${kind}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      let updated: Persona;
+      let savedDate = eventDate;
+      if (kind === "income") {
+        const dayOfMonth = Number(eventDate.slice(-2));
+        const schedule: IncomeSchedule = frequency === "monthly"
+          ? { type: "monthly", dayOfMonth }
+          : frequency === "fortnightly"
+            ? { type: "fortnightly", weekday: new Date(`${eventDate}T12:00:00Z`).getUTCDay(), nextDate: eventDate }
+            : { type: "once", date: eventDate };
+        updated = await api<Persona>("memory", { method: "PUT", body: JSON.stringify({ incomes: [...current.incomes, { id, name: name.trim(), amountPence, schedule, nextDate: eventDate }] }) });
+      } else {
+        updated = await api<Persona>("memory", { method: "PUT", body: JSON.stringify({ outgoings: [...current.outgoings, { id, name: name.trim(), amountPence, dayOfMonth: dueDay, category }] }) });
+        const currentMonth = new Date(Date.UTC(Number(demoDate.slice(0, 4)), Number(demoDate.slice(5, 7)) - 1, dueDay));
+        savedDate = currentMonth.toISOString().slice(0, 10) > demoDate ? currentMonth.toISOString().slice(0, 10) : new Date(Date.UTC(Number(demoDate.slice(0, 4)), Number(demoDate.slice(5, 7)), dueDay)).toISOString().slice(0, 10);
+      }
+      onSaved(updated, savedDate);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Could not save this event. Try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return <form ref={formRef} onSubmit={save} className="mt-4 border border-[var(--color-accent)] bg-[var(--color-accent-bg)] p-4" style={{ borderRadius: "var(--radius-md)" }}>
+    <div className="flex flex-wrap items-start justify-between gap-3"><div><h3 className="text-base font-bold">Add an event</h3><p className="mt-1 text-xs text-[var(--color-text-muted)]">Pick a date, then add money in or out.</p></div><button type="button" onClick={onCancel} aria-label="Close add event form" className="min-h-9 px-2 text-lg text-[var(--color-text-muted)] focus-visible:outline-2 focus-visible:outline-[var(--color-accent)]">×</button></div>
+    <div className="mt-4 grid grid-cols-2 gap-2" aria-label="Event type"><button type="button" aria-pressed={kind === "income"} onClick={() => setKind("income")} className={`min-h-11 border px-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-[var(--color-accent)] ${kind === "income" ? "border-[var(--color-go)] bg-[var(--color-go-bg)] text-[var(--color-go)]" : "border-[var(--color-border)] bg-[var(--color-surface)]"}`} style={{ borderRadius: "var(--radius-sm)" }}>+ Payday</button><button type="button" aria-pressed={kind === "bill"} onClick={() => setKind("bill")} className={`min-h-11 border px-3 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-[var(--color-accent)] ${kind === "bill" ? "border-[var(--color-stop)] bg-[var(--color-stop-bg)] text-[var(--color-stop)]" : "border-[var(--color-border)] bg-[var(--color-surface)]"}`} style={{ borderRadius: "var(--radius-sm)" }}>− Monthly bill</button></div>
+    <div className="mt-4 grid gap-3 sm:grid-cols-2"><label className="text-xs font-semibold">Name<input autoFocus required maxLength={80} value={name} onChange={event => setName(event.target.value)} placeholder={kind === "income" ? "e.g. Part-time job" : "e.g. Electricity"} className={fieldClass} style={{ borderRadius: "var(--radius-sm)" }} /></label><label className="text-xs font-semibold">Amount (£)<input required type="number" min="0.01" step="0.01" inputMode="decimal" value={amount} onChange={event => setAmount(event.target.value)} placeholder="0.00" className={fieldClass} style={{ borderRadius: "var(--radius-sm)" }} /></label>{kind === "income" ? <><label className="text-xs font-semibold">First payday<input required type="date" min={earliestDate} max={latestDate} value={eventDate} onChange={event => setEventDate(event.target.value)} className={fieldClass} style={{ borderRadius: "var(--radius-sm)" }} /></label><label className="text-xs font-semibold">Repeats<select value={frequency} onChange={event => setFrequency(event.target.value as Frequency)} className={fieldClass} style={{ borderRadius: "var(--radius-sm)" }}><option value="once">Just once</option><option value="monthly">Every month</option><option value="fortnightly">Every 2 weeks</option></select></label></> : <><label className="text-xs font-semibold">Day of each month<input required type="number" min="1" max="31" step="1" value={billDay} onChange={event => setBillDay(event.target.value)} className={fieldClass} style={{ borderRadius: "var(--radius-sm)" }} /></label><label className="text-xs font-semibold">Category<select value={category} onChange={event => setCategory(event.target.value as Category)} className={fieldClass} style={{ borderRadius: "var(--radius-sm)" }}>{CATEGORIES.map(value => <option key={value} value={value}>{CATEGORY_LABELS[value]}</option>)}</select></label></>}</div>
+    <p className="mt-3 text-xs text-[var(--color-text-muted)]">{kind === "bill" ? `This bill repeats monthly on day ${billDay || "…"}. Dates after the 28th may roll into the next month in shorter months.` : !eventDate ? "Choose the first payday." : frequency === "once" ? `This payday appears on ${date(eventDate)} only.` : frequency === "monthly" ? `This payday repeats on day ${eventDate.slice(-2)} each month from ${date(eventDate)}.` : `This payday repeats every 2 weeks from ${date(eventDate)}.`}</p>
+    {error && <p role="alert" className="mt-3 text-sm font-semibold text-[var(--color-stop)]">{error}</p>}
+    <div className="mt-4 flex flex-wrap gap-2"><button type="submit" disabled={busy} className="min-h-11 bg-[var(--color-accent)] px-4 text-sm font-semibold text-[var(--color-surface)] disabled:opacity-50" style={{ borderRadius: "var(--radius-sm)" }}>{busy ? "Saving…" : `Add ${kind === "income" ? "payday" : "bill"}`}</button><button type="button" onClick={onCancel} className="min-h-11 px-4 text-sm font-semibold text-[var(--color-text-muted)]">Cancel</button></div>
+  </form>;
+}
