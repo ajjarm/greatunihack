@@ -1,9 +1,17 @@
-# GitHub workflow for two people and their agents
+# GitHub workflow for four people and their agents
 
 The repo is the shared brain. Chat, email and copy-paste are not. This is the whole
 flow; it takes five minutes to learn.
 
-## One-time setup (both of you, tonight or at the start)
+Four rules that matter more with four people:
+
+1. Everyone has their own directory (see `docs/INTERFACES.md`). Never edit someone else's.
+2. Only Ajjar (the integrator) edits shared files: package manifest, lockfile, schema,
+   router, `.env.example`, shared types. Need a change there? `./scripts/ask.sh ajjar ...`.
+3. Shared shapes are written in `docs/INTERFACES.md` before you build against them.
+4. Land one lane at a time, every 45 minutes.
+
+## One-time setup (all four, tonight or at the start)
 
 ```bash
 # 1. GitHub CLI, logged in
@@ -14,12 +22,12 @@ gh auth login            # choose GitHub.com, HTTPS, login with browser
 gh repo clone ajjarm/greatunihack
 cd greatunihack
 
-# 3. Tell the scripts who you are (teammate: add your handle in scripts/team.sh)
-./scripts/sync.sh        # prints branches and your open inbox; if this works, you are set
+# 3. Check it works
+./scripts/sync.sh        # prints the roster, branches and your open inbox; if this works, you are set
 ```
 
-Teammate must be added as a collaborator (Ajjar runs
-`gh repo add-collaborator`... see "Admin" below) and must accept the invite email.
+Everyone must be a collaborator (Ajjar invites, see "Admin" below) and must accept the
+invite email, and their handle must be in `scripts/team.sh`.
 
 ## Every working session
 
@@ -52,11 +60,12 @@ The agent runs things like `git diff main...origin/<branch> --stat` and
 not yet written:
 
 ```bash
-./scripts/ask.sh "Need the shape of the /score response" "I'm building the results panel in apps/web/results. What fields come back and is latency included?"
+./scripts/ask.sh ajjar "Need the shape of the /score response" "I'm building the results panel in src/under-the-hood. What fields come back and is latency included?"
 ```
 
-That opens a GitHub issue labelled `handoff`, assigned to the other person. GitHub
-emails and push-notifies them. Carry on with something else.
+The first argument is who: a short name from `scripts/team.sh` (`ajjar`, `zack`, ...),
+a GitHub handle, or `all`. That opens a GitHub issue labelled `handoff`, assigned to
+them. GitHub emails and push-notifies them. Carry on with something else.
 
 **Step 3, the other side answers from their agent.** They say "check inbox" to their
 agent. `AGENTS.md` tells the agent to run `./scripts/inbox.sh`, read the request, look
@@ -85,16 +94,17 @@ above do not depend on it.
 
 ## Avoiding conflicts
 
-- Directories are owned (see `docs/DECISIONS.md`). Stay in yours.
-- Shared files (package manifest, lockfile, schema, router, `.env.example`) are owned by
-  Ajjar. Need a dependency? Ask via `ask.sh`, or add it and land immediately so the
-  other side picks it up on the next sync.
+- Directories are owned (see `docs/INTERFACES.md`). Stay in yours.
+- Shared files (package manifest, lockfile, schema, router, `.env.example`, shared types)
+  are owned by Ajjar. Need a dependency? `./scripts/ask.sh ajjar "add dep: <name>"` and
+  Ajjar lands it within minutes; everyone picks it up on the next `land.sh` or `sync.sh`.
 - Land small and often. A 45-minute branch merges in seconds; a 3-hour branch does not.
+- If `land.sh` shows a conflict in a file you do not own, stop and ask the integrator.
 - Never force-push main.
 
 ## Admin (Ajjar)
 
 ```bash
-gh repo add-collaborator <teammate-handle>   # if gh supports it; otherwise Settings → Collaborators
+gh api -X PUT repos/ajjarm/greatunihack/collaborators/<handle> -f permission=push   # invite
 gh repo edit --visibility public             # at submission time, for judges and LinkedIn
 ```

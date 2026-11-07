@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
-# Ask your teammate for something through a GitHub issue. Usage: ./scripts/ask.sh "title" ["details"]
+# Ask a teammate for something through a GitHub issue.
+# Usage: ./scripts/ask.sh <who> "title" ["details"]     who = short name from scripts/team.sh, a GitHub handle, or "all"
 set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 # shellcheck source=team.sh
 source scripts/team.sh
 
-title="${1:?usage: ./scripts/ask.sh \"title\" [\"details\"]}"
-details="${2:-}"
-to="$(other)"
-if [ -z "$to" ]; then
-  echo "Set TEAMMATE in scripts/team.sh first."
-  exit 1
+who="${1:?usage: ./scripts/ask.sh <who|all> \"title\" [\"details\"]}"
+title="${2:?usage: ./scripts/ask.sh <who|all> \"title\" [\"details\"]}"
+details="${3:-}"
+
+if [ "$who" = "all" ]; then
+  to="$(others)"
+else
+  to="$(handle "$who")" || { echo "Unknown teammate '$who'. Roster:"; roster; exit 1; }
 fi
 
 branch="$(git branch --show-current)"

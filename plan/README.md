@@ -8,7 +8,7 @@ Template (`plan/active/<feature>.md`):
 ```markdown
 # <feature>
 
-- **Owner:** Ajjar | Teammate
+- **Owner:** ajjar | zack | person3 | person4
 - **Branch:** <name>/<feature>
 - **Directories:** apps/web/<x>, packages/<y>
 - **Goal:** one sentence

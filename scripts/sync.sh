@@ -7,7 +7,8 @@ source scripts/team.sh
 
 git fetch --all --prune -q
 
-echo "== You are @$(me) on branch $(git branch --show-current)"
+echo "== You are @$(me) on branch $(git branch --show-current). Team:"
+roster
 echo
 echo "== Remote branches, newest first"
 git for-each-ref --sort=-committerdate refs/remotes/origin \
@@ -21,6 +22,9 @@ if git rev-parse --verify -q origin/main >/dev/null; then
 fi
 echo "== Open handoff requests assigned to you"
 gh issue list --label handoff --assignee @me --state open || true
+echo
+echo "== All open handoffs across the team"
+gh issue list --label handoff --state open || true
 echo
 echo "== Recently answered handoffs (closed)"
 gh issue list --label handoff --state closed --limit 5 || true

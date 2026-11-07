@@ -2,7 +2,7 @@
 
 > Unlike ___, we ___, which means ___.
 
-**Track:** [sponsor track] · **Team:** Ajjar Mansoor, Zack Aftab · **Built in 6 hours, 8 Nov 2026, Manchester**
+**Track:** [sponsor track] · **Team:** Ajjar Mansoor, Zack Aftab, [name], [name] · **Built in 6 hours, 8 Nov 2026, Manchester**
 
 ## What it does
 
@@ -28,7 +28,8 @@ npm run dev
 | `docs/DECISIONS.md` | Track, idea, stack, what is mocked. Agents read this first. |
 | `docs/PLAYBOOK.md` | Strategy, 6-hour timeline, lessons from Ox Hack. |
 | `docs/PITCH.md` | Timed, owned pitch script and Q&A bank. |
-| `docs/GITHUB-WORKFLOW.md` | How two people and two agents share this repo. |
+| `docs/GITHUB-WORKFLOW.md` | How four people and their agents share this repo. |
+| `docs/INTERFACES.md` | Directory map and the shapes shared between lanes. |
 | `plan/active/` | One file per feature in flight: owner, files, done-when. |
 | `scripts/` | `sync`, `checkpoint`, `land`, `ask`, `inbox`, `answer`. |
 | `AGENTS.md` / `CLAUDE.md` | Rules every agent follows. |
