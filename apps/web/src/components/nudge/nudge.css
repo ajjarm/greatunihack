@@ -1,0 +1,169 @@
+/* Nudge lane styles. Every colour, radius, shadow, font and duration comes from tokens.css.
+   All selectors are prefixed .nudge- so nothing leaks into other lanes. */
+
+.nudge-card {
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-float);
+  animation: nudge-slide-in var(--motion-slow) var(--ease-out) both;
+}
+.nudge-card[data-busy="true"] .nudge-risk-figure,
+.nudge-card[data-busy="true"] .nudge-impact {
+  animation: nudge-pulse 900ms ease-in-out infinite;
+}
+@keyframes nudge-slide-in {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes nudge-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nudge-card, .nudge-toast { animation: none !important; }
+  .nudge-card[data-busy="true"] .nudge-risk-figure,
+  .nudge-card[data-busy="true"] .nudge-impact { animation: none; opacity: 0.7; }
+}
+
+.nudge-muted { color: var(--color-text-muted); }
+.nudge-num { font-variant-numeric: tabular-nums; }
+.nudge-mono { font-family: var(--font-mono); }
+.nudge-divider { border-top: 1px solid var(--color-border); }
+
+.nudge-section-title {
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* band colours: go / think / stop */
+.nudge-band-go { --band: var(--color-go); --band-bg: var(--color-go-bg); }
+.nudge-band-think { --band: var(--color-think); --band-bg: var(--color-think-bg); }
+.nudge-band-stop { --band: var(--color-stop); --band-bg: var(--color-stop-bg); }
+.nudge-band-text { color: var(--band); }
+.nudge-band-pill {
+  color: var(--band);
+  background: var(--band-bg);
+  border-radius: 999px;
+  font-weight: 600;
+}
+.nudge-risk-panel {
+  background: var(--band-bg);
+  border-radius: var(--radius-md);
+}
+.nudge-meter {
+  background: var(--color-surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.nudge-meter > span {
+  display: block;
+  height: 100%;
+  background: var(--band);
+  border-radius: 999px;
+  transition: width var(--motion-base) var(--ease-out);
+}
+
+.nudge-tag {
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+  color: var(--color-text-muted);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+}
+
+.nudge-panel {
+  background: var(--color-surface-2);
+  border-radius: var(--radius-md);
+}
+.nudge-accent-panel {
+  background: var(--color-accent-bg);
+  border-radius: var(--radius-md);
+}
+
+/* buttons */
+.nudge-btn {
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 14px;
+  transition: background var(--motion-fast) var(--ease-out), opacity var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out);
+  cursor: pointer;
+}
+.nudge-btn:active:not(:disabled) { transform: scale(0.98); }
+.nudge-btn:disabled { opacity: 0.5; cursor: default; }
+.nudge-btn-primary { background: var(--color-text); color: var(--color-surface); }
+.nudge-btn-secondary { background: var(--color-surface-2); color: var(--color-text); border: 1px solid var(--color-border); }
+.nudge-btn-ghost { background: transparent; color: var(--color-text-muted); }
+.nudge-btn-ghost:hover:not(:disabled) { color: var(--color-text); }
+.nudge-btn-accent { background: var(--color-accent); color: var(--color-surface); }
+.nudge-btn-small { font-size: 12px; }
+
+.nudge-card :focus-visible,
+.nudge-toast :focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.nudge-input {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+.nudge-input::placeholder { color: var(--color-text-muted); }
+
+.nudge-chip {
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-out);
+}
+.nudge-chip-need { color: var(--color-go); background: var(--color-go-bg); }
+.nudge-chip-useful { color: var(--color-think); background: var(--color-think-bg); }
+.nudge-chip-want { color: var(--color-stop); background: var(--color-stop-bg); }
+
+.nudge-bar {
+  background: var(--color-surface);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.nudge-bar > span { display: block; height: 100%; background: var(--color-accent); border-radius: 999px; }
+
+.nudge-swatch { display: inline-block; width: 12px; height: 3px; border-radius: 2px; }
+.nudge-dot { display: inline-block; width: 7px; height: 7px; border-radius: 999px; }
+
+.nudge-error { color: var(--color-stop); background: var(--color-stop-bg); border-radius: var(--radius-sm); }
+
+.nudge-expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--motion-base) var(--ease-out);
+}
+.nudge-expand[data-open="true"] { grid-template-rows: 1fr; }
+.nudge-expand > div { overflow: hidden; }
+
+/* toast (verdict go_ahead) */
+.nudge-toast {
+  height: 72px;
+  background: var(--color-go-bg);
+  color: var(--color-go);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-sans);
+  animation: nudge-slide-in var(--motion-slow) var(--ease-out) both;
+}
+.nudge-toast-icon {
+  background: var(--color-go);
+  color: var(--color-surface);
+  border-radius: 999px;
+}
