@@ -18,6 +18,15 @@
   animation: dashboard-pop var(--motion-base) var(--ease-out) both;
 }
 
+.dashboard-score-orbit {
+  transform-origin: 120px 120px;
+  animation: dashboard-orbit 32s linear infinite;
+}
+
+.dashboard-score-progress {
+  transition: stroke-dashoffset var(--motion-slow) var(--ease-out);
+}
+
 .dashboard-bar-fill {
   transform-origin: left;
   animation: dashboard-bar-in var(--motion-slow) var(--ease-out) both;
@@ -85,6 +94,10 @@
 @keyframes dashboard-pop {
   from { opacity: 0.5; transform: scale(0.96); }
   to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes dashboard-orbit {
+  to { transform: rotate(360deg); }
 }
 
 @keyframes dashboard-bar-in {
