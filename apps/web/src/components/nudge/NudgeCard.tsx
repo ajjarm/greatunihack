@@ -72,6 +72,7 @@ export function NudgeCard(props: Props) {
           </div>
 
           <RiskRow a={a} compact={compact} />
+          {!done && <EssentialPrompt a={a} busy={busy} disabled={inactive} onEssential={props.onEssential} />}
           <HoursStrip a={a} compact={compact} />
 
           {full && <MoneyLines a={a} />}
@@ -151,6 +152,44 @@ function RiskRow({ a, compact }: { a: Assessment; compact?: boolean }) {
       <div className="nudge-meter h-1.5" aria-hidden>
         <span style={{ width: `${Math.max(0, Math.min(100, a.regretRisk))}%` }} />
       </div>
+    </section>
+  );
+}
+
+/** SPEC 4.2 item 6: items that look essential get asked about up front. Yes → PATCH essential. */
+function EssentialPrompt({
+  a,
+  busy,
+  disabled,
+  onEssential,
+}: {
+  a: Assessment;
+  busy: string | null;
+  disabled: boolean;
+  onEssential: (itemIndex: number, essential: boolean) => void;
+}) {
+  const asking = a.items.filter((it) => it.essentialPrompt && it.essential == null);
+  if (asking.length === 0) return null;
+  return (
+    <section className="nudge-accent-panel px-3 py-2 flex flex-col gap-2" aria-label="Is this essential?">
+      <p className="text-sm font-semibold">Looks like this might be essential. Is it?</p>
+      {asking.map((it) => (
+        <div key={it.index} className="flex items-center gap-2">
+          <span className="flex-1 min-w-0 text-sm">{it.name}</span>
+          {busy === `ess:${it.index}` ? (
+            <span className="text-xs nudge-muted">Saving…</span>
+          ) : (
+            <>
+              <button type="button" className="nudge-btn nudge-btn-ghost nudge-btn-small px-3 py-1.5 shrink-0" disabled={disabled} onClick={() => onEssential(it.index, false)}>
+                No
+              </button>
+              <button type="button" className="nudge-btn nudge-btn-accent nudge-btn-small px-3 py-1.5 shrink-0" disabled={disabled} onClick={() => onEssential(it.index, true)}>
+                Yes
+              </button>
+            </>
+          )}
+        </div>
+      ))}
     </section>
   );
 }
@@ -350,7 +389,7 @@ function DoneState({ a, done }: { a: Assessment; done: DoneInfo }) {
   if (done.decision === "wait") {
     text = "Saved. I’ll ask you again tomorrow.";
   } else if (done.decision === "buy_anyway") {
-    text = `Fair enough. I’ll check in about it in ${a.reflectionDays} days.`;
+    text = `Fair enough. I’ll check in about it in ${a.reflectionDays} ${a.reflectionDays === 1 ? "day" : "days"}.`;
   } else {
     text = "Dismissed. I won’t mention it again.";
   }

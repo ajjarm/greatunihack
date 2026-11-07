@@ -33,6 +33,8 @@ const initialExamples: SampleWeek[] = [
 
 export function ScoreExamples() {
   const [samples, setSamples] = useState(initialExamples);
+  // randomise only after hydration so server and client render the same first frame
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setSamples(makeExamples()); }, []);
 
   return <Card>

@@ -11,6 +11,12 @@ const SCORE_STORAGE_KEY = "greatunihack-purchase-score-adjustments";
 export default function PurchasesPage() {
   const { data, setData, error, loading, reload } = useApi<Purchase[]>("purchases");
   const pending = useApi<Purchase[]>("pending-reflections");
+  const reloadPending = pending.reload;
+  // reflections come due while the page is open (60s in the demo): check again every 15s
+  useEffect(() => {
+    const timer = setInterval(() => void reloadPending(), 15_000);
+    return () => clearInterval(timer);
+  }, [reloadPending]);
   const [category, setCategory] = useState<Category | "all">("all");
   const [feedback, setFeedback] = useState<Feedback | "all" | "unrated">("all");
   const [reason, setReason] = useState<Record<string, string>>({});
@@ -22,6 +28,8 @@ export default function PurchasesPage() {
     try {
       const stored = JSON.parse(localStorage.getItem(SCORE_STORAGE_KEY) ?? "{}");
       if (stored && typeof stored === "object" && !Array.isArray(stored)) {
+        // browser storage is read after hydration so the server and first client render match
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setScoreOverrides(Object.fromEntries(Object.entries(stored).filter((entry): entry is [string, number] => typeof entry[1] === "number" && Number.isInteger(entry[1]) && entry[1] >= 0 && entry[1] <= 100)));
       }
     } catch { /* Browser storage is optional. */ }

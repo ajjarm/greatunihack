@@ -19,7 +19,8 @@ export default function InsightsPage() {
   const timeline = useApi<TimelineResponse>("timeline");
   const purchases = useApi<Purchase[]>("purchases");
   const home = useApi<Home>("home");
-  useEffect(() => { const timer = setInterval(() => { void home.reload(); }, 10000); return () => clearInterval(timer); }, [home.reload]);
+  const reloadHome = home.reload;
+  useEffect(() => { const timer = setInterval(() => { void reloadHome(); }, 10000); return () => clearInterval(timer); }, [reloadHome]);
   if (!insights.data || !timeline.data) return <PageState loading={insights.loading || timeline.loading} error={insights.error || timeline.error} retry={() => { void insights.reload(); void timeline.reload(); }} />;
   const data = insights.data;
   const groupedInsights = insightSections.map(section => ({ title: section.title, items: data.sentences.filter(sentence => section.keys.includes(sentence.key)) })).filter(section => section.items.length > 0);

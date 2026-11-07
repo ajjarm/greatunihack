@@ -53,7 +53,7 @@ export function BillsCalendar({ nextBill, demoNow, onSaved }: { nextBill: MoneyE
   const nextBillMonthOffset = (Number(nextBill.date.slice(0, 4)) - Number(demoDate.slice(0, 4))) * 12 + Number(nextBill.date.slice(5, 7)) - Number(demoDate.slice(5, 7));
   const [open, setOpen] = useState(true);
   const [persona, setPersona] = useState<Persona | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [monthOffset, setMonthOffset] = useState(Math.min(11, Math.max(0, nextBillMonthOffset)));
   const [selectedDate, setSelectedDate] = useState<string | null>(nextBill.date);
@@ -67,7 +67,14 @@ export function BillsCalendar({ nextBill, demoNow, onSaved }: { nextBill: MoneyE
     finally { setLoading(false); }
   }
 
-  useEffect(() => { void loadBills(); }, []);
+  useEffect(() => {
+    let live = true;
+    api<Persona>("memory")
+      .then(next => { if (live) setPersona(next); })
+      .catch(cause => { if (live) setError(cause instanceof Error ? cause.message : "Could not load bills"); })
+      .finally(() => { if (live) setLoading(false); });
+    return () => { live = false; };
+  }, []);
 
   function toggle() {
     setOpen(!open);

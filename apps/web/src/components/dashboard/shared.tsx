@@ -28,7 +28,15 @@ export function useApi<T>(path: string) {
     catch (e) { setError(e instanceof Error ? e.message : "Could not load data"); }
     finally { setLoading(false); }
   }, [path]);
-  useEffect(() => { void reload(); }, [reload]);
+  // first load: state is only set from the promise callbacks, never synchronously in the effect
+  useEffect(() => {
+    let live = true;
+    api<T>(path)
+      .then(next => { if (live) { setData(next); setError(""); } })
+      .catch(e => { if (live) setError(e instanceof Error ? e.message : "Could not load data"); })
+      .finally(() => { if (live) setLoading(false); });
+    return () => { live = false; };
+  }, [path]);
   return { data, setData, error, loading, reload };
 }
 

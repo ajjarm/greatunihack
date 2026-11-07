@@ -70,7 +70,9 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
     (assessmentId ? api.getAssessment(assessmentId) : api.assessScenario(scenario!))
       .then((a) => {
         setAssessment(a);
-        setMode(a.verdict === "go_ahead" ? "banner" : nudgeMode(a.regretRisk));
+        // only go_ahead gets the self-closing banner; any other verdict under 40 (e.g. an
+        // unanswered essential prompt) needs the card so the user can answer
+        setMode(a.verdict === "go_ahead" ? "banner" : a.regretRisk < 40 ? "card" : nudgeMode(a.regretRisk));
         setWide(window.innerWidth >= 600);
         if ((FINAL as readonly string[]).includes(a.decision)) setDone({ decision: a.decision as api.DecisionIn });
       })

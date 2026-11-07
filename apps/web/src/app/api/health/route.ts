@@ -1,6 +1,6 @@
 import { handle, json, uncached } from "@/lib/api";
 import { brainLive } from "@/lib/brain/mode";
-import { demoNowIso, getStore } from "@/lib/store";
+import { demoNowIso } from "@/lib/store";
 
 export async function GET() {
   await uncached();
