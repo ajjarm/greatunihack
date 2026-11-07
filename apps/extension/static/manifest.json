@@ -13,6 +13,9 @@
     {
       "matches": [
         "https://www.amazon.co.uk/gp/buy/*",
+        "https://www.amazon.co.uk/cart/*",
+        "https://www.amazon.co.uk/gp/cart/*",
+        "https://www.amazon.co.uk/gp/aw/c*",
         "https://www.amazon.co.uk/checkout/*",
         "http://localhost:3000/test-checkout.html*"
       ],

@@ -31,9 +31,11 @@ const PRICE_RE = new RegExp(PRICE_SRC);
 const PRICE_RE_G = new RegExp(PRICE_SRC, "g");
 const PRICE_ONLY_RE = new RegExp(`^${PRICE_SRC}$`);
 
-const BUTTON_RE = /place your order|buy now|place order/i;
+const BUTTON_RE = /place your order|buy now|place order|proceed to checkout|go to checkout/i;
 const TOTAL_LABEL_RE = /^(order total|grand total|total to pay)\b/i;
 const TOTAL_INLINE_RE = new RegExp(`^(?:order total|grand total|total to pay)[^£]{0,30}?(${PRICE_SRC})`, "i");
+// Basket pages (Amazon /cart) have no order total; the subtotal is the basket total there.
+const SUBTOTAL_INLINE_RE = new RegExp(`^(?:subtotal|sub-total|basket total|cart total)[^£]{0,40}?(${PRICE_SRC})`, "i");
 const DELIVERY_LABEL_RE = /^(postage(\s*(&|and)\s*packing)?|p\s*&\s*p|delivery|shipping)(\s*(fee|charge|cost))?\s*:?$/i;
 const DELIVERY_FREE_RE = /^(postage(\s*(&|and)\s*packing)?|p\s*&\s*p|delivery|shipping)\s*:?\s*free\b/i;
 const SUMMARY_LABEL_RE =
@@ -248,6 +250,12 @@ function findTotal(prices: PriceEl[], els: Element[]): number | null {
     const t = textOf(el);
     if (t.length > 80) continue;
     const m = TOTAL_INLINE_RE.exec(t);
+    if (m && isVisible(el)) return parsePence(m[1]);
+  }
+  for (const el of els) {
+    const t = textOf(el);
+    if (t.length > 80) continue;
+    const m = SUBTOTAL_INLINE_RE.exec(t);
     if (m && isVisible(el)) return parsePence(m[1]);
   }
   return null;
