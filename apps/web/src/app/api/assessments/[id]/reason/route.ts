@@ -19,7 +19,11 @@ export async function POST(req: Request, { params }: Params<"id">) {
 
     // demo words are answered instantly and deterministically; everything else goes to Claude
     const quick = quickReasonVerdict(text);
-    if (quick) return json(putAssessment(applyReasonFallback(current, text, quick)));
+    if (quick) {
+      // a beat of "thinking" so the instant answer reads as considered, not canned
+      await new Promise((r) => setTimeout(r, 1500));
+      return json(putAssessment(applyReasonFallback(current, text, quick)));
+    }
 
     // live Brain first: Claude judges the actual words; the canned variant is only a fixture-mode shortcut
     if (brainLive()) {
