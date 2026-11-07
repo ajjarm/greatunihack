@@ -79,8 +79,21 @@ export default function HomePage() {
       </Card>
     </div>
 
+    <Card className="relative overflow-hidden border-l-4 border-l-[var(--color-accent)]">
+      <div className="flex items-start gap-4">
+        <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center bg-[var(--color-accent-bg)] text-xl font-bold text-[var(--color-accent)]" style={{ borderRadius: "var(--radius-md)" }}>✦</span>
+        <div className="min-w-0 flex-1">
+          <Label>From your spending history</Label>
+          <h2 className="mt-1 text-xl font-bold">Worth knowing</h2>
+          <p className="mt-3 max-w-3xl text-lg font-medium leading-relaxed">{data.insight}</p>
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-border)] pt-4">
+            <p className="text-xs text-[var(--color-text-muted)]">A pattern to keep in mind at your next checkout.</p>
+            <Link href="/insights#spending-patterns" className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]">See the evidence <span aria-hidden="true" className="ml-2">→</span></Link>
+          </div>
+        </div>
+      </div>
+    </Card>
     <BillsCalendar nextBill={data.nextBill} demoNow={data.demoNow} onSaved={() => void reload()} />
-    <Card className="bg-[var(--color-accent-bg)]"><Label>Worth knowing</Label><p className="mt-2 text-lg font-medium leading-snug">{data.insight}</p></Card>
     <section><div className="mb-3 flex items-center justify-between"><h2 className="text-xl font-bold">Recent checkouts</h2><Link href="/purchases" className="text-sm font-semibold text-[var(--color-accent)]">Purchases →</Link></div><div className="space-y-3">{data.recentAssessments.length ? data.recentAssessments.map(a => <Card key={a.id}><div className="flex items-start justify-between gap-3"><div><p className="font-semibold">{a.merchant}</p><p className="mt-1 text-sm text-[var(--color-text-muted)]">{a.headline}</p><p className="mt-2 text-xs text-[var(--color-text-muted)]">{date(a.createdAt)} · {a.decision.replaceAll("_", " ")}</p></div><p className="shrink-0 font-bold">{money(a.totalPence)}</p></div><AssessmentFactors id={a.id} score={a.regretRisk} /></Card>) : <Card><p className="text-sm text-[var(--color-text-muted)]">No checkouts yet.</p></Card>}</div></section>
     <ScoreExamples />
   </div>;
