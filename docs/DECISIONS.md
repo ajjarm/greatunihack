@@ -5,8 +5,7 @@ Agents read this after the contract. Everything here is decided unless marked op
 ## Track and idea
 
 - **Sponsor track:** BNY ("a financial tool nobody has seen before, for one specific
-  type of user"). Bonus challenges: n8n only if time allows in phase 2; ElevenLabs
-  dropped. Also entered for the overall prize automatically.
+  type of user"). Bonus challenges: none. n8n and ElevenLabs both dropped (7 Nov evening). Also entered for the overall prize automatically.
 - **Idea:** a money agent for students that watches the screen and steps in at
   checkout with regret risk, real cash impact, factors, and basket negotiation. Full
   spec in `docs/SPEC.md`.
@@ -33,8 +32,8 @@ Agents read this after the contract. Everything here is decided unless marked op
 | Checkout detection | extension on the Amazon checkout URL, scenarios matched by total | real basket parsed from the page |
 | Scoring | fixture assessments written by Zack | computed: timeline, necessity, affordability, factors 1–7 |
 | Reason chat | keyword fallback | Claude judgement |
-| Reflection and calibration | real state changes in the in-memory store | same, plus n8n delivery if time |
-| Transaction feed | not loaded | n8n from a sheet, Open Banking shape |
+| Reflection and calibration | real state changes in the in-memory store | same (reflection prompt lives on the dashboard) |
+| Transaction feed | not loaded | endpoint exists; no feed on the day |
 | Spend Score | fixture | Claude-judged with fallback |
 
 ## Product decisions (from the merge of four specs)
