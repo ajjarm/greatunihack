@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { Assessment, FactorKey, Purchase } from "@/lib/types";
 import { api, Bar } from "@/components/dashboard/shared";
 
@@ -17,15 +17,15 @@ const factorLabels: Record<FactorKey, string> = {
 const labelFor = (key: FactorKey) => factorLabels[key];
 
 export function AssessmentFactors({ id, score, itemName, fallbackPurchase }: { id: string; score: number; itemName?: string; fallbackPurchase?: Purchase }) {
+  const popupId = useId();
   const [open, setOpen] = useState(false);
   const [assessment, setAssessment] = useState<Assessment | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function toggle() {
-    if (open) { setOpen(false); return; }
+  async function show() {
     setOpen(true);
-    if (assessment) return;
+    if (assessment || loading) return;
     setLoading(true);
     try { setAssessment(await api<Assessment>(`assessments/${encodeURIComponent(id)}`)); setError(""); }
     catch (cause) { setError(cause instanceof Error && cause.message.startsWith("Unknown assessment:") ? "Detailed factors are not available for this older checkout." : "Could not load factor details. Try again."); }
@@ -39,9 +39,10 @@ export function AssessmentFactors({ id, score, itemName, fallbackPurchase }: { i
     ...fallbackPurchase.cues.map(cue => `Sales cue: ${cue.replaceAll("_", " ")}`),
     ...(purchaseHour !== null && (purchaseHour >= 23 || purchaseHour < 4) ? ["Late-night purchase"] : []),
   ] : [];
-  return <div className="mt-3 border-t border-[var(--color-border)] pt-3">
-    <button type="button" onClick={() => void toggle()} aria-expanded={open} aria-label={`${open ? "Hide" : "Show"} factor breakdown for ${itemName ?? "checkout"}, ${score}% regret risk`} className={`inline-flex min-h-10 items-center px-3 py-1 text-left text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${score >= 70 ? "bg-[var(--color-stop-bg)] text-[var(--color-stop)]" : score >= 40 ? "bg-[var(--color-think-bg)] text-[var(--color-think)]" : "bg-[var(--color-go-bg)] text-[var(--color-go)]"}`} style={{ borderRadius: "var(--radius-sm)" }}>{score}% regret risk · {open ? "Hide breakdown" : "See breakdown"}</button>
-    {open && <div className="mt-3" aria-live="polite">
+  return <div className="relative mt-3 border-t border-[var(--color-border)] pt-3" onMouseLeave={() => setOpen(false)} onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false); }} onKeyDown={event => { if (event.key === "Escape") setOpen(false); }}>
+    <button type="button" onMouseEnter={() => void show()} onFocus={() => void show()} onClick={() => void show()} aria-expanded={open} aria-describedby={open ? popupId : undefined} aria-label={`Regret risk ${score}% for ${itemName ?? "checkout"}. Show factor breakdown`} className={`inline-flex min-h-10 items-center px-3 py-1 text-left text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${score >= 70 ? "bg-[var(--color-stop-bg)] text-[var(--color-stop)]" : score >= 40 ? "bg-[var(--color-think-bg)] text-[var(--color-think)]" : "bg-[var(--color-go-bg)] text-[var(--color-go)]"}`} style={{ borderRadius: "var(--radius-sm)" }}>{score}% regret risk</button>
+    {open && <div id={popupId} role="tooltip" className="dashboard-pop absolute left-0 top-full z-40 max-h-[min(28rem,70vh)] w-80 max-w-[calc(100vw-3rem)] overflow-y-auto border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-float)]" style={{ borderRadius: "var(--radius-md)" }} aria-live="polite">
+      <p className="mb-3 text-sm font-bold">What {score}% regret risk means</p><p className="mb-3 text-xs text-[var(--color-text-muted)]">The agent&apos;s estimate of how likely you are to regret this {itemName ? "item" : "checkout"}. Higher means more risk; it is a prediction, not an outcome.</p>
       {loading && <p className="text-sm text-[var(--color-text-muted)]">Loading factors…</p>}
       {error && <div className="text-sm text-[var(--color-text-muted)]"><p>{error}</p>{purchaseSignals.length > 0 && <><p className="mt-2">Signals recorded for this item:</p><ul className="mt-1 list-inside list-disc space-y-1">{purchaseSignals.map(signal => <li key={signal}>{signal}</li>)}</ul><p className="mt-2 text-xs">These signals do not reconstruct the original score&apos;s point allocation.</p></>}</div>}
       {assessment && <div className="space-y-4">

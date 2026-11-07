@@ -7,6 +7,12 @@
   transition: transform var(--motion-base) var(--ease-out), box-shadow var(--motion-base) var(--ease-out), border-color var(--motion-base) var(--ease-out);
 }
 
+.dashboard-card:hover,
+.dashboard-card:focus-within {
+  position: relative;
+  z-index: 20;
+}
+
 .dashboard-chip,
 .dashboard-score-dial {
   animation: dashboard-pop var(--motion-base) var(--ease-out) both;
