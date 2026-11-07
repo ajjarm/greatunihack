@@ -1,0 +1,30 @@
+# Optional: Claude answers any issue or comment that mentions @claude, reading the repo on GitHub.
+# Needs one repository secret: CLAUDE_CODE_OAUTH_TOKEN (from `claude setup-token`)
+# or ANTHROPIC_API_KEY. See docs/GITHUB-WORKFLOW.md. Harmless if the secret is missing: the job just fails.
+name: Claude handoff
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  claude:
+    if: >-
+      (github.event_name == 'issues' && contains(github.event.issue.body, '@claude')) ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}

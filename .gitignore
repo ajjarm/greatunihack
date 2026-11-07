@@ -1,0 +1,30 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# deps / builds
+node_modules/
+dist/
+build/
+.next/
+.turbo/
+.vercel/
+coverage/
+*.tsbuildinfo
+
+# python
+__pycache__/
+.venv/
+venv/
+*.pyc
+
+# os / editors
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# agent local-only files
+.claude/settings.local.json
+.codex/
