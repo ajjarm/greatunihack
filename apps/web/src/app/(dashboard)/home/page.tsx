@@ -69,8 +69,6 @@ export default function HomePage() {
       <ScoreHistory score={score} selectedWeek={viewingPast ? selectedWeek : null} onSelect={setSelectedWeek} />
       <p className="mt-4 text-xs text-[var(--color-text-muted)]">The score reflects nudges, later feedback, weekly limits and your cash position. Spending alone does not lower it.</p>
     </Card>
-    <ScoreExamples />
-
     <div className="grid gap-5 lg:grid-cols-2">
       <Card><Label>Safe to spend until {date(data.nextIncome.date)}</Label><p className="mt-3 text-4xl font-bold">{money(data.safeToSpendPence)}</p><p className="mt-3 text-sm text-[var(--color-text-muted)]">{data.daysToNextIncome} day{data.daysToNextIncome === 1 ? "" : "s"} until {data.nextIncome.name} ({money(data.nextIncome.amountPence)})</p><div className="mt-6 border-t border-[var(--color-border)] pt-4"><Label>Current balance</Label><p className="mt-1 text-2xl font-semibold">{money(data.balancePence)}</p></div></Card>
       <Card>
@@ -82,5 +80,6 @@ export default function HomePage() {
     <Card><Label>Next bill</Label><div className="mt-2 flex items-end justify-between gap-4"><div><p className="font-semibold">{data.nextBill.name}</p><p className="text-sm text-[var(--color-text-muted)]">{date(data.nextBill.date)}</p></div><p className="text-xl font-bold">{money(data.nextBill.amountPence)}</p></div></Card>
     <Card className="bg-[var(--color-accent-bg)]"><Label>Worth knowing</Label><p className="mt-2 text-lg font-medium leading-snug">{data.insight}</p></Card>
     <section><div className="mb-3 flex items-center justify-between"><h2 className="text-xl font-bold">Recent checkouts</h2><Link href="/purchases" className="text-sm font-semibold text-[var(--color-accent)]">Purchases →</Link></div><div className="space-y-3">{data.recentAssessments.length ? data.recentAssessments.map(a => <Card key={a.id}><div className="flex items-start justify-between gap-3"><div><p className="font-semibold">{a.merchant}</p><p className="mt-1 text-sm text-[var(--color-text-muted)]">{a.headline}</p><p className="mt-2 text-xs text-[var(--color-text-muted)]">{date(a.createdAt)} · {a.decision.replaceAll("_", " ")}</p></div><p className="shrink-0 font-bold">{money(a.totalPence)}</p></div><AssessmentFactors id={a.id} score={a.regretRisk} /></Card>) : <Card><p className="text-sm text-[var(--color-text-muted)]">No checkouts yet.</p></Card>}</div></section>
+    <ScoreExamples />
   </div>;
 }
