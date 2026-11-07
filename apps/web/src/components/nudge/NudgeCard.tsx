@@ -145,7 +145,6 @@ function RiskRow({ a, compact }: { a: Assessment; compact?: boolean }) {
         </span>
         <span className="flex-1 text-sm leading-tight">
           regret risk
-          <span className="block text-xs nudge-muted">experimental</span>
         </span>
         <span className="nudge-band-pill text-xs px-2 py-0.5">{BAND_LABEL[b]}</span>
       </div>

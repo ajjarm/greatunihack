@@ -38,7 +38,7 @@ export function ScoreExamples() {
   useEffect(() => { setSamples(makeExamples()); }, []);
 
   return <Card>
-    <div className="flex flex-wrap items-start justify-between gap-3"><div><Label>Demo preview</Label><h2 className="ds-h2 mt-1">Explore Spend Score levels</h2><p className="mt-1 text-sm text-[var(--color-text-muted)]">Illustrative weeks showing how the four score levels look.</p></div><Button variant="quiet" onClick={() => setSamples(makeExamples())}>Shuffle examples</Button></div>
+    <div className="flex flex-wrap items-start justify-between gap-3"><div><Label>Score guide</Label><h2 className="ds-h2 mt-1">Explore Spend Score levels</h2><p className="mt-1 text-sm text-[var(--color-text-muted)]">Illustrative weeks showing how the four score levels look.</p></div><Button variant="quiet" onClick={() => setSamples(makeExamples())}>Shuffle examples</Button></div>
     <div className="mt-5 grid grid-cols-2 gap-[10px] md:gap-3 lg:grid-cols-4" aria-live="polite">{samples.map(sample => <div key={sample.label} className="ds-tile">
       <p className="ds-label">{sample.label}</p>
       <ScoreInfo label={`Illustrative Spend Score: ${sample.value} of 100`} details={<><p>This is a randomly generated example of the {sample.label.toLowerCase()} level, not a score from your account.</p><p>Example signals: {sample.heeded} of 8 nudges heeded and {sample.limitsKept} of 4 weekly limits kept. Later feedback and cash position also affect a real score.</p></>} className={`ds-big mt-2 ${sample.tone === "stop" ? "text-[var(--color-stop)]" : sample.tone === "think" ? "text-[var(--color-think)]" : sample.tone === "go" ? "text-[var(--color-go)]" : "text-[var(--color-text)]"}`}>{sample.value}<span className="ds-dec text-sm">/100</span></ScoreInfo>
