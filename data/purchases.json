@@ -62,7 +62,9 @@
     "essential": false,
     "cues": [],
     "feedback": "happy",
-    "feedbackAt": "2026-11-01T11:45:00+00:00"
+    "feedbackAt": "2026-11-01T11:45:00+00:00",
+    "assessmentId": "ah_13",
+    "predictedRegret": 28
   },
   {
     "id": "p_20",
@@ -83,6 +85,60 @@
     "feedbackAt": "2026-11-03T20:05:00+00:00"
   },
   {
+    "id": "p_44",
+    "merchant": "Trainline",
+    "item": "Advance train ticket",
+    "category": "transport",
+    "amountPence": 1249,
+    "purchasedAt": "2026-10-30T12:10:00+00:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_43",
+    "merchant": "Tesco",
+    "item": "Grocery top-up",
+    "category": "groceries",
+    "amountPence": 1347,
+    "purchasedAt": "2026-10-30T09:10:00+00:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null,
+    "assessmentId": "ah_15",
+    "predictedRegret": 54
+  },
+  {
+    "id": "p_25",
+    "merchant": "Deliveroo",
+    "item": "Wednesday takeaway delivery",
+    "category": "eating_out",
+    "amountPence": 2147,
+    "purchasedAt": "2026-10-28T19:10:00+00:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "regretted",
+    "feedbackAt": "2026-10-29T19:10:00+00:00",
+    "feedbackReason": "I had food at home and ordered on a weeknight.",
+    "assessmentId": "ah_14",
+    "predictedRegret": 71
+  },
+  {
+    "id": "p_59",
+    "merchant": "Amazon",
+    "item": "Notebook refill",
+    "category": "other",
+    "amountPence": 649,
+    "purchasedAt": "2026-10-25T13:10:00+00:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": null
+  },
+  {
     "id": "p_19",
     "merchant": "Amazon",
     "item": "Phone grip ring",
@@ -97,6 +153,44 @@
     "feedback": "regretted",
     "feedbackReason": "Never put it on",
     "feedbackAt": "2026-10-28T17:30:00+00:00"
+  },
+  {
+    "id": "p_58",
+    "merchant": "Tesco",
+    "item": "Fresh food order",
+    "category": "groceries",
+    "amountPence": 2743,
+    "purchasedAt": "2026-10-22T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_26",
+    "merchant": "Uber Eats",
+    "item": "Wednesday pizza delivery",
+    "category": "eating_out",
+    "amountPence": 1949,
+    "purchasedAt": "2026-10-21T19:10:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "regretted",
+    "feedbackAt": "2026-10-22T19:10:00+01:00",
+    "feedbackReason": "I had food at home and ordered on a weeknight."
+  },
+  {
+    "id": "p_57",
+    "merchant": "Trainline",
+    "item": "Advance rail fare",
+    "category": "transport",
+    "amountPence": 1649,
+    "purchasedAt": "2026-10-19T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
   },
   {
     "id": "p_18",
@@ -143,6 +237,18 @@
     "feedbackAt": "2026-10-23T20:40:00+01:00"
   },
   {
+    "id": "p_42",
+    "merchant": "Tesco",
+    "item": "Grocery top-up",
+    "category": "groceries",
+    "amountPence": 1347,
+    "purchasedAt": "2026-10-16T09:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
     "id": "p_15",
     "merchant": "Just Eat",
     "item": "Chinese takeaway, Wednesday",
@@ -155,6 +261,18 @@
     "feedback": "regretted",
     "feedbackReason": "Weeknight, again",
     "feedbackAt": "2026-10-15T12:00:00+01:00"
+  },
+  {
+    "id": "p_56",
+    "merchant": "Amazon",
+    "item": "Kitchen storage tubs",
+    "category": "household",
+    "amountPence": 1299,
+    "purchasedAt": "2026-10-12T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
   },
   {
     "id": "p_14",
@@ -173,6 +291,18 @@
     "feedbackAt": "2026-10-17T18:25:00+01:00"
   },
   {
+    "id": "p_55",
+    "merchant": "Tesco",
+    "item": "Grocery delivery",
+    "category": "groceries",
+    "amountPence": 3217,
+    "purchasedAt": "2026-10-08T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
     "id": "p_13",
     "merchant": "Waterstones",
     "item": "Fundamentals of Statistics",
@@ -186,6 +316,18 @@
     "feedbackAt": "2026-10-10T16:00:00+01:00"
   },
   {
+    "id": "p_54",
+    "merchant": "Trainline",
+    "item": "Weekend advance ticket",
+    "category": "transport",
+    "amountPence": 1749,
+    "purchasedAt": "2026-10-05T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
     "id": "p_12",
     "merchant": "Deliveroo",
     "item": "Brunch",
@@ -196,7 +338,9 @@
     "essential": false,
     "cues": [],
     "feedback": "happy",
-    "feedbackAt": "2026-10-04T10:30:00+01:00"
+    "feedbackAt": "2026-10-04T10:30:00+01:00",
+    "assessmentId": "ah_20",
+    "predictedRegret": 12
   },
   {
     "id": "p_11",
@@ -216,6 +360,42 @@
     "feedbackAt": "2026-10-07T21:05:00+01:00"
   },
   {
+    "id": "p_41",
+    "merchant": "Trainline",
+    "item": "Advance train ticket",
+    "category": "transport",
+    "amountPence": 1249,
+    "purchasedAt": "2026-10-02T12:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_40",
+    "merchant": "Tesco",
+    "item": "Grocery top-up",
+    "category": "groceries",
+    "amountPence": 1347,
+    "purchasedAt": "2026-10-02T09:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_53",
+    "merchant": "Amazon",
+    "item": "Birthday gift mug",
+    "category": "gifts",
+    "amountPence": 1199,
+    "purchasedAt": "2026-09-29T13:10:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": null
+  },
+  {
     "id": "p_10",
     "merchant": "Amazon",
     "item": "Leather phone case, black",
@@ -229,7 +409,23 @@
     ],
     "feedback": "regretted",
     "feedbackReason": "The clear one was fine",
-    "feedbackAt": "2026-10-02T19:10:00+01:00"
+    "feedbackAt": "2026-10-02T19:10:00+01:00",
+    "assessmentId": "ah_19",
+    "predictedRegret": 75
+  },
+  {
+    "id": "p_29",
+    "merchant": "Uber Eats",
+    "item": "Saturday takeaway delivery",
+    "category": "eating_out",
+    "amountPence": 1697,
+    "purchasedAt": "2026-09-26T19:10:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "happy",
+    "feedbackAt": "2026-09-27T19:10:00+01:00",
+    "feedbackReason": "A planned meal with friends."
   },
   {
     "id": "p_09",
@@ -242,7 +438,21 @@
     "essential": true,
     "cues": [],
     "feedback": "happy",
-    "feedbackAt": "2026-09-30T11:20:00+01:00"
+    "feedbackAt": "2026-09-30T11:20:00+01:00",
+    "assessmentId": "ah_18",
+    "predictedRegret": 12
+  },
+  {
+    "id": "p_52",
+    "merchant": "Tesco",
+    "item": "Weekly grocery top-up",
+    "category": "groceries",
+    "amountPence": 2583,
+    "purchasedAt": "2026-09-22T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
   },
   {
     "id": "p_08",
@@ -256,7 +466,83 @@
     "cues": [],
     "feedback": "happy",
     "feedbackReason": "Use them every day",
-    "feedbackAt": "2026-09-29T17:45:00+01:00"
+    "feedbackAt": "2026-09-29T17:45:00+01:00",
+    "assessmentId": "ah_17",
+    "predictedRegret": 12
+  },
+  {
+    "id": "p_39",
+    "merchant": "Boots",
+    "item": "Toiletries order",
+    "category": "health",
+    "amountPence": 849,
+    "purchasedAt": "2026-09-18T18:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_38",
+    "merchant": "Amazon",
+    "item": "Laundry detergent refill",
+    "category": "household",
+    "amountPence": 987,
+    "purchasedAt": "2026-09-18T15:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_37",
+    "merchant": "Trainline",
+    "item": "Advance train ticket",
+    "category": "transport",
+    "amountPence": 1249,
+    "purchasedAt": "2026-09-18T12:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_36",
+    "merchant": "Tesco",
+    "item": "Grocery top-up",
+    "category": "groceries",
+    "amountPence": 1347,
+    "purchasedAt": "2026-09-18T09:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_51",
+    "merchant": "Boots",
+    "item": "Prescription collection order",
+    "category": "health",
+    "amountPence": 349,
+    "purchasedAt": "2026-09-15T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_28",
+    "merchant": "Deliveroo",
+    "item": "Saturday dinner delivery",
+    "category": "eating_out",
+    "amountPence": 2267,
+    "purchasedAt": "2026-09-12T19:10:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "happy",
+    "feedbackAt": "2026-09-13T19:10:00+01:00",
+    "feedbackReason": "A planned meal with friends."
   },
   {
     "id": "p_07",
@@ -270,6 +556,30 @@
     "cues": [],
     "feedback": "happy",
     "feedbackAt": "2026-09-14T20:00:00+01:00"
+  },
+  {
+    "id": "p_50",
+    "merchant": "Trainline",
+    "item": "Advance train booking",
+    "category": "transport",
+    "amountPence": 1547,
+    "purchasedAt": "2026-09-10T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_49",
+    "merchant": "Tesco",
+    "item": "Fruit and breakfast groceries",
+    "category": "groceries",
+    "amountPence": 1943,
+    "purchasedAt": "2026-09-07T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
   },
   {
     "id": "p_06",
@@ -286,6 +596,92 @@
     "feedbackAt": "2026-09-05T13:30:00+01:00"
   },
   {
+    "id": "p_35",
+    "merchant": "Amazon",
+    "item": "Laundry detergent refill",
+    "category": "household",
+    "amountPence": 987,
+    "purchasedAt": "2026-09-04T15:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_34",
+    "merchant": "Trainline",
+    "item": "Advance train ticket",
+    "category": "transport",
+    "amountPence": 1249,
+    "purchasedAt": "2026-09-04T12:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_33",
+    "merchant": "Tesco",
+    "item": "Grocery top-up",
+    "category": "groceries",
+    "amountPence": 1347,
+    "purchasedAt": "2026-09-04T09:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_48",
+    "merchant": "Amazon",
+    "item": "USB-C cable",
+    "category": "tech",
+    "amountPence": 899,
+    "purchasedAt": "2026-09-01T13:10:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_27",
+    "merchant": "Just Eat",
+    "item": "Saturday meal with flatmates",
+    "category": "eating_out",
+    "amountPence": 1849,
+    "purchasedAt": "2026-08-29T19:10:00+01:00",
+    "source": "feed",
+    "essential": false,
+    "cues": [],
+    "feedback": "happy",
+    "feedbackAt": "2026-08-30T19:10:00+01:00",
+    "feedbackReason": "A planned meal with friends."
+  },
+  {
+    "id": "p_47",
+    "merchant": "Tesco",
+    "item": "Fresh food delivery",
+    "category": "groceries",
+    "amountPence": 2867,
+    "purchasedAt": "2026-08-28T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_46",
+    "merchant": "Trainline",
+    "item": "Advance ticket home",
+    "category": "transport",
+    "amountPence": 1849,
+    "purchasedAt": "2026-08-25T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
     "id": "p_04",
     "merchant": "Amazon",
     "item": "Wireless earbuds",
@@ -297,6 +693,42 @@
     "cues": [
       "scarcity"
     ],
+    "feedback": null
+  },
+  {
+    "id": "p_32",
+    "merchant": "Amazon",
+    "item": "Laundry detergent refill",
+    "category": "household",
+    "amountPence": 987,
+    "purchasedAt": "2026-08-21T15:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_31",
+    "merchant": "Trainline",
+    "item": "Advance train ticket",
+    "category": "transport",
+    "amountPence": 1249,
+    "purchasedAt": "2026-08-21T12:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_30",
+    "merchant": "Tesco",
+    "item": "Grocery top-up",
+    "category": "groceries",
+    "amountPence": 1347,
+    "purchasedAt": "2026-08-21T09:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
     "feedback": null
   },
   {
@@ -339,6 +771,32 @@
     ],
     "feedback": "regretted",
     "feedbackReason": "Already had two hoodies",
-    "feedbackAt": "2026-08-18T18:02:00+01:00"
+    "feedbackAt": "2026-08-18T18:02:00+01:00",
+    "assessmentId": "ah_16",
+    "predictedRegret": 75
+  },
+  {
+    "id": "p_60",
+    "merchant": "Tesco",
+    "item": "Household grocery top-up",
+    "category": "groceries",
+    "amountPence": 2137,
+    "purchasedAt": "2026-08-12T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
+  },
+  {
+    "id": "p_45",
+    "merchant": "Tesco",
+    "item": "Pantry top-up",
+    "category": "groceries",
+    "amountPence": 1647,
+    "purchasedAt": "2026-08-11T13:10:00+01:00",
+    "source": "feed",
+    "essential": true,
+    "cues": [],
+    "feedback": null
   }
 ]

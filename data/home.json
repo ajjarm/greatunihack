@@ -54,6 +54,95 @@
     "amountPence": 1800
   },
   "insight": "You've regretted 3 of your last 4 late-night clothes orders. It's 11:40pm.",
-  "recentAssessments": [],
+  "recentAssessments": [
+    {
+      "id": "ah_01",
+      "createdAt": "2026-11-06T23:05:00+00:00",
+      "merchant": "ASOS",
+      "totalPence": 5400,
+      "verdict": "strong_nudge",
+      "regretRisk": 74,
+      "headline": "Hold on, this looks like a late-night impulse buy.",
+      "decision": "wait",
+      "outcome": null
+    },
+    {
+      "id": "ah_02",
+      "createdAt": "2026-11-04T12:30:00+00:00",
+      "merchant": "Tesco",
+      "totalPence": 2715,
+      "verdict": "go_ahead",
+      "regretRisk": 9,
+      "headline": "Looks fine. £385 safe after this.",
+      "decision": "dismiss",
+      "outcome": null
+    },
+    {
+      "id": "ah_03",
+      "createdAt": "2026-11-01T16:15:00+00:00",
+      "merchant": "SU shop",
+      "totalPence": 550,
+      "verdict": "go_ahead",
+      "regretRisk": 6,
+      "headline": "Looks fine. Course books are always fine.",
+      "decision": "dismiss",
+      "outcome": "happy"
+    },
+    {
+      "id": "ah_12",
+      "createdAt": "2026-10-31T21:10:00+00:00",
+      "merchant": "Amazon",
+      "totalPence": 2500,
+      "verdict": "nudge",
+      "regretRisk": 61,
+      "headline": "You chose to leave this optional order for now.",
+      "decision": "dismiss",
+      "outcome": null
+    },
+    {
+      "id": "ah_13",
+      "createdAt": "2026-10-31T18:55:00+00:00",
+      "merchant": "Uber Eats",
+      "totalPence": 2240,
+      "verdict": "go_ahead",
+      "regretRisk": 28,
+      "headline": "You chose to continue; later feedback helps tune the next estimate.",
+      "decision": "buy_anyway",
+      "outcome": "happy"
+    },
+    {
+      "id": "ah_04",
+      "createdAt": "2026-10-30T23:35:00+00:00",
+      "merchant": "ASOS",
+      "totalPence": 3800,
+      "verdict": "strong_nudge",
+      "regretRisk": 71,
+      "headline": "Late on a Friday, and it's clothes again.",
+      "decision": "buy_anyway",
+      "outcome": "regretted"
+    },
+    {
+      "id": "ah_15",
+      "createdAt": "2026-10-30T09:05:00+00:00",
+      "merchant": "Tesco",
+      "totalPence": 1347,
+      "verdict": "nudge",
+      "regretRisk": 54,
+      "headline": "You chose to continue; later feedback helps tune the next estimate.",
+      "decision": "buy_anyway",
+      "outcome": null
+    },
+    {
+      "id": "ah_11",
+      "createdAt": "2026-10-29T21:10:00+00:00",
+      "merchant": "Amazon",
+      "totalPence": 2000,
+      "verdict": "nudge",
+      "regretRisk": 60,
+      "headline": "You chose to leave this optional order for now.",
+      "decision": "wait",
+      "outcome": null
+    }
+  ],
   "pendingReflections": 0
 }

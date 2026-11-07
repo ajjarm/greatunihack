@@ -2,38 +2,38 @@
   "sentences": [
     {
       "key": "category",
-      "text": "Clothes and accessories are where your regrets live: 3 of 5 clothes buys and 3 of 4 accessories you reviewed went badly. Books never have.",
-      "evidence": "clothes 3 of 5, accessories 3 of 4, books 0 of 3, eating out 2 of 5"
+      "text": "You regretted 3 of 5 reviewed clothing orders and 3 of 4 accessory orders. Your three reviewed books were all happy purchases.",
+      "evidence": "clothes 3/5; accessories 3/4; books 0/3; eating out 4/10"
     },
     {
       "key": "late_night",
-      "text": "Between 11pm and 2am you regret almost everything you buy. Six of the seven late-night purchases you reviewed were regrets.",
-      "evidence": "7 reviewed late-night purchases, 6 regretted"
+      "text": "6 of 7 reviewed orders regretted between 11pm and 2am. A short pause may help.",
+      "evidence": "p_20, p_19, p_17, p_14, p_11, p_10, p_01"
     },
     {
       "key": "friday",
-      "text": "Friday after 10pm is the worst hour of your week. Five purchases, five regrets.",
-      "evidence": "p_01, p_06, p_11, p_16, p_20"
+      "text": "On Fridays after 10pm, 5 of 5 reviewed orders regretted.",
+      "evidence": "p_20, p_16, p_11, p_06, p_01"
     },
     {
       "key": "payday",
-      "text": "The two days after a shift pays are busier and riskier: 4 of the 7 purchases you reviewed in those windows were regrets, against 9 of 20 overall.",
-      "evidence": "7 reviewed within 48h of payday, 4 regretted; 20 reviewed overall, 9 regretted"
+      "text": "Within 48 hours of payday, you regretted 57% of reviewed orders, compared with 44% overall.",
+      "evidence": "4 of 7 reviewed orders regretted; overall 11 of 25 reviewed orders regretted"
     },
     {
       "key": "pressure",
-      "text": "Under a sale, countdown or only-2-left banner you regretted 7 of 8 purchases. Without one, 2 of 12.",
-      "evidence": "8 reviewed with a cue, 7 regretted; 12 without, 2 regretted"
+      "text": "With sales cues, you regretted 88% of reviewed orders. Without them, 24%.",
+      "evidence": "With cues: 7 of 8 reviewed orders regretted; without cues: 4 of 17 reviewed orders regretted"
     },
     {
       "key": "duplicates",
-      "text": "You own two phone cases and two pairs of earbuds. The second of each was a late-night order, and the second case was a regret.",
-      "evidence": "p_02 and p_10 phone cases; p_04 and p_14 earbuds"
+      "text": "You have two phone cases and two pairs of earbuds. The second phone case was a regret.",
+      "evidence": "p_02 and p_10: phone cases; p_04 and p_14: earbuds"
     },
     {
       "key": "calibration",
-      "text": "I'm 81% tuned to you, up from 64% a month ago. Accessories is where I've learned most.",
-      "evidence": "20 reviewed purchases; accessories 81%, clothes 78%, books 90%"
+      "text": "I'm 81% tuned to you, up from 64% a month ago.",
+      "evidence": "Prepared demo calibration: accessories 81%, clothes 78%, books 90%"
     }
   ],
   "regretByCategory": [
@@ -57,8 +57,8 @@
     },
     {
       "category": "eating_out",
-      "reviewed": 5,
-      "regretted": 2,
+      "reviewed": 10,
+      "regretted": 4,
       "ratePct": 40
     },
     {
@@ -78,29 +78,65 @@
       "reviewed": 3,
       "regretted": 0,
       "ratePct": 0
+    },
+    {
+      "category": "health",
+      "reviewed": 0,
+      "regretted": 0,
+      "ratePct": 0
+    },
+    {
+      "category": "groceries",
+      "reviewed": 0,
+      "regretted": 0,
+      "ratePct": 0
+    },
+    {
+      "category": "household",
+      "reviewed": 0,
+      "regretted": 0,
+      "ratePct": 0
+    },
+    {
+      "category": "gifts",
+      "reviewed": 0,
+      "regretted": 0,
+      "ratePct": 0
+    },
+    {
+      "category": "subscriptions",
+      "reviewed": 0,
+      "regretted": 0,
+      "ratePct": 0
+    },
+    {
+      "category": "other",
+      "reviewed": 0,
+      "regretted": 0,
+      "ratePct": 0
     }
   ],
   "riskyWindows": [
     {
       "label": "Friday after 10pm",
       "ratePct": 100,
-      "evidence": "5 of 5 reviewed purchases regretted"
+      "evidence": "5 of 5 reviewed orders regretted"
     },
     {
       "label": "Late night, 11pm to 2am",
       "ratePct": 86,
-      "evidence": "6 of 7 reviewed purchases regretted"
+      "evidence": "6 of 7 reviewed orders regretted"
     },
     {
       "label": "48 hours after payday",
       "ratePct": 57,
-      "evidence": "4 of 7 reviewed purchases regretted"
+      "evidence": "4 of 7 reviewed orders regretted"
     }
   ],
   "pressure": {
     "withCueRatePct": 88,
-    "withoutCueRatePct": 17,
-    "sentence": "With a sales cue on the page you regretted 88% of purchases. Without one, 17%."
+    "withoutCueRatePct": 24,
+    "sentence": "With sales cues, you regretted 88% of reviewed orders. Without them, 24%."
   },
   "duplicates": [
     {
@@ -120,19 +156,19 @@
       ]
     }
   ],
-  "avoidedPence": 13800,
+  "avoidedPence": 21000,
   "avoidedCouldBe": [
     {
       "label": "Trip fund",
-      "text": "£138 is nearly a quarter of what you still need for the summer trip."
+      "text": "An estimated £210 is 46% of what is left for your summer trip."
     },
     {
       "label": "Rent buffer",
-      "text": "£138 would cover the gap on 1 January until the loan lands."
+      "text": "An estimated £210 could stay available for rent."
     },
     {
       "label": "Days of spending",
-      "text": "£138 is about nine days of your usual spending."
+      "text": "An estimated £210 is about 16 days at your recent purchase pace."
     }
   ],
   "calibration": {
@@ -192,5 +228,420 @@
       "spentThisWeekPence": 2384
     }
   ],
-  "timeline": []
+  "timeline": [
+    {
+      "date": "2026-11-08",
+      "projectedPence": 41200,
+      "events": []
+    },
+    {
+      "date": "2026-11-09",
+      "projectedPence": 41200,
+      "events": []
+    },
+    {
+      "date": "2026-11-10",
+      "projectedPence": 41200,
+      "events": []
+    },
+    {
+      "date": "2026-11-11",
+      "projectedPence": 41200,
+      "events": []
+    },
+    {
+      "date": "2026-11-12",
+      "projectedPence": 41200,
+      "events": []
+    },
+    {
+      "date": "2026-11-13",
+      "projectedPence": 61000,
+      "events": [
+        {
+          "type": "income",
+          "name": "Part-time job",
+          "amountPence": 19800
+        }
+      ]
+    },
+    {
+      "date": "2026-11-14",
+      "projectedPence": 59200,
+      "events": [
+        {
+          "type": "bill",
+          "name": "Phone",
+          "amountPence": 1800
+        }
+      ]
+    },
+    {
+      "date": "2026-11-15",
+      "projectedPence": 59200,
+      "events": []
+    },
+    {
+      "date": "2026-11-16",
+      "projectedPence": 59200,
+      "events": []
+    },
+    {
+      "date": "2026-11-17",
+      "projectedPence": 59200,
+      "events": []
+    },
+    {
+      "date": "2026-11-18",
+      "projectedPence": 59200,
+      "events": []
+    },
+    {
+      "date": "2026-11-19",
+      "projectedPence": 59200,
+      "events": []
+    },
+    {
+      "date": "2026-11-20",
+      "projectedPence": 56800,
+      "events": [
+        {
+          "type": "bill",
+          "name": "Gym",
+          "amountPence": 2400
+        }
+      ]
+    },
+    {
+      "date": "2026-11-21",
+      "projectedPence": 56800,
+      "events": []
+    },
+    {
+      "date": "2026-11-22",
+      "projectedPence": 56800,
+      "events": []
+    },
+    {
+      "date": "2026-11-23",
+      "projectedPence": 56800,
+      "events": []
+    },
+    {
+      "date": "2026-11-24",
+      "projectedPence": 56800,
+      "events": []
+    },
+    {
+      "date": "2026-11-25",
+      "projectedPence": 56800,
+      "events": []
+    },
+    {
+      "date": "2026-11-26",
+      "projectedPence": 56800,
+      "events": []
+    },
+    {
+      "date": "2026-11-27",
+      "projectedPence": 77400,
+      "events": [
+        {
+          "type": "income",
+          "name": "Part-time job",
+          "amountPence": 20600
+        }
+      ]
+    },
+    {
+      "date": "2026-11-28",
+      "projectedPence": 77400,
+      "events": []
+    },
+    {
+      "date": "2026-11-29",
+      "projectedPence": 77400,
+      "events": []
+    },
+    {
+      "date": "2026-11-30",
+      "projectedPence": 77400,
+      "events": []
+    },
+    {
+      "date": "2026-12-01",
+      "projectedPence": 12400,
+      "events": [
+        {
+          "type": "bill",
+          "name": "Rent",
+          "amountPence": 65000
+        }
+      ]
+    },
+    {
+      "date": "2026-12-02",
+      "projectedPence": 12400,
+      "events": []
+    },
+    {
+      "date": "2026-12-03",
+      "projectedPence": 12400,
+      "events": []
+    },
+    {
+      "date": "2026-12-04",
+      "projectedPence": 12400,
+      "events": []
+    },
+    {
+      "date": "2026-12-05",
+      "projectedPence": 11300,
+      "events": [
+        {
+          "type": "bill",
+          "name": "Spotify",
+          "amountPence": 1100
+        }
+      ]
+    },
+    {
+      "date": "2026-12-06",
+      "projectedPence": 11300,
+      "events": []
+    },
+    {
+      "date": "2026-12-07",
+      "projectedPence": 11300,
+      "events": []
+    },
+    {
+      "date": "2026-12-08",
+      "projectedPence": 11300,
+      "events": []
+    },
+    {
+      "date": "2026-12-09",
+      "projectedPence": 11300,
+      "events": []
+    },
+    {
+      "date": "2026-12-10",
+      "projectedPence": 11300,
+      "events": []
+    },
+    {
+      "date": "2026-12-11",
+      "projectedPence": 30300,
+      "events": [
+        {
+          "type": "income",
+          "name": "Part-time job",
+          "amountPence": 19000
+        }
+      ]
+    },
+    {
+      "date": "2026-12-12",
+      "projectedPence": 30300,
+      "events": []
+    },
+    {
+      "date": "2026-12-13",
+      "projectedPence": 30300,
+      "events": []
+    },
+    {
+      "date": "2026-12-14",
+      "projectedPence": 28500,
+      "events": [
+        {
+          "type": "bill",
+          "name": "Phone",
+          "amountPence": 1800
+        }
+      ]
+    },
+    {
+      "date": "2026-12-15",
+      "projectedPence": 28500,
+      "events": []
+    },
+    {
+      "date": "2026-12-16",
+      "projectedPence": 28500,
+      "events": []
+    },
+    {
+      "date": "2026-12-17",
+      "projectedPence": 28500,
+      "events": []
+    },
+    {
+      "date": "2026-12-18",
+      "projectedPence": 28500,
+      "events": []
+    },
+    {
+      "date": "2026-12-19",
+      "projectedPence": 28500,
+      "events": []
+    },
+    {
+      "date": "2026-12-20",
+      "projectedPence": 26100,
+      "events": [
+        {
+          "type": "bill",
+          "name": "Gym",
+          "amountPence": 2400
+        }
+      ]
+    },
+    {
+      "date": "2026-12-21",
+      "projectedPence": 26100,
+      "events": []
+    },
+    {
+      "date": "2026-12-22",
+      "projectedPence": 26100,
+      "events": []
+    },
+    {
+      "date": "2026-12-23",
+      "projectedPence": 26100,
+      "events": []
+    },
+    {
+      "date": "2026-12-24",
+      "projectedPence": 26100,
+      "events": []
+    },
+    {
+      "date": "2026-12-25",
+      "projectedPence": 44500,
+      "events": [
+        {
+          "type": "income",
+          "name": "Part-time job",
+          "amountPence": 18400
+        }
+      ]
+    },
+    {
+      "date": "2026-12-26",
+      "projectedPence": 44500,
+      "events": []
+    },
+    {
+      "date": "2026-12-27",
+      "projectedPence": 44500,
+      "events": []
+    },
+    {
+      "date": "2026-12-28",
+      "projectedPence": 44500,
+      "events": []
+    },
+    {
+      "date": "2026-12-29",
+      "projectedPence": 44500,
+      "events": []
+    },
+    {
+      "date": "2026-12-30",
+      "projectedPence": 44500,
+      "events": []
+    },
+    {
+      "date": "2026-12-31",
+      "projectedPence": 44500,
+      "events": []
+    },
+    {
+      "date": "2027-01-01",
+      "projectedPence": -20500,
+      "events": [
+        {
+          "type": "bill",
+          "name": "Rent",
+          "amountPence": 65000
+        }
+      ]
+    },
+    {
+      "date": "2027-01-02",
+      "projectedPence": -20500,
+      "events": []
+    },
+    {
+      "date": "2027-01-03",
+      "projectedPence": -20500,
+      "events": []
+    },
+    {
+      "date": "2027-01-04",
+      "projectedPence": -20500,
+      "events": []
+    },
+    {
+      "date": "2027-01-05",
+      "projectedPence": -21600,
+      "events": [
+        {
+          "type": "bill",
+          "name": "Spotify",
+          "amountPence": 1100
+        }
+      ]
+    },
+    {
+      "date": "2027-01-06",
+      "projectedPence": -21600,
+      "events": []
+    },
+    {
+      "date": "2027-01-07",
+      "projectedPence": -21600,
+      "events": []
+    },
+    {
+      "date": "2027-01-08",
+      "projectedPence": -1600,
+      "events": [
+        {
+          "type": "income",
+          "name": "Part-time job",
+          "amountPence": 20000
+        }
+      ]
+    },
+    {
+      "date": "2027-01-09",
+      "projectedPence": -1600,
+      "events": []
+    },
+    {
+      "date": "2027-01-10",
+      "projectedPence": -1600,
+      "events": []
+    },
+    {
+      "date": "2027-01-11",
+      "projectedPence": -1600,
+      "events": []
+    },
+    {
+      "date": "2027-01-12",
+      "projectedPence": 212400,
+      "events": [
+        {
+          "type": "income",
+          "name": "Maintenance loan",
+          "amountPence": 214000
+        }
+      ]
+    }
+  ]
 }

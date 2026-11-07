@@ -33,6 +33,28 @@
     "outcome": "happy"
   },
   {
+    "id": "ah_12",
+    "createdAt": "2026-10-31T21:10:00+00:00",
+    "merchant": "Amazon",
+    "totalPence": 2500,
+    "verdict": "nudge",
+    "regretRisk": 61,
+    "headline": "You chose to leave this optional order for now.",
+    "decision": "dismiss",
+    "outcome": null
+  },
+  {
+    "id": "ah_13",
+    "createdAt": "2026-10-31T18:55:00+00:00",
+    "merchant": "Uber Eats",
+    "totalPence": 2240,
+    "verdict": "go_ahead",
+    "regretRisk": 28,
+    "headline": "You chose to continue; later feedback helps tune the next estimate.",
+    "decision": "buy_anyway",
+    "outcome": "happy"
+  },
+  {
     "id": "ah_04",
     "createdAt": "2026-10-30T23:35:00+00:00",
     "merchant": "ASOS",
@@ -42,6 +64,61 @@
     "headline": "Late on a Friday, and it's clothes again.",
     "decision": "buy_anyway",
     "outcome": "regretted"
+  },
+  {
+    "id": "ah_15",
+    "createdAt": "2026-10-30T09:05:00+00:00",
+    "merchant": "Tesco",
+    "totalPence": 1347,
+    "verdict": "nudge",
+    "regretRisk": 54,
+    "headline": "You chose to continue; later feedback helps tune the next estimate.",
+    "decision": "buy_anyway",
+    "outcome": null
+  },
+  {
+    "id": "ah_11",
+    "createdAt": "2026-10-29T21:10:00+00:00",
+    "merchant": "Amazon",
+    "totalPence": 2000,
+    "verdict": "nudge",
+    "regretRisk": 60,
+    "headline": "You chose to leave this optional order for now.",
+    "decision": "wait",
+    "outcome": null
+  },
+  {
+    "id": "ah_14",
+    "createdAt": "2026-10-28T19:05:00+00:00",
+    "merchant": "Deliveroo",
+    "totalPence": 2147,
+    "verdict": "strong_nudge",
+    "regretRisk": 71,
+    "headline": "You chose to continue; later feedback helps tune the next estimate.",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
+  },
+  {
+    "id": "ah_10",
+    "createdAt": "2026-10-27T21:10:00+00:00",
+    "merchant": "Amazon",
+    "totalPence": 1500,
+    "verdict": "nudge",
+    "regretRisk": 59,
+    "headline": "You chose to leave this optional order for now.",
+    "decision": "dismiss",
+    "outcome": null
+  },
+  {
+    "id": "ah_09",
+    "createdAt": "2026-10-26T21:10:00+00:00",
+    "merchant": "Amazon",
+    "totalPence": 1200,
+    "verdict": "nudge",
+    "regretRisk": 58,
+    "headline": "You chose to leave this optional order for now.",
+    "decision": "wait",
+    "outcome": null
   },
   {
     "id": "ah_05",
@@ -86,5 +163,60 @@
     "headline": "Weeknight takeaway for two, and you said you'd stop.",
     "decision": "dismiss",
     "outcome": null
+  },
+  {
+    "id": "ah_20",
+    "createdAt": "2026-10-03T12:35:00+01:00",
+    "merchant": "Deliveroo",
+    "totalPence": 1625,
+    "verdict": "go_ahead",
+    "regretRisk": 12,
+    "headline": "Your earlier order gives the next decision some context.",
+    "decision": "buy_anyway",
+    "outcome": "happy"
+  },
+  {
+    "id": "ah_19",
+    "createdAt": "2026-09-27T00:25:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 1299,
+    "verdict": "strong_nudge",
+    "regretRisk": 75,
+    "headline": "Your earlier order gives the next decision some context.",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
+  },
+  {
+    "id": "ah_18",
+    "createdAt": "2026-09-23T13:55:00+01:00",
+    "merchant": "Blackwell's",
+    "totalPence": 3499,
+    "verdict": "go_ahead",
+    "regretRisk": 12,
+    "headline": "Your earlier order gives the next decision some context.",
+    "decision": "buy_anyway",
+    "outcome": "happy"
+  },
+  {
+    "id": "ah_17",
+    "createdAt": "2026-09-22T10:10:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 4999,
+    "verdict": "go_ahead",
+    "regretRisk": 12,
+    "headline": "Your earlier order gives the next decision some context.",
+    "decision": "buy_anyway",
+    "outcome": "happy"
+  },
+  {
+    "id": "ah_16",
+    "createdAt": "2026-08-14T23:15:00+01:00",
+    "merchant": "ASOS",
+    "totalPence": 3200,
+    "verdict": "strong_nudge",
+    "regretRisk": 75,
+    "headline": "Your earlier order gives the next decision some context.",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
   }
 ]
