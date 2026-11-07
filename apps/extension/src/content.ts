@@ -16,6 +16,7 @@ import { asinFromUrl, parseCheckout, parseProductPage, toAssessRequest, type Par
 const KEY_PREFIX = "st-ext:";
 const SCENARIO_IDX_KEY = `${KEY_PREFIX}scenario-idx`;
 const FRAME_ID = "st-nudge-frame";
+const SCRIM_ID = "st-nudge-scrim";
 
 interface ScenarioSummary {
   id: string;
@@ -71,9 +72,39 @@ async function assessParsed(req: AssessRequest): Promise<Assessment> {
 
 // ---------- the nudge iframe ----------
 
+/** Greys and blurs the whole shop page behind the card. */
+function showScrim() {
+  if (document.getElementById(SCRIM_ID)) return;
+  const d = document.createElement("div");
+  d.id = SCRIM_ID;
+  const s = d.style;
+  s.setProperty("position", "fixed", "important");
+  s.setProperty("inset", "0", "important");
+  s.setProperty("z-index", "2147483646", "important");
+  s.setProperty("background", "rgba(12, 12, 14, 0.55)", "important");
+  s.setProperty("backdrop-filter", "blur(6px)", "important");
+  s.setProperty("-webkit-backdrop-filter", "blur(6px)", "important");
+  s.setProperty("opacity", "0");
+  s.setProperty("transition", "opacity 240ms ease");
+  (document.body ?? document.documentElement).appendChild(d);
+  requestAnimationFrame(() => d.style.setProperty("opacity", "1"));
+}
+
+function removeScrim(fade: boolean) {
+  const d = document.getElementById(SCRIM_ID);
+  if (!d) return;
+  if (!fade) {
+    d.remove();
+    return;
+  }
+  d.style.setProperty("opacity", "0");
+  setTimeout(() => d.remove(), 240);
+}
+
 function removeFrame(fade: boolean) {
   const f = frame;
   frame = null;
+  removeScrim(fade);
   if (!f) return;
   if (!fade) {
     f.remove();
@@ -117,6 +148,7 @@ async function showFrame(path: string) {
 
   frame = f;
   frameOrigin = new URL(base).origin;
+  showScrim();
   (document.body ?? document.documentElement).appendChild(f);
 }
 
@@ -130,6 +162,9 @@ window.addEventListener("message", (event: MessageEvent) => {
     const max = window.innerHeight - 32;
     const h = Math.max(72, Math.min(max, Math.ceil(data.height)));
     frame.style.setProperty("height", `${h}px`, "important");
+    // a short frame is the "looks fine" toast: no need to grey the page for that
+    if (h <= 80) removeScrim(true);
+    else showScrim();
   } else if (data.type === "close") {
     removeFrame(true);
   } else if (data.type === "open") {

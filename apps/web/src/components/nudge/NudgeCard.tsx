@@ -47,7 +47,7 @@ export function NudgeCard(props: Props) {
     <div className="flex flex-col gap-3">
       <article className="nudge-card flex flex-col" data-busy={busy ? "true" : "false"} aria-busy={!!busy} aria-labelledby="nudge-headline">
         <div className={`flex flex-col ${compact ? "gap-3 p-4" : "gap-4 p-5"}`}>
-          {/* title row; the ✕ is there on every score */}
+          {/* title row */}
           <div className="flex items-start gap-3">
             <div className="flex-1 min-w-0 flex flex-col gap-1">
               <span className="text-xs nudge-muted">
@@ -57,18 +57,6 @@ export function NudgeCard(props: Props) {
                 {a.headline}
               </h1>
             </div>
-            {!done && (
-              <button
-                type="button"
-                className="nudge-btn nudge-btn-round shrink-0"
-                aria-label="Dismiss (Esc)"
-                title="Dismiss (Esc)"
-                disabled={inactive}
-                onClick={() => props.onDecision("dismiss")}
-              >
-                ✕
-              </button>
-            )}
           </div>
 
           <RiskRow a={a} compact={compact} />

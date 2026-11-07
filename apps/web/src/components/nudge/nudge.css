@@ -439,8 +439,14 @@ html:has(.nudge-root) nextjs-portal { display: none; }
 
 /* reason pill and replies sit under the card: give them the solid glass base so they read on any page */
 .nudge-root .nudge-pill:not(.nudge-card .nudge-pill) {
-  background: var(--glass-sheen), var(--glass-tint-strong), color-mix(in srgb, var(--color-bg) 72%, transparent);
-  box-shadow: var(--shadow-card), var(--glass-rim);
+  background: #36373a;
+  background: var(--color-surface-2, #36373a);
+  box-shadow: var(--shadow-card);
+}
+.nudge-root .nudge-reply:not(.nudge-card .nudge-reply),
+.nudge-root .nudge-bubble-reply:not(.nudge-card .nudge-bubble-reply) {
+  background: #2a2b2d;
+  background: var(--color-surface, #2a2b2d);
 }
 .nudge-bubble-user {
   background: var(--color-accent);
