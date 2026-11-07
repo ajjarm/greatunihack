@@ -55,9 +55,9 @@ export default function HomePage() {
     {data.pendingReflections > 0 && <Link href="/purchases" className="block border border-[var(--color-accent)] bg-[var(--color-accent-bg)] p-4 text-sm font-semibold text-[var(--color-accent)]" style={{ borderRadius: "var(--radius-md)" }}>{data.pendingReflections} purchase{data.pendingReflections === 1 ? " is" : "s are"} ready for a check-in →</Link>}
 
     <Card className="relative z-10">
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-7">
+      <div className="flex flex-col items-center gap-5 text-center">
         <SpendScoreBreakdown value={displayedScore} tone={tone} report={viewingPast ? selectedReport || null : weekly.data?.weekStart === lastHistoryPoint?.weekStart ? weekly.data : null} current={!viewingPast} explanation={score.explanation} safeToSpendPence={data.safeToSpendPence} />
-        <div className="min-w-0 flex-1" aria-live="polite">
+        <div className="min-w-0 max-w-2xl" aria-live="polite">
           <Label>{viewingPast ? `Week of ${date(selectedPoint!.weekStart)}` : "Current Spend Score"}</Label>
           <h2 className="mt-1 text-2xl font-bold">{veryGood ? "Very good" : band === "green" ? "Doing well" : band === "amber" ? "Making progress" : "Needs attention"}</h2>
           <div className="mt-3 flex flex-wrap items-center gap-2"><Chip tone={tone}>{veryGood ? "very good" : band}</Chip>{change !== null && <span className="text-sm font-semibold">{change > 0 ? `+${change}` : change} points vs previous week</span>}</div>
