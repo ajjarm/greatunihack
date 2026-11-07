@@ -23,7 +23,8 @@ export default function WaitingPage() {
   const active = data.filter(i => i.status === "waiting" || i.status === "extended");
   const finished = data.filter(i => i.status === "bought" || i.status === "removed");
   function countdown(until: string) {
-    const remaining = Math.max(0, new Date(until).getTime() - (home ? new Date(home.demoNow).getTime() + elapsed * 1000 : Date.now()));
+    if (!home) return "Checking the timer…";
+    const remaining = Math.max(0, new Date(until).getTime() - (new Date(home.demoNow).getTime() + elapsed * 1000));
     if (!remaining) return "Ready to reconsider";
     const hours = Math.floor(remaining / 3600000);
     const minutes = Math.floor((remaining % 3600000) / 60000);
