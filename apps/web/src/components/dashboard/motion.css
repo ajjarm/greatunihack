@@ -24,7 +24,12 @@
 
 .dashboard-pop {
   animation: dashboard-pop var(--motion-base) var(--ease-out) both;
-  transform-origin: top left;
+  transform-origin: top center;
+}
+
+.dashboard-score-popover {
+  left: 50%;
+  translate: -50% 0;
 }
 
 .dashboard-insight-row {
