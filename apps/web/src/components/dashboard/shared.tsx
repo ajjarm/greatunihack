@@ -48,6 +48,10 @@ export function Bar({ value, max = 100, tone = "accent" }: { value: number; max?
   const color = { accent: "var(--color-accent)", go: "var(--color-go)", think: "var(--color-think)", stop: "var(--color-stop)" }[tone];
   return <div className="h-2 w-full overflow-hidden bg-[var(--color-surface-2)]" style={{ borderRadius: "var(--radius-sm)" }}><div className="h-full" style={{ width: `${Math.min(100, Math.max(0, max ? value / max * 100 : 0))}%`, backgroundColor: color, borderRadius: "var(--radius-sm)" }} /></div>;
 }
+export function ScoreDial({ value, tone }: { value: number; tone: "go" | "think" | "stop" }) {
+  const score = Math.min(100, Math.max(0, value));
+  return <div role="meter" aria-label="Spend Score" aria-valuemin={0} aria-valuemax={100} aria-valuenow={score} className="flex h-32 w-32 shrink-0 items-center justify-center p-2" style={{ borderRadius: "50%", background: `conic-gradient(var(--color-${tone}) ${score}%, var(--color-surface-2) ${score}%)` }}><div className="flex h-full w-full flex-col items-center justify-center bg-[var(--color-surface)]" style={{ borderRadius: "50%" }}><span className="text-4xl font-bold">{score}</span><span className="text-xs text-[var(--color-text-muted)]">of 100</span></div></div>;
+}
 export function PageState({ loading, error, retry }: { loading: boolean; error: string; retry: () => void }) {
   if (loading) return <Card><p role="status" className="text-[var(--color-text-muted)]">Loading your dashboard…</p></Card>;
   if (error) return <Card><p role="alert">{error}</p><div className="mt-4"><Button onClick={retry}>Try again</Button></div></Card>;

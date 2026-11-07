@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Home } from "@/lib/types";
-import { Card, Chip, Label, PageState, date, money, useApi } from "@/components/dashboard/shared";
+import { Card, Chip, Label, PageState, ScoreDial, date, money, useApi } from "@/components/dashboard/shared";
 
 export default function HomePage() {
   const { data, error, loading, reload } = useApi<Home>("home");
@@ -12,12 +12,11 @@ export default function HomePage() {
   if (!data) return <PageState loading={loading} error={error} retry={reload} />;
   const score = data.spendScore;
   const tone = score.band === "green" ? "go" : score.band === "amber" ? "think" : "stop";
-  const color = `var(--color-${tone})`;
   return <div className="space-y-5">
     <header><Label>Overview</Label><h1 className="mt-1 text-3xl font-bold">Your money, today</h1><p className="mt-1 text-sm text-[var(--color-text-muted)]">{date(data.demoNow)}</p></header>
     {data.pendingReflections > 0 && <Link href="/purchases" className="block border border-[var(--color-accent)] bg-[var(--color-accent-bg)] p-4 text-sm font-semibold text-[var(--color-accent)]" style={{ borderRadius: "var(--radius-md)" }}>{data.pendingReflections} purchase{data.pendingReflections === 1 ? " is" : "s are"} ready for a check-in →</Link>}
     <div className="grid gap-5 lg:grid-cols-2">
-      <Card><div className="flex items-center gap-5"><div className="flex h-32 w-32 shrink-0 flex-col items-center justify-center border-[10px]" style={{ borderColor: color, borderRadius: "50%" }}><span className="text-4xl font-bold">{score.value}</span><span className="text-xs text-[var(--color-text-muted)]">of 100</span></div><div><Label>Spend Score</Label><div className="mt-2"><Chip tone={tone}>{score.band} · {score.trend === "up" ? "rising" : score.trend === "down" ? "falling" : "steady"}</Chip></div><button onClick={() => setExplain(!explain)} aria-expanded={explain} className="mt-3 text-sm font-semibold text-[var(--color-accent)]">{explain ? "Hide explanation" : "How is this scored?"}</button></div></div>{explain && <p className="mt-5 border-t border-[var(--color-border)] pt-4 text-sm leading-relaxed">{score.explanation}</p>}{score.history.length > 0 && <p className="mt-4 text-xs text-[var(--color-text-muted)]">Previous week: {score.history.at(-1)?.value}/100</p>}</Card>
+      <Card><div className="flex items-center gap-5"><ScoreDial value={score.value} tone={tone} /><div className="min-w-0"><Label>Spend Score</Label><div className="mt-2"><Chip tone={tone}>{score.band} · {score.trend === "up" ? "rising" : score.trend === "down" ? "falling" : "steady"}</Chip></div><button onClick={() => setExplain(!explain)} aria-expanded={explain} className="mt-3 text-left text-sm font-semibold text-[var(--color-accent)]">{explain ? "Hide explanation" : "How is this scored?"}</button></div></div>{explain && <p className="mt-5 border-t border-[var(--color-border)] pt-4 text-sm leading-relaxed">{score.explanation}</p>}{score.history.length > 0 && <p className="mt-4 text-xs text-[var(--color-text-muted)]">Previous week: {score.history.at(-1)?.value}/100</p>}</Card>
       <Card><Label>Safe to spend until {date(data.nextIncome.date)}</Label><p className="mt-3 text-4xl font-bold">{money(data.safeToSpendPence)}</p><p className="mt-3 text-sm text-[var(--color-text-muted)]">{data.daysToNextIncome} day{data.daysToNextIncome === 1 ? "" : "s"} until {data.nextIncome.name} ({money(data.nextIncome.amountPence)})</p><div className="mt-6 border-t border-[var(--color-border)] pt-4"><Label>Current balance</Label><p className="mt-1 text-2xl font-semibold">{money(data.balancePence)}</p></div></Card>
     </div>
     <Card><Label>Next bill</Label><div className="mt-2 flex items-end justify-between gap-4"><div><p className="font-semibold">{data.nextBill.name}</p><p className="text-sm text-[var(--color-text-muted)]">{date(data.nextBill.date)}</p></div><p className="text-xl font-bold">{money(data.nextBill.amountPence)}</p></div></Card>
