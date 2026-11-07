@@ -56,6 +56,11 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
   const [mode, setMode] = useState<NudgeMode>("card");
   const isToast = mode === "banner";
   const isLock = mode === "lock";
+  // the grey full-screen layer needs a frame that fills the viewport; in a narrow 400px frame
+  // (an extension that hasn't switched to full-screen yet) the locked nudge renders as a normal,
+  // still-locked card that reports its height
+  const [wide, setWide] = useState(false);
+  const isOverlay = isLock && wide;
   const started = useRef(false);
 
   // load once (guarded so dev StrictMode does not create two assessments)
@@ -66,6 +71,7 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
       .then((a) => {
         setAssessment(a);
         setMode(a.verdict === "go_ahead" ? "banner" : nudgeMode(a.regretRisk));
+        setWide(window.innerWidth >= 600);
         if ((FINAL as readonly string[]).includes(a.decision)) setDone({ decision: a.decision as api.DecisionIn });
       })
       .catch((e: Error) => setError(e.message));
@@ -151,15 +157,15 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
   // so body.scrollHeight never drops below the iframe's current height and the card couldn't shrink.
   useLayoutEffect(() => {
     if (isToast) hostResize(72);
-    else if (!isLock) hostResize(contentHeight());
+    else if (!isOverlay) hostResize(contentHeight());
   });
   useEffect(() => {
     const root = document.querySelector(".nudge-root");
-    if (isToast || isLock || !root || typeof ResizeObserver === "undefined") return;
+    if (isToast || isOverlay || !root || typeof ResizeObserver === "undefined") return;
     const ro = new ResizeObserver(() => hostResize(contentHeight()));
     ro.observe(root);
     return () => ro.disconnect();
-  }, [isToast, isLock]);
+  }, [isToast, isOverlay]);
 
   if (!assessment) return <Message error={error} />;
 
@@ -188,7 +194,7 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
       />
   );
 
-  if (isLock && !done) {
+  if (isOverlay && !done) {
     return (
       <div className="nudge-backdrop fixed inset-0 overflow-y-auto flex justify-center items-start p-6" role="dialog" aria-modal="true" aria-labelledby="nudge-headline">
         <div className="w-full max-w-[440px] my-auto">{card}</div>
