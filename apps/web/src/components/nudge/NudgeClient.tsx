@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { hostClose, hostResize } from "@/lib/host";
 import type { Assessment, Purchase, WaitingItem } from "@/lib/types";
 import * as api from "./api";
-import { nudgeMode, type NudgeMode } from "./format";
+import { money, nudgeMode, type NudgeMode } from "./format";
 import { NudgeCard } from "./NudgeCard";
 import { NudgeToast } from "./NudgeToast";
 
@@ -23,6 +23,11 @@ export function NudgeClient() {
   const params = useSearchParams();
   const assessmentId = params.get("assessmentId");
   const scenario = params.get("scenario");
+  // the extension shows ?pending=1 while /api/assess runs, then ?error=1 if it failed
+  if (params.get("error")) return <ErrorLine />;
+  if (params.get("pending") && !assessmentId) {
+    return <Pending merchant={params.get("merchant")} total={Number(params.get("total"))} />;
+  }
   if (!assessmentId && !scenario) {
     return <Message error="Add ?scenario=scn_1_impulse or ?assessmentId=… to the URL." />;
   }
@@ -41,6 +46,37 @@ function Message({ error }: { error?: string | null }) {
           <p className="nudge-muted text-sm nudge-risk-figure">Having a second think…</p>
         )}
       </div>
+    </div>
+  );
+}
+
+function Pending({ merchant, total }: { merchant: string | null; total: number }) {
+  useLayoutEffect(() => hostResize(contentHeight())); // about 120px
+  useEffect(() => {
+    const root = document.querySelector(".nudge-root");
+    if (!root || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => hostResize(contentHeight()));
+    ro.observe(root);
+    return () => ro.disconnect();
+  }, []);
+  const what = [merchant, Number.isFinite(total) && total > 0 ? money(total) : null].filter(Boolean).join(" · ");
+  return (
+    <div className="p-3">
+      <div className="nudge-card px-5 py-6 flex flex-col gap-2" data-busy="true" aria-busy="true">
+        <p className="nudge-muted text-sm nudge-risk-figure">Having a second think…</p>
+        {what && <p className="nudge-muted text-xs nudge-num">{what}</p>}
+      </div>
+    </div>
+  );
+}
+
+function ErrorLine() {
+  useLayoutEffect(() => hostResize(72));
+  return (
+    <div className="p-3">
+      <p className="nudge-card nudge-muted px-3 py-3 text-xs whitespace-nowrap overflow-hidden text-ellipsis" role="status">
+        Couldn&apos;t judge this basket. Press Option+Shift+N to retry.
+      </p>
     </div>
   );
 }

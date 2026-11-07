@@ -1,10 +1,12 @@
 /**
  * Content script: Amazon checkout pages and the local test page.
  *
- * Flow: confirm it's a checkout → parse the basket → GET /api/scenarios and attach a
- * scenarioId when a fixture total matches (±1p) → POST /api/assess → inject the nudge
- * iframe. One nudge per basketHash per tab session (sessionStorage); a changed total
- * makes a new hash, so it judges again. Does nothing while paused.
+ * Flow: confirm it's a checkout → parse the basket → inject the nudge iframe at once in
+ * its pending ("Having a second think…") state → GET /api/scenarios and attach a
+ * scenarioId when a fixture total matches (±1p) → POST /api/assess → point the iframe at
+ * the assessment (or at /nudge?error=1 if that failed). One nudge per basketHash per page
+ * load (in memory, so SPA re-renders don't re-judge but a reload does); a changed total
+ * makes a new hash, so it judges again. Alt+Shift+N forces a re-judge. Does nothing while paused.
  */
 import type { AssessRequest, Assessment, HostMessage } from "../../web/src/lib/types";
 import { api } from "./api";
@@ -12,7 +14,6 @@ import { getWebUrl, isPaused, type TabMessage, type WorkerMessage } from "./conf
 import { parseCheckout, toAssessRequest } from "./parser";
 
 const KEY_PREFIX = "st-ext:";
-const SEEN_KEY = (hash: string) => `${KEY_PREFIX}seen:${hash}`;
 const SCENARIO_IDX_KEY = `${KEY_PREFIX}scenario-idx`;
 const FRAME_ID = "st-nudge-frame";
 
@@ -26,8 +27,9 @@ interface ScenarioSummary {
 let frame: HTMLIFrameElement | null = null;
 let frameOrigin = "";
 let inFlight = false;
-let retryAfter = 0;
 let scenariosCache: ScenarioSummary[] | null = null;
+/** basketHashes already judged on this page load (deliberately not sessionStorage). */
+const seen = new Set<string>();
 
 // ---------- session storage (per tab session) ----------
 
@@ -43,13 +45,6 @@ function ssSet(key: string, v: string) {
     sessionStorage.setItem(key, v);
   } catch {
     /* storage blocked: we may nudge twice, which is fine */
-  }
-}
-function ssDel(key: string) {
-  try {
-    sessionStorage.removeItem(key);
-  } catch {
-    /* ignore */
   }
 }
 
@@ -88,15 +83,21 @@ function removeFrame(fade: boolean) {
   setTimeout(() => f.remove(), 200);
 }
 
-async function showNudge(assessmentId: string) {
+/** Points the nudge iframe at `path` on WEB_URL, injecting it if it isn't on the page. */
+async function showFrame(path: string) {
   const base = await getWebUrl();
+  const src = `${base}${path}`;
+  if (frame && frame.isConnected) {
+    frame.src = src; // same window, so resize/close messages keep matching
+    return;
+  }
   removeFrame(false);
   document.getElementById(FRAME_ID)?.remove();
 
   const f = document.createElement("iframe");
   f.id = FRAME_ID;
   f.title = "Checkout money agent";
-  f.src = `${base}/nudge?assessmentId=${encodeURIComponent(assessmentId)}`;
+  f.src = src;
   f.setAttribute("allowtransparency", "true");
   const s = f.style;
   s.setProperty("position", "fixed", "important");
@@ -104,7 +105,7 @@ async function showNudge(assessmentId: string) {
   s.setProperty("right", "16px", "important");
   s.setProperty("width", "400px", "important");
   s.setProperty("max-width", "calc(100vw - 32px)", "important");
-  s.setProperty("height", "160px", "important");
+  s.setProperty("height", "120px", "important");
   s.setProperty("z-index", "2147483647", "important");
   s.setProperty("border", "none", "important");
   s.setProperty("border-radius", "16px", "important");
@@ -147,6 +148,24 @@ async function openDashboard(path?: string) {
   }
 }
 
+const pendingPath = (merchant: string, totalPence: number) =>
+  `/nudge?pending=1&merchant=${encodeURIComponent(merchant || "Amazon")}&total=${Math.round(totalPence)}`;
+
+/** Shows the thinking state straight away, then the assessment (or the error line). */
+async function assessAndShow(totalPence: number, merchant: string, assess: () => Promise<Assessment>): Promise<boolean> {
+  await showFrame(pendingPath(merchant, totalPence));
+  try {
+    const a = await assess();
+    if (!a?.id) throw new Error("assessment without an id");
+    await showFrame(`/nudge?assessmentId=${encodeURIComponent(a.id)}`);
+    return true;
+  } catch (e) {
+    console.warn("[st] assess failed", e);
+    await showFrame("/nudge?error=1");
+    return false;
+  }
+}
+
 // ---------- automatic judging ----------
 
 async function judgeParsed(force: boolean): Promise<boolean> {
@@ -155,23 +174,17 @@ async function judgeParsed(force: boolean): Promise<boolean> {
   if (!parsed.isCheckout) return false;
   const req = toAssessRequest(parsed);
   if (!req) return false;
-  if (!force && ssGet(SEEN_KEY(req.basketHash))) return true;
+  if (!force && seen.has(req.basketHash)) return true;
 
-  ssSet(SEEN_KEY(req.basketHash), String(Date.now()));
-  try {
-    const a = await assessParsed(req);
-    if (!a?.id) throw new Error("assessment without an id");
-    await showNudge(a.id);
-  } catch (e) {
-    ssDel(SEEN_KEY(req.basketHash));
-    retryAfter = Date.now() + 5000;
-    console.warn("[st] assess failed", e);
-  }
+  // Stays seen even if assess fails: the error line asks for Alt+Shift+N rather than
+  // flickering between pending and error on every DOM tick.
+  seen.add(req.basketHash);
+  await assessAndShow(req.totalPence, req.merchant, () => assessParsed(req));
   return true;
 }
 
 async function tick() {
-  if (inFlight || Date.now() < retryAfter) return;
+  if (inFlight) return;
   if (await isPaused()) return;
   inFlight = true;
   try {
@@ -212,8 +225,7 @@ async function judgeNow() {
       capturedAt: new Date().toISOString(),
       basketHash: "shortcut",
     };
-    const a = await api<Assessment>("/api/assess", "POST", req);
-    if (a?.id) await showNudge(a.id);
+    await assessAndShow(s.totalPence, s.merchant, () => api<Assessment>("/api/assess", "POST", req));
   } catch (e) {
     console.warn("[st] judge-now failed", e);
   } finally {
@@ -228,6 +240,11 @@ chrome.runtime.onMessage.addListener((msg: TabMessage) => {
 
 // ---------- start ----------
 console.info("[st] SecondThought content script loaded on", location.href);
+
+// Wake the server's model client so the first real assessment isn't a cold start.
+api("/api/health?warm=1").catch(() => {
+  /* fire and forget */
+});
 
 const observer = new MutationObserver((records) => {
   // ignore our own iframe going in and out
