@@ -1,4 +1,6 @@
 import { error, handle, isStr, json, readBody, uncached, type Params } from "@/lib/api";
+import { recomputeNegotiation } from "@/lib/brain/assess";
+import { brainLive } from "@/lib/brain/mode";
 import { applyNegotiationFallback } from "@/lib/logic";
 import { getAssessment, getStore, putAssessment, scenarioOf } from "@/lib/store";
 import type { Assessment } from "@/lib/types";
@@ -13,6 +15,12 @@ export async function POST(req: Request, { params }: Params<"id">) {
     if (!isStr(body.optionId)) return error("optionId is required", 400);
     const option = current.negotiation.find((n) => n.id === body.optionId);
     if (!option) return error(`Unknown optionId: ${body.optionId}`, 404);
+
+    // live Brain: assessments it created are re-judged with the option applied
+    if (brainLive()) {
+      const live = recomputeNegotiation(getStore(), current, option);
+      if (live) return json(putAssessment(live));
+    }
 
     const variant = scenarioOf(id)?.variants?.negotiated;
     if (variant && variant.optionId === option.id && current.decision === "none") {

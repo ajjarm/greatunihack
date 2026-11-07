@@ -7,9 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check:data": "tsx scripts/check-data.ts"
+    "check:data": "tsx scripts/check-data.ts",
+    "eval:brain": "tsx scripts/eval-brain.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
     "next": "16.4.5",
     "react": "19.3.0",
     "react-dom": "19.3.0"
