@@ -226,16 +226,21 @@ yes → verdict `essential_cover`).
 
 ## 8. Design tokens (apps/web/src/styles/tokens.css)
 
-Use these and only these. Defaults are neutral; Ajjar replaces the values when
-`docs/DESIGN.md` is ready.
+Use these and only these. Values and component recipes: `docs/DESIGN.md`.
 
 ```css
 --color-bg, --color-surface, --color-surface-2, --color-text, --color-text-muted,
---color-border, --color-accent, --color-accent-bg, --color-go, --color-go-bg,
+--color-text-dim, --color-border, --color-fill, --color-fill-2,
+--color-accent, --color-accent-bg, --color-on-accent, --color-go, --color-go-bg,
 --color-think, --color-think-bg, --color-stop, --color-stop-bg,
---radius-sm, --radius-md, --radius-lg, --shadow-card, --shadow-float,
---font-sans, --font-mono, --space-1 ... --space-8, --motion-fast (150ms),
---motion-base (220ms), --motion-slow (320ms), --ease-out
+--glass-tint, --glass-tint-strong, --glass-blur, --glass-sheen, --glass-edge, --glass-rim,
+--color-popover, --color-scrim,
+--radius-sm, --radius-md, --radius-lg, --radius-pill, --shadow-card, --shadow-float,
+--font-sans, --font-mono, --fs-display, --fs-number, --fs-h1, --fs-headline, --fs-h2,
+--fs-body, --fs-label, --space-1 ... --space-9,
+--motion-press (120ms), --motion-fast (150ms), --motion-base (240ms),
+--motion-slow (340ms), --motion-exit (160ms), --ease-out, --ease-in-out,
+--z-card, --z-popover, --z-nav, --z-toast
 ```
 
 Tailwind is available for layout (flex, grid, spacing), but colours, radii, shadows

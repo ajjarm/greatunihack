@@ -1,5 +1,6 @@
 import { error, handle, isInt, isStr, json, readBody, uncached } from "@/lib/api";
 import { assessLiveWithin } from "@/lib/brain/assess";
+import { applyDemoRules } from "@/lib/brain/demo-rules";
 import { brainLive } from "@/lib/brain/mode";
 import { buildGenericAssessment, cloneAssessment, newId } from "@/lib/logic";
 import { findScenario, getStore, putAssessment } from "@/lib/store";
@@ -69,12 +70,12 @@ export async function POST(req: Request) {
     // (each Claude call has its own deadline and the words fall back to templates)
     if (brainLive()) {
       try {
-        return json(putAssessment(await assessLiveWithin(parsed, store)));
+        return json(putAssessment(applyDemoRules(store, await assessLiveWithin(parsed, store))));
       } catch (e) {
         console.error("[brain] assessLive failed, using the fixture builder:", e instanceof Error ? e.message : e);
         const a = buildGenericAssessment(store, parsed, id);
         a.reasoning = `(fixture fallback) ${a.reasoning}`;
-        return json(putAssessment(a));
+        return json(putAssessment(applyDemoRules(store, a)));
       }
     }
 

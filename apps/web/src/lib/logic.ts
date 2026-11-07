@@ -251,9 +251,16 @@ export function reasonAccepted(text: string): boolean {
 }
 
 /** Justification fallback: accepted reasons lower every risk by 30; money never changes. */
-export function applyReasonFallback(a: Assessment, text: string): Assessment {
-  const accepted = reasonAccepted(text);
+export function applyReasonFallback(a: Assessment, text: string, force?: { accepted: boolean; verdictText?: string }): Assessment {
+  const accepted = force ? force.accepted : reasonAccepted(text);
   const adjustment = accepted ? -30 : 0;
+  // A new reason replaces the previous one: undo the earlier adjustment first so they never stack.
+  const previous = a.reason?.adjustment ?? 0;
+  if (previous) {
+    a.items = a.items.map((it) => ({ ...it, regretRisk: clamp(it.regretRisk - previous, 0, 100), factors: it.factors.filter((f) => f.key !== "reason") }));
+    a.regretRisk = clamp(a.regretRisk - previous, 0, 100);
+    a.topFactors = a.topFactors.filter((f) => f.key !== "reason");
+  }
   const before = a.regretRisk;
   a.items = a.items.map((it) => ({
     ...it,
@@ -268,7 +275,7 @@ export function applyReasonFallback(a: Assessment, text: string): Assessment {
   const verdictText = accepted
     ? `That changes the risk, not the money. Risk drops from ${before} to ${a.regretRisk}.`
     : `Noted, but it does not change the picture. Risk stays at ${a.regretRisk}.`;
-  a.reason = { text, accepted, adjustment, verdictText };
+  a.reason = { text, accepted, adjustment, verdictText: force?.verdictText ? `${force.verdictText} Risk ${accepted ? `drops from ${before} to ${a.regretRisk}` : `stays at ${a.regretRisk}`}.` : verdictText };
   if (accepted) {
     const reasonFactor: Assessment["topFactors"][number] = { key: "reason", text: "You gave a reason, so the want score drops" };
     a.topFactors = [reasonFactor, ...a.topFactors].slice(0, 3);

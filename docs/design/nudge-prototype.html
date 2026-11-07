@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1200">
+<title>SecondThought · nudge prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap">
+<style>
+  :root{
+    --band:#FF8C78; --band-glow:rgba(255,140,120,.5); --accent:#CDFF44; --on-accent:#121212;
+    --text:#F2F2F2; --muted:#B4B5B7;
+    --ease-out:cubic-bezier(.22,1,.36,1);
+  }
+  html,body{margin:0;background:#101010}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.45;font-variant-numeric:tabular-nums;font-feature-settings:"cv11","ss01"}
+  *{box-sizing:border-box}
+  button{font:inherit}
+  .stage{position:relative;width:1200px;height:880px;margin:0 auto;overflow:hidden;background:#fff}
+  .stage img.page{position:absolute;inset:0;width:1200px;height:880px;object-fit:cover}
+  .scrim{position:absolute;inset:0;background:rgba(0,0,0,.48);opacity:0;transition:opacity 320ms var(--ease-out);pointer-events:none}
+  .scrim.on{opacity:1}
+
+  /* liquid glass: the material lives on ::before so popovers inside can still sample the page */
+  .glass{position:relative;box-shadow:0 30px 70px rgba(0,0,0,.45),0 1px 2px rgba(0,0,0,.3)}
+  .glass::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(150deg,rgba(255,255,255,.12),rgba(255,255,255,.03) 32%,rgba(255,255,255,0) 55%,rgba(255,255,255,.04)),rgba(58,59,61,.72);-webkit-backdrop-filter:blur(40px) saturate(160%);backdrop-filter:blur(40px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(0,0,0,.4);pointer-events:none}
+  .glass::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.45),rgba(255,255,255,.10) 36%,rgba(255,255,255,.06) 64%,rgba(255,255,255,.30));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+  .z{position:relative;z-index:1}
+  .rel{position:relative}
+  .acc{background:var(--accent);color:var(--on-accent)}.acc:hover{background:#D9FF6E}
+  .sub{position:relative;background:rgba(255,255,255,.055);border-radius:16px}
+
+  .cluster{position:absolute;top:96px;right:36px;width:460px;opacity:0;transform:translateX(44px) scale(.96);transition:opacity 300ms var(--ease-out),transform 380ms var(--ease-out)}
+  .cluster.in{opacity:1;transform:none}
+  .cluster.out{opacity:0;transform:translateX(44px) scale(.96);transition-duration:200ms,240ms}
+  .inner{opacity:.6;transition:opacity 360ms var(--ease-out)}
+  .in .inner{opacity:1}
+  .aura{position:absolute;width:380px;height:300px;right:-40px;top:-70px;border-radius:50%;filter:blur(70px);opacity:0;transition:opacity 600ms ease,background 500ms ease;pointer-events:none;background:radial-gradient(circle,var(--band),transparent 68%)}
+  .in .aura{opacity:.30}
+  .land{opacity:0;transform:translateY(8px);transition:opacity 300ms var(--ease-out),transform 300ms var(--ease-out)}
+  .ready .land{opacity:1;transform:none}
+  .ready .d1{transition-delay:0ms}.ready .d2{transition-delay:50ms}.ready .d3{transition-delay:100ms}.ready .d4{transition-delay:150ms}.ready .d5{transition-delay:200ms}.ready .d6{transition-delay:250ms}.ready .d7{transition-delay:300ms}
+
+  .think{position:absolute;inset:0;z-index:2;display:flex;align-items:center;gap:14px;transition:opacity 220ms ease;pointer-events:none}
+  .ready .think{opacity:0}
+  .shim{height:12px;border-radius:6px;background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.2),rgba(255,255,255,.08));background-size:200% 100%;animation:shim 1.4s linear infinite}
+  @keyframes shim{from{background-position:200% 0}to{background-position:-200% 0}}
+  .spin{transform-origin:46px 46px;animation:spin 1.1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .arc{transition:stroke-dasharray 700ms var(--ease-out),stroke 400ms ease}
+  .ringwrap{position:relative;width:76px;height:76px}
+  .ringnum{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;letter-spacing:-0.03em;color:#fff}
+  .ringnum small{font-size:11px;font-weight:600;margin-left:1px;align-self:flex-start;margin-top:17px}
+  .draw{stroke-dasharray:1400;stroke-dashoffset:1400;transition:d 500ms var(--ease-out)}
+  .ready .draw{stroke-dashoffset:0;transition:stroke-dashoffset 1100ms var(--ease-out) 240ms,d 500ms var(--ease-out),stroke 400ms ease}
+  .fillarea{opacity:0;transition:opacity 600ms ease 900ms,d 500ms var(--ease-out)}
+  .ready .fillarea{opacity:1}
+
+  .tile{cursor:default;transition:background 180ms ease}
+  .tile:hover,.tile.on{background:rgba(255,255,255,.10);z-index:20}
+
+  /* flat bars */
+  .bar{position:relative;height:6px;border-radius:3px;background:rgba(255,255,255,.18);overflow:hidden}
+  .bar>span{position:absolute;top:0;bottom:0;border-radius:3px;transition:width 520ms var(--ease-out),background 400ms ease}
+  .bar .have{left:0;background:#fff}
+  .bar .over{right:0;background:var(--band)}
+  .blocks{display:flex;gap:3px;height:6px}
+  .blocks span{flex:1;border-radius:3px;background:#fff}
+  .blocks span.half{background:linear-gradient(90deg,#fff 50%,rgba(255,255,255,.18) 50%)}
+
+  .pop{position:absolute;width:270px;padding:13px 15px 15px;border-radius:18px;z-index:30;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px) scale(.97);transition:opacity 140ms var(--ease-out),transform 160ms var(--ease-out),visibility 0s linear 160ms}
+  .pop.show{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity 200ms var(--ease-out),transform 260ms var(--ease-out),visibility 0s}
+  .pop::before{background:linear-gradient(150deg,rgba(255,255,255,.10),rgba(255,255,255,0) 50%),rgba(52,53,55,.94);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 20px 50px rgba(0,0,0,.5)}
+  .pop.left{transform:translateX(8px) scale(.97);transform-origin:right 30px}
+  .pop.left.show{transform:none}
+
+  .btn{font-weight:600;font-size:13px;letter-spacing:-0.005em;border:0;cursor:pointer;border-radius:999px;min-height:40px;padding:0 16px;transition:transform 120ms var(--ease-out),background 150ms ease,opacity 200ms ease;user-select:none;display:inline-flex;align-items:center;gap:7px;color:var(--text);white-space:nowrap;background:rgba(255,255,255,.08)}
+  .btn:hover{background:rgba(255,255,255,.12)}
+  .btn:active{transform:scale(.96)}
+  .btn[disabled]{opacity:.5;cursor:not-allowed}.btn[disabled]:active{transform:none}
+  .btn:focus-visible,.tag:focus-visible,.inp:focus-visible,.round:focus-visible,.link:focus-visible{outline:2px solid #F2F2F2;outline-offset:2px}
+  .white{background:#F2F2F2;color:#1B1A17}.white:hover{background:#fff}
+  .round{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:0;cursor:pointer;flex:none;transition:transform 120ms var(--ease-out),background 150ms ease;color:var(--muted);background:transparent}
+  .round:active{transform:scale(.94)}
+  .link{font-size:13px;font-weight:500;color:#C9CACC;background:transparent;border:0;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:4px 0;transition:color 150ms ease}
+  .link:hover{color:#fff}
+  .more{animation:land 240ms var(--ease-out) both}
+  @keyframes land{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  .tag{font-size:11px;font-weight:600;color:var(--text);border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);border-radius:6px;padding:3px 8px;cursor:pointer;transition:transform 120ms var(--ease-out),background 150ms ease}
+  .tag:hover{background:rgba(255,255,255,.12)}.tag:active{transform:scale(.95)}
+  .inp{font-size:14px;flex:1;min-width:0;border:0;background:transparent;color:var(--text);padding:8px 0;font-family:inherit}
+  .inp::placeholder{color:var(--muted)}
+  .inp:focus{outline:none}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--muted)}
+  .muted{color:var(--muted)}
+  .num{transition:color 400ms ease}
+  .band{color:var(--band);transition:color 400ms ease}
+  .row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid rgba(255,255,255,.08);font-size:13px}
+  .hidden{display:none !important}
+  .strip{position:relative;height:8px;border-radius:4px;background:rgba(255,255,255,.14);margin:6px 0 0}
+  .strip .seg{position:absolute;top:0;bottom:0;border-radius:4px;transition:left 500ms var(--ease-out),width 500ms var(--ease-out)}
+  .strip .dot{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:2px solid #3A3B3D;background:#F2F2F2;cursor:default;transition:transform 160ms var(--ease-out),left 500ms var(--ease-out)}
+  .strip .dot:hover,.strip .dot.on{transform:scale(1.3)}
+  .strip .dot.pay{background:#9BF2B0}
+  .strip .dot.buy{background:var(--band);width:16px;height:16px;margin:-8px 0 0 -8px}
+  .krow{display:flex;align-items:baseline;gap:12px;padding:9px 0 0;font-size:14px}
+
+  .toast{position:absolute;top:96px;right:36px;width:460px;display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:999px;min-height:52px;transform:translateY(-8px);opacity:0;transition:transform 240ms var(--ease-out),opacity 200ms ease;z-index:3;pointer-events:none}
+  .toast.on{transform:none;opacity:1}
+  .ghost{position:absolute;left:1001px;top:479px;width:174px;height:27px;border:0;background:transparent;border-radius:14px;cursor:pointer}
+  .replay{position:absolute;left:24px;bottom:24px;border-radius:999px;padding:0 14px 0 10px;min-height:40px;display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text);border:0;cursor:pointer;transition:transform 120ms var(--ease-out);background:transparent}
+  .replay:active{transform:scale(.96)}
+
+  @media (prefers-reduced-motion:reduce){
+    .cluster,.inner,.land,.arc,.draw,.toast,.aura,.think,.fillarea,.pop,.bar>span,.scrim{transition-duration:1ms!important;transition-delay:0ms!important}
+    .more{animation-duration:1ms}.spin,.shim{animation:none}
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <img class="page" src="amazon-watch.webp" alt="Amazon product page for a Gucci watch">
+  <div class="scrim" id="scrim"></div>
+  <button class="ghost" id="addToCart" aria-label="Add to Cart, brings the nudge back" title="Add to Cart"></button>
+
+  <div class="cluster" id="cluster" role="dialog" aria-label="SecondThought nudge">
+    <div class="aura"></div>
+    <div class="inner">
+      <div class="glass" style="border-radius:26px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px">
+        <div class="think" aria-hidden="true" style="padding:18px 22px;align-items:flex-start;gap:14px;border-radius:26px">
+          <svg width="56" height="56" viewBox="0 0 92 92" style="flex:none"><circle cx="46" cy="46" r="40" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="8"/><circle class="spin" cx="46" cy="46" r="40" fill="none" stroke="#F2F2F2" stroke-opacity=".7" stroke-width="8" stroke-linecap="round" stroke-dasharray="50 201.3"/></svg>
+          <div style="flex:1;display:flex;flex-direction:column;gap:10px;padding-top:6px"><span class="muted" style="font-size:12px">Having a look at this one…</span><div class="shim" style="width:62%"></div><div class="shim" style="width:40%"></div></div>
+        </div>
+
+        <div class="z land d1" style="display:flex;align-items:center;justify-content:space-between;padding:0 4px"><span class="eyebrow">SecondThought · Amazon · £618 · <span style="font-weight:500;opacity:.8">experimental</span></span><button class="link" id="detailsBtn" style="font-size:12px;padding:0"><span id="detailsLabel">Show details</span> <svg id="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" style="transition:transform 200ms ease"><path d="M6 9l6 6 6-6"/></svg></button></div>
+        <h2 class="z land d2" id="headline" style="margin:0 0 4px;padding:0 4px;font-size:21px;line-height:1.25;font-weight:600;letter-spacing:-0.02em;color:#fff">Hold on, this looks like an impulse buy.</h2>
+
+        <div class="rel" style="display:flex;gap:8px;align-items:stretch">
+          <div class="sub tile land d3" id="ringTile" style="width:120px;flex:none;padding:12px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:6px">
+            <div class="ringwrap">
+              <svg width="76" height="76" viewBox="0 0 92 92" aria-hidden="true" style="display:block;overflow:visible">
+                <circle cx="46" cy="46" r="40" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="7"/>
+                <circle class="arc" id="arc" cx="46" cy="46" r="40" fill="none" stroke="var(--band)" stroke-width="7" stroke-linecap="round" stroke-dasharray="0 251.3" transform="rotate(-90 46 46)" style="filter:drop-shadow(0 0 5px var(--band-glow))"/>
+              </svg>
+              <div class="ringnum" id="ringNum" role="img" aria-label="Regret risk 0 out of 100"><span id="score">0</span><small>%</small></div>
+            </div>
+            <span class="muted" style="font-size:12px">regret risk</span>
+            <div class="pop glass left" id="popWhy" style="top:0;right:calc(100% + 30px)">
+              <div class="z eyebrow" style="margin-bottom:8px">Why <span id="whyScore">0</span>% · experimental</div>
+              <div class="z" id="whyList" style="display:flex;flex-direction:column;gap:8px;font-size:13px;line-height:1.45"></div>
+            </div>
+          </div>
+
+          <div class="sub tile land d4" id="tileSafe" style="flex:1;padding:11px 12px 10px;display:flex;flex-direction:column;justify-content:space-between;gap:12px">
+            <div><div class="num band" id="safeFig" style="font-size:22px;font-weight:600;letter-spacing:-0.03em;line-height:1">£206</div><div class="muted" id="safeLabel" style="font-size:12px;margin-top:4px;line-height:1.3">overdrawn till Fri 13 Nov</div></div>
+            <div><div class="bar"><span class="over" id="safeOver" style="width:33%"></span><span class="have" id="safeHave" style="width:67%"></span></div></div>
+            <div class="pop glass" id="popSafe" style="top:calc(100% + 8px);left:0;transform-origin:30px top">
+              <div class="z eyebrow" id="safePopTitle" style="margin-bottom:8px">After this order</div>
+              <div class="z" style="display:flex;flex-direction:column;gap:6px;font-size:13px;margin-bottom:10px">
+                <div style="display:flex;justify-content:space-between"><span class="muted">In your account</span><span style="font-weight:600">£412</span></div>
+                <div style="display:flex;justify-content:space-between"><span class="muted" id="safePopRow">Days to payday</span><span style="font-weight:600" id="safePopVal">5</span></div>
+                <div style="display:flex;justify-content:space-between"><span class="muted">The watch</span><span style="font-weight:600">−£618</span></div>
+              </div>
+              <div class="z muted" id="safeNote" style="font-size:13px;line-height:1.45"></div>
+            </div>
+          </div>
+
+          <div class="sub tile land d5" id="tileHours" style="flex:1;padding:11px 12px 10px;display:flex;flex-direction:column;justify-content:space-between;gap:12px">
+            <div><div style="font-size:22px;font-weight:600;letter-spacing:-0.03em;color:#fff;line-height:1">65 hrs</div><div class="muted" style="font-size:12px;margin-top:4px;line-height:1.3">of work to pay for it</div></div>
+            <div><div class="blocks" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span class="half"></span></div></div>
+            <div class="pop glass" id="popHours" style="top:calc(100% + 8px);right:0;transform-origin:calc(100% - 30px) top">
+              <div class="z eyebrow" style="margin-bottom:10px">In your time</div>
+              <div class="z" style="display:flex;flex-direction:column;gap:8px;font-size:13px"><div style="display:flex;justify-content:space-between"><span class="muted">At £9.50 an hour</span><span style="font-weight:600">65 hours</span></div><div style="display:flex;justify-content:space-between"><span class="muted">Saturday shifts</span><span style="font-weight:600">6½</span></div><div style="display:flex;justify-content:space-between"><span class="muted">Summer trip fund, £600</span><span style="font-weight:600">103%</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rel sub land d6" id="tileChart" style="padding:14px 16px 12px">
+          <div class="band" id="rentLine" style="font-size:14px;font-weight:500"></div>
+          <div class="strip" id="strip" role="img" aria-label="Days you would be overdrawn over the next five weeks"></div>
+          <div class="muted" style="display:flex;justify-content:space-between;font-size:12px;margin-top:8px"><span>Today</span><span>Fri 11 Dec</span></div>
+          <div id="keyRows" style="margin-top:4px"></div>
+          <div class="pop glass" id="popRent" style="top:calc(100% + 8px);left:0;transform-origin:30px top">
+            <div class="z eyebrow" id="evTitle" style="margin-bottom:6px"></div>
+            <div class="z muted" id="rentNote" style="font-size:13px;line-height:1.45"></div>
+          </div>
+        </div>
+
+        <div class="rel sub more hidden" id="details" style="padding:4px 14px 8px">
+          <div class="row" style="align-items:center;border-top:0"><span style="flex:1;font-weight:500">Gucci G-Timeless watch</span><span class="muted">£618</span><button class="tag" id="chip" aria-label="Change necessity, currently want">want</button><span class="band" style="font-weight:600"><span id="score2">0</span>%</span></div>
+          <div class="row"><span>Phone £18, Sat 14 Nov</span><span style="font-weight:600" id="billState">Not covered</span></div>
+          <div class="row"><span>Summer trip fund, £140 of £600</span><span class="band" style="font-weight:600">103% of it</span></div>
+          <div class="row" id="factors" style="flex-direction:column;align-items:stretch;gap:8px"></div>
+        </div>
+
+        <form class="rel sub land d7" id="reasonForm" style="display:flex;align-items:center;gap:6px;padding:5px 5px 5px 8px;border-radius:999px;min-height:50px;margin-top:4px">
+          <span class="round" aria-hidden="true" style="width:34px;height:34px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          <label for="reason" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Why are you buying it?</label>
+          <input id="reason" class="inp" type="text" placeholder="Why are you buying it?" autocomplete="off">
+          <button class="round" type="button" aria-label="Speak"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
+          <button class="round acc" type="submit" aria-label="Send" style="width:38px;height:38px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+        </form>
+        <div class="rel more muted hidden" id="reply" style="font-size:13px;padding:0 12px"></div>
+
+        <div class="rel land d7" style="display:flex;gap:8px;align-items:center;padding:2px 0 0">
+          <button class="btn acc" id="waitBtn">Wait until payday <span style="font-weight:500;color:#3A4A0E">· 52%</span></button>
+          <button class="btn" id="buyBtn" disabled title="Tell me why first"><svg id="lockIcon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Buying anyway</span></button>
+          <button class="round" id="dismissBtn" aria-label="Dismiss" style="color:#F2F2F2;margin-left:auto;background:rgba(255,255,255,.08)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast glass" id="toast" role="status" aria-live="polite">
+    <span class="z" style="width:28px;height:28px;border-radius:50%;background:rgba(155,242,176,.18);color:#9BF2B0;display:flex;align-items:center;justify-content:center;flex:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>
+    <span class="z" id="toastText" style="font-size:13px;font-weight:500"></span>
+  </div>
+
+  <button class="replay glass" id="replayBtn"><svg class="z" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span class="z">Replay</span></button>
+</div>
+
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const reduced = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const BANDS = {
+    stop:  { hex: '#FF8C78', glow: 'rgba(255,140,120,.5)' },
+    think: { hex: '#FFD15C', glow: 'rgba(255,209,92,.5)' },
+    go:    { hex: '#9BF2B0', glow: 'rgba(155,242,176,.5)' }
+  };
+  const bandOf = n => n >= 70 ? 'stop' : n >= 40 ? 'think' : 'go';
+
+  const state = { phase: 'hidden', shown: 0, applied: false, gift: false, unlocked: false, details: false, chip: 'want', hover: null, pinned: null, ev: null };
+  let timers = [], raf = 0;
+  const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+
+  // ---- event timeline ----
+  const EVENTS = [
+    { d: 0,  name: 'this watch', amt: -618, kind: 'buy' },
+    { d: 5,  name: 'pay',        amt:  198, kind: 'pay' },
+    { d: 6,  name: 'phone',      amt:  -18, kind: 'bill' },
+    { d: 12, name: 'gym',        amt:  -24, kind: 'bill' },
+    { d: 19, name: 'pay',        amt:  198, kind: 'pay' },
+    { d: 23, name: 'rent',       amt: -650, kind: 'bill' },
+    { d: 27, name: 'Spotify',    amt:  -11, kind: 'bill' },
+    { d: 33, name: 'pay',        amt:  198, kind: 'pay' }
+  ];
+  const DAY0 = new Date(2026, 10, 8);
+  const fmt = d => { const t = new Date(DAY0); t.setDate(t.getDate() + d); return t.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }); };
+  const money = n => (n < 0 ? '−£' : '£') + Math.abs(n);
+  const SPAN = 33;
+  const pct = d => (d / SPAN * 100).toFixed(2) + '%';
+  let ledgerKey = null, ledgerRows = [];
+  function buildLedger(applied) {
+    const evs = EVENTS.map(e => (e.kind === 'buy' && applied) ? { ...e, d: 5.3 } : { ...e }).sort((a, b) => a.d - b.d);
+    let w = 412;
+    const rows = evs.map(e => { w += e.amt; return { ...e, w }; });
+    let html = '';
+    rows.forEach((r, i) => {
+      const end = rows[i + 1] ? rows[i + 1].d : SPAN;
+      const col = r.w < 0 ? '#FF8C78' : 'rgba(255,255,255,.45)';
+      html += '<span class="seg" style="left:' + pct(r.d) + ';width:' + ((end - r.d) / SPAN * 100).toFixed(2) + '%;background:' + col + '"></span>';
+    });
+    if (rows[0].d > 0) html += '<span class="seg" style="left:0;width:' + pct(rows[0].d) + ';background:rgba(255,255,255,.45)"></span>';
+    rows.forEach((r, i) => { html += '<span class="dot ' + r.kind + '" data-i="' + i + '" style="left:' + pct(r.d) + '"></span>'; });
+    const strip = $('strip'); strip.innerHTML = html;
+    strip.querySelectorAll('.dot').forEach(dot => {
+      dot.addEventListener('mouseenter', () => { state.ev = +dot.dataset.i; state.hover = 'rent'; render(); });
+      dot.addEventListener('mouseleave', () => { state.ev = null; state.hover = null; render(); });
+    });
+    ledgerRows = rows;
+    return rows;
+  }
+
+  function render() {
+    const s = state;
+    const band = BANDS[bandOf(s.shown)];
+    document.documentElement.style.setProperty('--band', band.hex);
+    document.documentElement.style.setProperty('--band-glow', band.glow);
+    $('score').textContent = s.shown; $('score2').textContent = s.shown; $('whyScore').textContent = s.shown;
+    $('ringNum').setAttribute('aria-label', 'Regret risk ' + s.shown + ' out of 100');
+    $('arc').setAttribute('stroke-dasharray', (s.shown * 2.513).toFixed(1) + ' 251.3');
+    $('headline').textContent = s.gift ? 'Fair enough, a gift changes the picture.' : (s.applied ? 'Better. Still a lot of watch for one account.' : 'Hold on, this looks like an impulse buy.');
+
+    const have = s.applied ? 610 : 412;
+    const safe = have - 618;
+    $('safeFig').textContent = '£' + Math.abs(safe);
+    $('safeLabel').textContent = s.applied ? 'overdrawn after payday' : 'overdrawn till Fri 13 Nov';
+    $('safeHave').style.width = Math.round(have / 618 * 100) + '%';
+    $('safeOver').style.width = Math.round(Math.max(0, 618 - have) / 618 * 100) + '%';
+    $('safePopTitle').textContent = s.applied ? 'If you buy on the 13th' : 'After this order';
+    $('safePopRow').textContent = s.applied ? 'Payday, Fri 13 Nov' : 'Days to payday';
+    $('safePopVal').textContent = s.applied ? '+£198' : '5';
+    $('safeNote').textContent = s.applied ? 'Even after your shift pays you’d be £8 under. Closer, not there.' : 'You have £412. The watch is £618. That’s five days in the overdraft before your shift pays on the 13th.';
+
+    if (ledgerKey !== String(s.applied)) { ledgerKey = String(s.applied); buildLedger(s.applied); }
+    const rows = ledgerRows;
+    const redDays = Math.round(rows.reduce((n, r, i) => n + (r.w < 0 ? ((rows[i + 1] ? rows[i + 1].d : SPAN) - r.d) : 0), 0));
+    $('rentLine').textContent = redDays ? 'Overdrawn on ' + redDays + ' of the next 33 days' : 'Stays above £0 for the next 33 days';
+    const keys = rows.filter(r => (r.kind === 'pay' && r.d === 5) || r.name === 'rent');
+    $('keyRows').innerHTML = keys.map(r => '<div class="krow"><span class="muted" style="width:92px;flex:none">' + fmt(r.d) + '</span><span style="flex:1">' + (r.name === 'rent' ? 'Rent' : 'Payday') + '</span><span class="muted">' + (r.amt > 0 ? '+' : '−') + '£' + Math.abs(r.amt) + '</span><span style="width:64px;text-align:right;font-weight:600;color:' + (r.w < 0 ? '#FF8C78' : '#F2F2F2') + '">' + money(r.w) + '</span></div>').join('');
+    $('strip').querySelectorAll('.dot').forEach(d => d.classList.toggle('on', +d.dataset.i === s.ev));
+    if (s.ev != null && rows[s.ev]) {
+      const r = rows[s.ev];
+      $('evTitle').textContent = (r.kind === 'buy' ? 'The watch' : r.name.charAt(0).toUpperCase() + r.name.slice(1)) + ' · ' + fmt(Math.round(r.d));
+      $('rentNote').textContent = (r.amt > 0 ? '+' : '−') + '£' + Math.abs(r.amt) + '. You’d have ' + money(r.w) + ' after it.';
+      const strip = $('strip'), tileW = $('tileChart').clientWidth;
+      const dotX = strip.offsetLeft + r.d / SPAN * strip.clientWidth;
+      $('popRent').style.left = Math.max(0, Math.min(tileW - 270, dotX - 40)) + 'px';
+      $('popRent').style.transformOrigin = Math.max(12, dotX - parseFloat($('popRent').style.left)) + 'px top';
+    }
+
+    const why = s.applied
+      ? ['Payday covers a third of it, not the rest.', 'You regretted 3 of your last 4 late-night orders.', 'Five days usually settles the urge. Usually.']
+      : ['£618 is one and a half times what’s in your account.', 'You regretted 3 of your last 4 late-night orders.', '“Only 1 left” is a sales cue, not evidence it’s scarce.'];
+    $('whyList').innerHTML = why.map(() => '<div style="display:flex;gap:10px"><span style="flex:none;width:6px;height:6px;border-radius:50%;background:var(--band);margin-top:7px"></span><span></span></div>').join('');
+    [...$('whyList').querySelectorAll('span:last-child')].forEach((el, i) => el.textContent = why[i]);
+
+    const fr = s.applied
+      ? [['Can’t afford it this week', 10, 30], ['Late-night pattern', 24, 30], ['Scarcity banner', 14, 20], ['Over the accessories limit', 4, 20]]
+      : [['Can’t afford it this week', 30, 30], ['Late-night pattern', 24, 30], ['Scarcity banner', 14, 20], ['Over the accessories limit', 16, 20]];
+    $('factors').innerHTML = fr.map(f => '<div style="display:flex;align-items:center;gap:12px;font-size:13px"><span style="flex:1"></span><span class="bar" style="width:64px;flex:none"><span class="have" style="width:' + Math.round(f[1] / f[2] * 100) + '%;background:var(--band)"></span></span><span class="muted" style="width:40px;text-align:right;font-size:12px">' + f[1] + '/' + f[2] + '</span></div>').join('');
+    [...$('factors').querySelectorAll('div > span:first-child')].forEach((el, i) => el.textContent = fr[i][0]);
+
+    $('billState').textContent = safe + 18 < 0 ? 'Not covered' : 'Covered';
+    $('billState').style.color = safe + 18 < 0 ? band.hex : '#9BF2B0';
+    $('chip').textContent = s.chip; $('chip').setAttribute('aria-label', 'Change necessity, currently ' + s.chip);
+    $('details').classList.toggle('hidden', !s.details);
+    $('detailsLabel').textContent = s.details ? 'Hide details' : 'Show details';
+    $('chev').style.transform = s.details ? 'rotate(180deg)' : '';
+    $('reason').placeholder = s.unlocked ? 'Anything else I should know?' : 'Why are you buying it?';
+    $('buyBtn').disabled = !s.unlocked; $('lockIcon').classList.toggle('hidden', s.unlocked);
+
+    const live = s.phase === 'ready';
+    const show = k => live && (s.hover === k || s.pinned === k);
+    $('popWhy').classList.toggle('show', show('why'));
+    $('popSafe').classList.toggle('show', show('safe'));
+    $('popHours').classList.toggle('show', show('hours'));
+    $('popRent').classList.toggle('show', show('rent'));
+    $('ringTile').classList.toggle('on', show('why'));
+    $('tileSafe').classList.toggle('on', show('safe'));
+    $('tileHours').classList.toggle('on', show('hours'));
+    $('tileChart').classList.toggle('on', show('rent'));
+
+    const c = $('cluster');
+    c.classList.toggle('in', s.phase === 'thinking' || s.phase === 'ready');
+    c.classList.toggle('ready', s.phase === 'ready');
+    c.classList.toggle('out', s.phase === 'leaving');
+    $('scrim').classList.toggle('on', s.phase === 'thinking' || s.phase === 'ready');
+  }
+
+  function count(from, to, dur) {
+    cancelAnimationFrame(raf);
+    if (reduced()) { state.shown = to; render(); return; }
+    const t0 = performance.now();
+    const step = t => {
+      const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      state.shown = Math.round(from + (to - from) * e); render();
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+  }
+  function fresh() {
+    timers.forEach(clearTimeout); timers = []; cancelAnimationFrame(raf);
+    Object.assign(state, { phase: 'hidden', shown: 0, applied: false, gift: false, unlocked: false, details: false, chip: 'want', hover: null, pinned: null });
+    $('reply').classList.add('hidden'); $('reason').value = ''; $('toast').classList.remove('on');
+    render();
+  }
+  function start() {
+    fresh();
+    later(() => { state.phase = 'thinking'; render(); }, 120);
+    later(() => { state.phase = 'ready'; render(); count(0, 82, 700); }, 1400);
+  }
+  function replay() {
+    if (state.phase === 'thinking' || state.phase === 'ready') { state.phase = 'leaving'; render(); later(start, 280); }
+    else start();
+  }
+  function leave(msg) {
+    state.phase = 'leaving'; render();
+    if (msg) { $('toastText').textContent = msg; $('toast').classList.add('on'); later(() => $('toast').classList.remove('on'), 3400); }
+  }
+
+  const hov = (id, key) => {
+    const el = $(id);
+    el.addEventListener('mouseenter', () => { state.hover = key; render(); });
+    el.addEventListener('mouseleave', () => { state.hover = null; render(); });
+  };
+  hov('ringTile', 'why'); hov('tileSafe', 'safe'); hov('tileHours', 'hours'); 
+  $('ringTile').addEventListener('click', () => { state.pinned = state.pinned === 'why' ? null : 'why'; render(); });
+
+  $('detailsBtn').addEventListener('click', () => { state.details = !state.details; render(); });
+  $('chip').addEventListener('click', () => { const o = ['want', 'useful', 'need']; state.chip = o[(o.indexOf(state.chip) + 1) % 3]; render(); });
+  $('reasonForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const r = $('reason').value.trim(); if (!r) return;
+    const reply = $('reply'); reply.classList.remove('hidden');
+    if (/gift|present|birthday|anniversary/i.test(r)) {
+      state.gift = true; state.unlocked = true; reply.textContent = 'Reason accepted. Money impact unchanged. Buying anyway is unlocked.';
+      count(state.shown, state.applied ? 40 : 61, 500);
+    } else { state.unlocked = true; reply.textContent = 'Noted. The money maths doesn’t change, but Buying anyway is unlocked.'; }
+    $('reason').value = ''; render();
+  });
+  $('waitBtn').addEventListener('click', () => {
+    if (state.phase !== 'ready') return;
+    state.applied = true; render(); count(state.shown, state.gift ? 40 : 52, 500);
+    later(() => leave('Saved to Waiting. I’ll ask again on Fri 13 Nov.'), 1100);
+  });
+  $('buyBtn').addEventListener('click', () => leave('Noted. I’ll check in on this one in a few days.'));
+  $('dismissBtn').addEventListener('click', () => leave(''));
+  $('replayBtn').addEventListener('click', replay);
+  $('addToCart').addEventListener('click', replay);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && state.phase === 'ready') leave(''); if (e.key === 'r' && document.activeElement !== $('reason')) replay(); });
+
+  start();
+})();
+</script>
+</body>
+</html>

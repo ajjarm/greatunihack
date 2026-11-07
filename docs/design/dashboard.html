@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#141416">
+<title>SecondThought · dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap">
+<style>
+  :root{
+    --bg:#141416; --text:#F2F2F2; --muted:#B4B5B7; --dim:#7A7B7D; --line:rgba(255,255,255,.10);
+    --fill:rgba(255,255,255,.06); --fill-2:rgba(255,255,255,.10);
+    --accent:#CDFF44; --on-accent:#121212;
+    --go:#9BF2B0; --think:#FFD15C; --stop:#FF8C78;
+    --ease-out:cubic-bezier(.22,1,.36,1);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:#0B0B0C}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.45;font-variant-numeric:tabular-nums;font-feature-settings:"cv11","ss01"}
+  button,input{font:inherit;color:inherit}
+  html{-webkit-tap-highlight-color:transparent}
+  button,a{touch-action:manipulation}
+  .mbrand{display:none}
+  .xaxis b{font-weight:inherit}
+  .xaxis .sh{display:none}
+  a{color:var(--accent);text-decoration:none}
+  button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+
+  .app{position:relative;width:100%;max-width:1280px;min-height:100vh;margin:0 auto;background:var(--bg);display:grid;grid-template-columns:80px minmax(0,1fr);overflow:hidden}
+  .blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+
+  .rail{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:20px 0 18px;gap:10px;z-index:5}
+  .logo{width:40px;height:40px;display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+  .nav{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);border:0;background:transparent;cursor:pointer;position:relative;transition:background 150ms ease,color 150ms ease,transform 120ms var(--ease-out)}
+  .nav:hover{background:var(--fill);color:var(--text)}
+  .nav:active{transform:scale(.95)}
+  .nav.on{background:var(--fill-2);color:var(--text)}
+  .nav .tip{position:absolute;left:calc(100% + 10px);top:50%;transform:translate(-4px,-50%);background:#F2F2F2;color:#111;font-size:12px;font-weight:600;padding:5px 9px;border-radius:8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 140ms var(--ease-out),transform 180ms var(--ease-out)}
+  .nav:hover .tip{opacity:1;transform:translate(0,-50%)}
+  .nav .dot{position:absolute;top:9px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--accent);transition:opacity 200ms ease,transform 200ms var(--ease-out)}
+  .nav .dot.gone{opacity:0;transform:scale(.4)}
+
+  .col{min-width:0;position:relative;z-index:1}
+  .top{height:76px;display:flex;align-items:center;gap:14px;padding:0 28px;border-bottom:1px solid var(--line)}
+  .search{display:flex;align-items:center;gap:10px;width:360px;height:44px;background:var(--fill);border-radius:999px;padding:0 14px 0 16px;color:var(--muted)}
+  .search input{flex:1;background:transparent;border:0;outline:0;min-width:0}
+  .search input::placeholder{color:var(--dim)}
+  .kbd{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+  .icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);border:0;background:transparent;cursor:pointer;transition:background 150ms ease,color 150ms ease}
+  .icon:hover{background:var(--fill);color:var(--text)}
+  .who{display:flex;align-items:center;gap:12px;padding-left:16px;border-left:1px solid var(--line)}
+  .avatar{width:40px;height:40px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;font-weight:700}
+
+  main{padding:26px 28px 48px}
+  .view{display:none}
+  .view.on{display:block}
+  .head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px}
+  h1{margin:0;font-size:28px;font-weight:500;letter-spacing:-0.02em}
+  .sub{font-size:14px;color:var(--muted);margin-top:4px}
+  .grid{display:grid;gap:14px;min-width:0}
+
+  /* glass, same material as the nudge */
+  .card{position:relative;border-radius:22px;padding:20px;min-width:0;box-shadow:0 24px 60px rgba(0,0,0,.35),0 1px 2px rgba(0,0,0,.3)}
+  .card::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(150deg,rgba(255,255,255,.10),rgba(255,255,255,.02) 32%,rgba(255,255,255,0) 55%,rgba(255,255,255,.03)),rgba(58,59,61,.55);-webkit-backdrop-filter:blur(40px) saturate(160%);backdrop-filter:blur(40px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 -1px 0 rgba(0,0,0,.4);pointer-events:none}
+  .card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.40),rgba(255,255,255,.08) 36%,rgba(255,255,255,.05) 64%,rgba(255,255,255,.26));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+  .card>*{position:relative;z-index:1}
+  .card:has(.pop.show){z-index:20}
+  .view.on .card{animation:arrive 340ms var(--ease-out) both;animation-delay:calc(var(--i,0) * 50ms)}
+  @keyframes arrive{from{opacity:0;transform:translateY(8px)}}
+
+  .h2{font-size:18px;font-weight:500;margin:0;letter-spacing:-0.01em}
+  .lbl{font-size:12px;color:var(--muted)}
+  .muted{color:var(--muted)}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .tile{background:var(--fill);border-radius:16px;padding:16px 18px;min-width:0;position:relative}
+  .big{font-size:30px;font-weight:600;letter-spacing:-0.03em;line-height:1}
+  .big .dec{color:var(--dim);font-weight:500}
+  .glyph{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:#F2F2F2;color:#111;display:flex;align-items:center;justify-content:center}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 18px;border-radius:999px;border:0;cursor:pointer;font-weight:600;font-size:13px;white-space:nowrap;transition:transform 120ms var(--ease-out),background 150ms ease,opacity 200ms ease;user-select:none}
+  .btn:active{transform:scale(.97)}
+  .btn.acc{background:var(--accent);color:var(--on-accent)}.btn.acc:hover{background:#D9FF6E}
+  .btn.sec{background:var(--fill-2);color:var(--text)}.btn.sec:hover{background:rgba(255,255,255,.15)}
+  .btn.sm{min-height:34px;padding:0 14px;font-size:12px}
+  .chip{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border:0}
+  .chip.go{color:var(--go);background:rgba(155,242,176,.12)}
+  .chip.stop{color:var(--stop);background:rgba(255,140,120,.12)}
+  .chip.think{color:var(--think);background:rgba(255,209,92,.12)}
+  .chip.mute{color:var(--muted);background:var(--fill)}
+  .chip.acc{color:var(--on-accent);background:var(--accent);cursor:pointer}
+
+  .bar{position:relative;height:6px;border-radius:3px;background:var(--fill-2);overflow:hidden}
+  .bar>i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;transform-origin:left;animation:fillx 640ms var(--ease-out) both;animation-delay:200ms}
+  @keyframes fillx{from{transform:scaleX(0)}}
+
+  /* limit pills, from the reference */
+  .pill{height:40px;border-radius:999px;position:relative;overflow:hidden;background:var(--fill)}
+  .pill>span{position:absolute;left:0;top:0;bottom:0;border-radius:999px;display:flex;align-items:center;padding-left:6px}
+  .pill b{height:28px;padding:0 10px;border-radius:999px;background:rgba(0,0,0,.75);color:#fff;font-size:12px;font-weight:600;display:inline-flex;align-items:center}
+  .pill.acc>span{background:var(--accent)}
+  .pill.white>span{background:#F2F2F2}
+  .pill.hatch>span{background:repeating-linear-gradient(135deg,rgba(255,255,255,.26) 0 1px,transparent 1px 6px)}
+  .pill.hatch b{background:rgba(0,0,0,.4)}
+
+  /* spend score bars */
+  .bars{position:relative;height:150px;display:flex;align-items:flex-end;gap:10px}
+  .sb{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;position:relative;cursor:default}
+  .sb .col{width:100%;border-radius:6px 6px 2px 2px;transform-origin:bottom;animation:grow 560ms var(--ease-out) both;animation-delay:calc(120ms + var(--k) * 30ms);background:repeating-linear-gradient(135deg,rgba(255,255,255,.22) 0 1px,transparent 1px 6px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+  @keyframes grow{from{transform:scaleY(.06)}}
+  .sb.now .col{background:linear-gradient(180deg,var(--accent) 0 34%,#A9D43A 34% 67%,#86A92E 67%);box-shadow:none}
+  .sb .tipb{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translate(-50%,6px) scale(.97);transform-origin:bottom center;background:#F2F2F2;color:#111;border-radius:10px;padding:6px 10px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 140ms var(--ease-out),transform 180ms var(--ease-out);text-align:center;font-size:12px}
+  .sb .tipb b{font-size:14px;display:block}
+  .sb:hover .tipb{opacity:1;transform:translate(-50%,0)}
+  .xaxis{display:flex;gap:10px;margin-top:10px}
+  .xaxis span{flex:1;text-align:center;font-size:12px;color:var(--muted);height:28px;line-height:28px;border-radius:999px;white-space:nowrap}
+  .xaxis span.now{background:var(--accent);color:var(--on-accent);font-weight:600}
+
+  /* timeline strip, same component as the nudge */
+  .strip{position:relative;height:8px;border-radius:4px;background:var(--fill-2);margin-top:18px}
+  .strip .seg{position:absolute;top:0;bottom:0;border-radius:4px;transform-origin:left;animation:fillx 600ms var(--ease-out) both;animation-delay:220ms}
+  .strip .tdot{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;border:2px solid #3A3B3D;background:#F2F2F2;cursor:default;transition:transform 160ms var(--ease-out)}
+  .strip .tdot:hover{transform:scale(1.3)}
+  .strip .tdot.pay{background:var(--go)}
+  .krow{display:flex;align-items:baseline;gap:12px;padding:10px 0 0;font-size:14px}
+
+  .pop{position:absolute;width:250px;padding:12px 14px 13px;border-radius:16px;background:rgba(50,51,53,.97);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 20px 50px rgba(0,0,0,.5);z-index:30;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-6px) scale(.97);transform-origin:40px top;transition:opacity 140ms var(--ease-out),transform 160ms var(--ease-out),visibility 0s linear 160ms}
+  .pop.show{opacity:1;visibility:visible;transform:none;transition:opacity 200ms var(--ease-out),transform 260ms var(--ease-out),visibility 0s}
+
+  /* purchase rows */
+  .li{display:flex;align-items:center;gap:14px;padding:12px 4px;border-top:1px solid var(--line);transition:background 150ms ease}
+  .li:hover{background:rgba(255,255,255,.025)}
+  .mark{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#111;background:#F2F2F2;flex:none}
+  .day{font-size:12px;color:var(--muted);padding:18px 4px 8px}
+  .day:first-child{padding-top:2px}
+  .fbset{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:var(--fill)}
+  .fb{width:32px;height:32px;border-radius:50%;border:0;background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 150ms ease,color 150ms ease,transform 120ms var(--ease-out)}
+  .fb:hover{color:var(--text);background:var(--fill-2)}
+  .fb:active{transform:scale(.9)}
+  .fb.on.happy{background:var(--go);color:#111}.fb.on.regretted{background:var(--stop);color:#111}.fb.on.unsure{background:var(--think);color:#111}
+  .bigfb{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:999px;border:0;background:var(--fill-2);color:var(--text);font-weight:600;cursor:pointer;transition:transform 120ms var(--ease-out),background 150ms ease}
+  .bigfb:hover{background:rgba(255,255,255,.16)}
+  .bigfb:active{transform:scale(.97)}
+  .seg{display:inline-flex;gap:2px;padding:4px;border-radius:999px;background:var(--fill)}
+  .seg button{border:0;background:transparent;border-radius:999px;padding:0 14px;height:32px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:background 150ms ease,color 150ms ease}
+  .seg button.on{background:var(--fill-2);color:var(--text)}
+
+  /* waiting */
+  .count{font-size:44px;font-weight:600;letter-spacing:-0.03em;line-height:1}
+  .wcard{transition:opacity 220ms var(--ease-out),transform 260ms var(--ease-out)}
+  .wcard.leaving{opacity:0;transform:scale(.97)}
+
+  /* chat */
+  .msgs{display:flex;flex-direction:column;gap:10px;overflow:auto;padding-right:4px}
+  .msg{max-width:80%;padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.4}
+  .msg.me{align-self:flex-end;background:var(--accent);color:var(--on-accent);border-bottom-right-radius:6px}
+  .msg.bot{align-self:flex-start;background:var(--fill-2);border-bottom-left-radius:6px}
+  .msg.new{animation:arrive 260ms var(--ease-out) both}
+  .confirm{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--go);background:rgba(155,242,176,.10);border-radius:999px;padding:6px 12px}
+  .inbar{display:flex;align-items:center;gap:6px;padding:5px 5px 5px 18px;border-radius:999px;background:var(--fill);min-height:52px}
+  .inbar input{flex:1;min-width:0;border:0;background:transparent;outline:0;font-size:14px}
+  .inbar input::placeholder{color:var(--muted)}
+  .round{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:0;cursor:pointer;flex:none;transition:transform 120ms var(--ease-out)}
+  .round:active{transform:scale(.94)}
+  .prow{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+  .prow:first-of-type{border-top:0}
+
+  .toast{position:fixed;left:50%;bottom:28px;z-index:50;display:flex;align-items:center;gap:10px;padding:12px 18px;border-radius:999px;background:rgba(50,51,53,.97);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 20px 50px rgba(0,0,0,.5);font-size:14px;font-weight:500;opacity:0;transform:translate(-50%,12px);transition:opacity 200ms var(--ease-out),transform 260ms var(--ease-out);pointer-events:none}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+
+  /* ---------- phone ---------- */
+  @media (max-width:767px){
+    .app{grid-template-columns:minmax(0,1fr)}
+    .rail{position:fixed;top:auto;bottom:0;left:0;right:0;height:auto;flex-direction:row;justify-content:space-around;gap:0;padding:6px 8px calc(6px + env(safe-area-inset-bottom));border-right:0;border-top:1px solid var(--line);background:rgba(28,29,31,.72);-webkit-backdrop-filter:blur(30px) saturate(160%);backdrop-filter:blur(30px) saturate(160%);z-index:40}
+    .rail .logo,.rail>div[style*="flex:1"],#pauseBtn{display:none}
+    .nav{width:auto;height:auto;min-width:60px;flex-direction:column;gap:3px;padding:6px 6px 4px;border-radius:14px}
+    .nav.on{background:transparent;color:var(--text)}
+    .nav.on svg{color:var(--accent)}
+    .nav .tip{position:static;opacity:1;transform:none;background:none;color:inherit;font-size:12px;font-weight:500;padding:0}
+    .nav .dot{top:4px;right:16px}
+    .top{height:60px;padding:0 16px;gap:10px;padding-top:env(safe-area-inset-top)}
+    .mbrand{display:flex;align-items:center;gap:8px}
+    .search,.who>div:last-child{display:none}
+    .who{border-left:0;padding-left:0}
+    .avatar{width:34px;height:34px;font-size:13px}
+    main{padding:18px 16px calc(100px + env(safe-area-inset-bottom))}
+    .head{flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:14px}
+    h1{font-size:26px}
+    .grid:not(.keep){grid-template-columns:minmax(0,1fr) !important}
+    .grid.tiles{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px}
+    .grid.tiles>.tile:nth-child(3){grid-column:1/-1}
+    .tile{padding:14px 14px}
+    .big{font-size:26px}
+    .card{padding:16px;border-radius:20px}
+    .grid.score{gap:18px}
+    .bars{height:120px;gap:6px}
+    .xaxis{gap:6px}
+    .xaxis span{font-size:12px}
+    .xaxis .lg{display:none}
+    .xaxis .sh{display:inline}
+    .glyph{display:none}
+    .li{gap:12px}
+    .li .txt .nm,.li .txt .lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .li .amt{width:auto !important}
+    .li.full{flex-wrap:wrap;row-gap:8px}
+    .li.full .risk{display:none}
+    .li.full .act{width:100% !important;justify-content:flex-start !important;padding-left:48px}
+    .li.compact .risk{display:none}
+    .li.compact .act{width:auto !important}
+    .seg{max-width:100%;overflow-x:auto}
+    .count{font-size:40px}
+    .card.chat{height:520px !important}
+    .inbar input{font-size:16px}
+    .toast{bottom:calc(92px + env(safe-area-inset-bottom));max-width:calc(100% - 32px);white-space:normal}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:1ms!important;animation-delay:0ms!important;transition-duration:1ms!important}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="blob" style="width:520px;height:420px;left:120px;top:-120px;background:rgba(205,255,68,.10)" aria-hidden="true"></div>
+  <div class="blob" style="width:520px;height:460px;right:-120px;top:380px;background:rgba(255,140,120,.09)" aria-hidden="true"></div>
+  <div class="blob" style="width:460px;height:380px;left:520px;top:860px;background:rgba(155,242,176,.08)" aria-hidden="true"></div>
+
+  <aside class="rail">
+    <div class="logo" aria-label="SecondThought"><svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true"><circle cx="15" cy="15" r="11" stroke="#CDFF44" stroke-width="3.5" stroke-dasharray="52 18" stroke-linecap="round" transform="rotate(-90 15 15)"/><circle cx="15" cy="15" r="3" fill="#CDFF44"/></svg></div>
+    <button class="nav" data-view="home" aria-label="Home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg><span class="tip">Home</span></button>
+    <button class="nav" data-view="purchases" aria-label="Purchases"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg><span class="dot" id="navDot" aria-hidden="true"></span><span class="tip">Purchases</span></button>
+    <button class="nav" data-view="waiting" aria-label="Waiting"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="tip">Waiting</span></button>
+    <button class="nav" data-view="insights" aria-label="Insights"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-8M22 19H2"/></svg><span class="tip">Insights</span></button>
+    <button class="nav" data-view="profile" aria-label="Profile"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="tip">Profile</span></button>
+    <div style="flex:1"></div>
+    <button class="nav" id="pauseBtn" aria-label="Pause nudges for an hour"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/></svg><span class="tip">Pause nudges for an hour</span></button>
+  </aside>
+
+  <div class="col">
+    <header class="top">
+      <div class="mbrand" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 30 30" fill="none"><circle cx="15" cy="15" r="11" stroke="#CDFF44" stroke-width="3.5" stroke-dasharray="52 18" stroke-linecap="round" transform="rotate(-90 15 15)"/><circle cx="15" cy="15" r="3" fill="#CDFF44"/></svg><span style="font-weight:600;font-size:16px;letter-spacing:-0.01em">SecondThought</span></div>
+      <label class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input type="search" placeholder="Search purchases, rules, shops" aria-label="Search"><span class="kbd">⌘ F</span></label>
+      <div style="flex:1"></div>
+      <button class="icon" aria-label="Notifications"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></svg></button>
+      <div class="who"><div class="avatar">SO</div><div><div style="font-weight:600">Sam Okafor</div><div class="lbl">Manchester</div></div></div>
+    </header>
+
+    <main>
+      <!-- HOME -->
+      <section class="view" id="v-home">
+        <div class="head"><div><h1>Home</h1><div class="sub">You’ve regretted 3 of your last 4 late-night clothes orders. It’s 11:40pm.</div></div><button class="btn acc" data-go="profile" data-focus="1">Add a rule <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button></div>
+        <div class="grid" style="grid-template-columns:minmax(0,1fr) 400px;align-items:stretch">
+          <section class="card" style="--i:0;display:flex;flex-direction:column;gap:18px">
+            <div class="h2">Money</div>
+            <div class="grid tiles" style="grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
+              <div class="tile"><div class="lbl">until Fri 13 Nov</div><div style="font-size:16px;font-weight:500;margin-top:2px">Safe to spend</div><div class="big" style="margin-top:16px">£412<span class="dec">.00</span></div><div class="glyph" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="6" width="18" height="12" rx="3"/><path d="M3 10h18"/></svg></div></div>
+              <div class="tile"><div class="lbl">in 5 days</div><div style="font-size:16px;font-weight:500;margin-top:2px">Next payday</div><div class="big" style="margin-top:16px">£198<span class="dec">.00</span></div><div class="glyph" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div></div>
+              <div class="tile"><div class="lbl">Phone · Sat 14 Nov</div><div style="font-size:16px;font-weight:500;margin-top:2px">Next bill</div><div class="big" style="margin-top:16px;display:flex;align-items:baseline;gap:10px"><span>£18<span class="dec">.00</span></span><span class="chip go">Covered</span></div><div class="glyph" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M11 17h2"/></svg></div></div>
+            </div>
+            <div class="grid score" style="grid-template-columns:300px minmax(0,1fr);gap:28px;align-items:end;flex:1">
+              <div style="display:flex;flex-direction:column;justify-content:space-between;height:100%">
+                <div>
+                  <div class="h2">Spend Score</div>
+                  <div style="display:flex;align-items:baseline;gap:10px;margin-top:10px"><span style="font-size:56px;font-weight:600;letter-spacing:-0.04em;line-height:1">72</span><span style="font-size:20px;color:var(--dim);font-weight:500">/100</span><span class="chip go" style="margin-left:4px">↗ improving</span></div>
+                  <p class="muted" style="margin:12px 0 0;line-height:1.5">Up 3 on last week. Clothes still pulls it down.</p>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:18px"><button class="btn acc" id="homeReflect" data-go="purchases">Reflect on 1 purchase</button><button class="btn sec" data-go="waiting">Waiting · <span id="waitCount">2</span></button></div>
+              </div>
+              <div>
+                <div class="bars" id="bars"></div>
+                <div class="xaxis" id="xaxis"></div>
+              </div>
+            </div>
+          </section>
+          <div class="grid" style="align-content:start">
+            <section class="card" style="--i:1">
+              <div class="row"><div class="h2">Limits this week</div><a href="#profile" data-go="profile" style="font-size:13px;font-weight:500">Edit</a></div>
+              <div class="grid keep" style="grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:16px">
+                <div><div class="pill acc"><span style="width:53%"><b>53%</b></span></div><div class="lbl" style="margin-top:8px">Groceries · £24 of £45</div></div>
+                <div><div class="pill white"><span style="width:22%;min-width:54px"><b>22%</b></span></div><div class="lbl" style="margin-top:8px">Clothes · £13 of £60</div></div>
+                <div><div class="pill hatch"><span style="width:100%"><b>0%</b></span></div><div class="lbl" style="margin-top:8px">Eating out · £0 of £40</div></div>
+              </div>
+              <div class="muted" style="margin-top:16px">£138 left across your four limits.</div>
+            </section>
+            <section class="card" style="--i:2" id="tlHome"></section>
+          </div>
+        </div>
+        <section class="card" style="--i:3;margin-top:14px">
+          <div class="row" style="margin-bottom:6px"><div class="h2">Recent purchases</div><button class="btn sec sm" data-go="purchases">See all</button></div>
+          <div id="homeList"></div>
+        </section>
+      </section>
+
+      <!-- PURCHASES -->
+      <section class="view" id="v-purchases">
+        <div class="head"><div><h1>Purchases</h1><div class="sub">Rate what you bought. It’s how I learn you.</div></div><div class="seg" id="pFilter" role="tablist"><button class="on" data-f="all">All</button><button data-f="want">Wants</button><button data-f="ess">Essentials</button><button data-f="regretted">Regretted</button></div></div>
+        <section class="card" style="--i:0;margin-bottom:14px" id="reflectCard"></section>
+        <section class="card" style="--i:1"><div id="pList"></div></section>
+      </section>
+
+      <!-- WAITING -->
+      <section class="view" id="v-waiting">
+        <div class="head"><div><h1>Waiting</h1><div class="sub">Things you parked. I’ll ask again when the timer runs out.</div></div></div>
+        <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))" id="wGrid"></div>
+      </section>
+
+      <!-- INSIGHTS -->
+      <section class="view" id="v-insights">
+        <div class="head"><div><h1>Insights</h1><div class="sub">From 20 purchases you’ve rated.</div></div></div>
+        <div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+          <section class="card" style="--i:0"><div class="lbl">Late at night</div><div style="font-size:18px;font-weight:500;margin-top:8px;line-height:1.35">Between 11pm and 2am you regret almost everything you buy.</div><div class="lbl" style="margin-top:12px">6 of 7 late-night purchases</div></section>
+          <section class="card" style="--i:1"><div class="lbl">Under pressure</div><div style="display:flex;align-items:baseline;gap:18px;margin-top:8px"><div><div class="big" style="color:var(--stop)">88%</div><div class="lbl" style="margin-top:6px">regretted with a sale or “only 2 left” banner</div></div><div><div class="big">17%</div><div class="lbl" style="margin-top:6px">without one</div></div></div></section>
+          <section class="card" style="--i:2"><div class="lbl">Duplicates</div><div style="font-size:18px;font-weight:500;margin-top:8px;line-height:1.35">You own two phone cases and two pairs of earbuds.</div><div class="lbl" style="margin-top:12px">The second of each was a late-night order</div></section>
+        </div>
+        <div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-top:14px">
+          <section class="card" style="--i:3"><div class="h2">Regret by category</div><div id="regretCat" style="margin-top:14px"></div></section>
+          <section class="card" style="--i:4"><div class="h2">Risky times</div><div id="risky" style="margin-top:14px"></div></section>
+          <section class="card" style="--i:5"><div class="h2">Limits this week</div><div id="limits" style="margin-top:14px"></div></section>
+        </div>
+        <div class="grid" style="grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,.8fr);margin-top:14px">
+          <section class="card" style="--i:6" id="tlIns"></section>
+          <section class="card" style="--i:7"><div class="row"><div class="h2">Tuned to you</div><span class="chip go">↗ from 64%</span></div><div class="big" style="margin-top:14px">81%</div><div id="calib" style="margin-top:12px"></div></section>
+          <section class="card" style="--i:8"><div class="h2">Avoided</div><div class="big" style="margin-top:14px">£138</div><div class="lbl" style="margin-top:6px">estimated, this term</div><div class="muted" style="margin-top:16px;line-height:1.5">Nearly a quarter of what you still need for the summer trip.</div></section>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section class="view" id="v-profile">
+        <div class="head"><div><h1>Profile</h1><div class="sub">Tell me how your money works. I keep the rules.</div></div></div>
+        <div class="grid" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start">
+          <section class="card chat" style="--i:0;display:flex;flex-direction:column;gap:14px;height:640px">
+            <div class="h2">Chat</div>
+            <div class="msgs" id="msgs" style="flex:1"></div>
+            <form class="inbar" id="chatForm"><label for="chatIn" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Tell me a rule or a bill</label><input id="chatIn" placeholder="e.g. gym is £24 on the 20th" autocomplete="off"><button class="round" type="submit" aria-label="Send" style="background:var(--accent);color:var(--on-accent)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button></form>
+          </section>
+          <div class="grid">
+            <section class="card" style="--i:1"><div class="h2">Money in</div><div style="margin-top:8px" id="pfIn"></div></section>
+            <section class="card" style="--i:2"><div class="h2">Bills</div><div style="margin-top:8px" id="pfBills"></div></section>
+            <section class="card" style="--i:3"><div class="h2">Rules</div><div style="margin-top:8px" id="pfRules"></div></section>
+            <section class="card" style="--i:4"><div class="row"><div class="h2">Summer trip</div><span class="muted">£140 of £600</span></div><div class="bar" style="margin-top:14px;height:8px;border-radius:4px"><i style="width:23%;background:var(--accent)"></i></div></section>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const DAY0 = new Date(2026, 10, 8);
+  const fmt = d => { const t = new Date(DAY0); t.setDate(t.getDate() + Math.round(d)); return t.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }); };
+  const money = n => (n < 0 ? '−£' : '£') + Math.abs(n).toLocaleString('en-GB');
+  const gbp = n => '£' + n.toFixed(2);
+  const ICON = {
+    happy: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 14a4 4 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/></svg>',
+    unsure: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 15h6M9 9.5h.01M15 9.5h.01"/></svg>',
+    regretted: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 16a4 4 0 0 1 7 0M9 9.5h.01M15 9.5h.01"/></svg>'
+  };
+  const FBNAME = { happy: 'Happy', unsure: 'Unsure', regretted: 'Regretted' };
+
+  // ---------- data (from data/*.json) ----------
+  const P = [
+    { id: 'p_05', m: 'Tesco', it: 'Weekly shop', cat: 'Groceries', amt: 23.84, d: '2026-11-07', ess: true },
+    { id: 'p_24', m: 'Bee Network', it: 'Weekly bus pass', cat: 'Transport', amt: 18.50, d: '2026-11-05', ess: true },
+    { id: 'p_23', m: 'ASOS', it: 'Plain white tee', cat: 'Clothes', amt: 12.99, d: '2026-11-03', fb: 'happy' },
+    { id: 'p_22', m: 'SU shop', it: 'Course reader, week 6', cat: 'Books', amt: 5.50, d: '2026-11-01', risk: 6, fb: 'happy' },
+    { id: 'p_21', m: 'Uber Eats', it: 'Burgers, Halloween', cat: 'Eating out', amt: 22.40, d: '2026-10-31', fb: 'happy' },
+    { id: 'p_20', m: 'ASOS', it: 'Zip hoodie, navy', cat: 'Clothes', amt: 38.00, d: '2026-10-30', risk: 71, fb: null, due: true },
+    { id: 'p_19', m: 'Amazon', it: 'Phone grip ring', cat: 'Accessories', amt: 6.99, d: '2026-10-24', fb: 'regretted' },
+    { id: 'p_18', m: 'Tesco', it: 'Big shop', cat: 'Groceries', amt: 31.12, d: '2026-10-17', ess: true },
+    { id: 'p_17', m: 'ASOS', it: 'Black cargo trousers', cat: 'Clothes', amt: 42.00, d: '2026-10-17', fb: 'happy' },
+    { id: 'p_16', m: 'Steam', it: 'Hades II', cat: 'Fun', amt: 23.99, d: '2026-10-16', fb: 'regretted' },
+    { id: 'p_15', m: 'Just Eat', it: 'Chinese takeaway', cat: 'Eating out', amt: 19.80, d: '2026-10-14', fb: 'regretted' },
+    { id: 'p_14', m: 'Amazon', it: 'Wireless earbuds', cat: 'Accessories', amt: 24.99, d: '2026-10-10', fb: 'regretted' },
+    { id: 'p_13', m: 'Waterstones', it: 'Fundamentals of Statistics', cat: 'Books', amt: 28.99, d: '2026-10-06', fb: 'happy' }
+  ];
+  const EVENTS = [
+    { d: 5, name: 'Payday', amt: 198, kind: 'pay' }, { d: 6, name: 'Phone', amt: -18, kind: 'bill' },
+    { d: 12, name: 'Gym', amt: -24, kind: 'bill' }, { d: 19, name: 'Payday', amt: 198, kind: 'pay' },
+    { d: 23, name: 'Rent', amt: -650, kind: 'bill' }, { d: 27, name: 'Spotify', amt: -11, kind: 'bill' },
+    { d: 33, name: 'Payday', amt: 198, kind: 'pay' }
+  ];
+  const WAIT = [
+    { id: 'w1', m: 'ASOS', it: 'Corduroy overshirt, tan', amt: 54, saved: new Date(2026, 10, 6, 23, 6), until: new Date(2026, 10, 9, 9, 0) },
+    { id: 'w2', m: 'Amazon', it: 'Puffer jacket, black', amt: 48, saved: new Date(2026, 9, 20, 21, 12), until: new Date(2026, 10, 20, 9, 0), extended: true }
+  ];
+  const state = { filter: 'all', bills: [['Rent', 650, '1st'], ['Spotify', 11, '5th'], ['Phone', 18, '14th'], ['Gym', 24, '20th']], rules: ['No trainers until exams are over', 'No takeaway on weeknights', 'Course books are always fine'] };
+  let clockStart = Date.now();
+  const nowSim = () => new Date(new Date(2026, 10, 8, 23, 40).getTime() + (Date.now() - clockStart));
+
+  // ---------- toast ----------
+  let toastT;
+  function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2800); }
+
+  // ---------- navigation ----------
+  function show(view, focus) {
+    if (!document.getElementById('v-' + view)) view = 'home';
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
+    void document.body.offsetWidth;
+    $('v-' + view).classList.add('on');
+    document.querySelectorAll('.nav[data-view]').forEach(n => n.classList.toggle('on', n.dataset.view === view));
+    if (location.hash !== '#' + view) history.replaceState(null, '', '#' + view);
+    window.scrollTo(0, 0);
+    if (focus) setTimeout(() => $('chatIn').focus(), 350);
+  }
+  document.addEventListener('click', e => {
+    const n = e.target.closest('[data-view]'); if (n) { show(n.dataset.view); return; }
+    const g = e.target.closest('[data-go]'); if (g) { e.preventDefault(); show(g.dataset.go, g.dataset.focus); }
+  });
+  $('pauseBtn').addEventListener('click', () => toast('Nudges paused until 12:40am.'));
+
+  // ---------- spend score bars ----------
+  const hist = [['14 Sep', 58], ['21 Sep', 61], ['28 Sep', 60], ['5 Oct', 64], ['12 Oct', 63], ['19 Oct', 67], ['26 Oct', 69], ['2 Nov', 72]];
+  $('bars').innerHTML = hist.map((h, i) => {
+    const now = i === hist.length - 1, dl = i ? h[1] - hist[i - 1][1] : 0;
+    return '<div class="sb' + (now ? ' now' : '') + '"><div class="tipb"><b>' + h[1] + '</b>' + (i ? (dl >= 0 ? '+' : '') + dl + ' on the week before' : 'week of ' + h[0]) + '</div><div class="col" style="height:' + h[1] + '%;--k:' + i + '"></div></div>';
+  }).join('');
+  $('xaxis').innerHTML = hist.map((h, i) => '<span' + (i === hist.length - 1 ? ' class="now"' : '') + '><b class="lg">' + h[0] + '</b><b class="sh">' + h[0].split(' ')[0] + '</b></span>').join('');
+
+  // ---------- timeline ----------
+  const SPAN = 33, TL = {};
+  const pct = d => (d / SPAN * 100).toFixed(2) + '%';
+  function timeline(key, start) {
+    let w = start;
+    const rows = EVENTS.map(e => { w += e.amt; return { ...e, w }; });
+    TL[key] = rows;
+    const spans = [[0, rows[0].d, start]].concat(rows.map((r, i) => [r.d, rows[i + 1] ? rows[i + 1].d : SPAN, r.w]));
+    const red = spans.reduce((n, s) => n + (s[2] < 0 ? s[1] - s[0] : 0), 0);
+    const low = rows.reduce((m, r) => r.w < m.w ? r : m);
+    const keys = [rows.find(r => r.kind === 'pay'), rows.find(r => r.name === 'Rent')];
+    return '<div class="row"><div class="h2">Next 5 weeks</div><span class="chip ' + (red ? 'stop">Overdrawn ' + red + ' days' : 'go">Above £0') + '</span></div>' +
+      '<div class="muted" style="margin-top:8px">Lowest point ' + money(low.w) + ' on ' + fmt(low.d) + '.</div>' +
+      '<div class="strip" data-tl="' + key + '" role="img" aria-label="Balance over the next five weeks">' +
+        spans.map(s => '<span class="seg" style="left:' + pct(s[0]) + ';width:' + ((s[1] - s[0]) / SPAN * 100).toFixed(2) + '%;background:' + (s[2] < 0 ? 'var(--stop)' : 'rgba(255,255,255,.45)') + '"></span>').join('') +
+        rows.map((r, i) => '<span class="tdot ' + r.kind + '" data-i="' + i + '" style="left:' + pct(r.d) + '"></span>').join('') +
+      '</div>' +
+      '<div class="row lbl" style="margin-top:8px"><span>Today</span><span>' + fmt(SPAN) + '</span></div>' +
+      keys.map(r => '<div class="krow"><span class="muted" style="width:92px;flex:none">' + fmt(r.d) + '</span><span style="flex:1">' + r.name + '</span><span class="muted">' + (r.amt > 0 ? '+' : '−') + '£' + Math.abs(r.amt) + '</span><span style="width:60px;text-align:right;font-weight:600;color:' + (r.w < 0 ? 'var(--stop)' : 'var(--text)') + '">' + money(r.w) + '</span></div>').join('') +
+      '<div class="pop" id="pop-' + key + '"><div class="lbl" id="popt-' + key + '"></div><div id="popb-' + key + '" style="margin-top:4px"></div></div>';
+  }
+  $('tlHome').innerHTML = timeline('home', 412);
+  $('tlIns').innerHTML = timeline('ins', 412);
+  document.addEventListener('mouseover', e => {
+    const dot = e.target.closest('.tdot'); if (!dot) return;
+    const key = dot.parentNode.dataset.tl, r = TL[key][+dot.dataset.i], card = dot.closest('.card'), pop = $('pop-' + key);
+    $('popt-' + key).textContent = r.name + ' · ' + fmt(r.d);
+    $('popb-' + key).textContent = (r.amt > 0 ? '+' : '−') + '£' + Math.abs(r.amt) + '. You’ll have ' + money(r.w) + ' after it.';
+    const cr = card.getBoundingClientRect(), dr = dot.getBoundingClientRect();
+    const left = Math.max(12, Math.min(cr.width - 262, dr.left - cr.left - 36));
+    pop.style.left = left + 'px'; pop.style.top = (dr.bottom - cr.top + 10) + 'px';
+    pop.style.transformOrigin = (dr.left - cr.left - left + 7) + 'px top';
+    pop.classList.add('show');
+  });
+  document.addEventListener('click', e => { const dot = e.target.closest('.tdot'); if (dot) dot.dispatchEvent(new MouseEvent('mouseover', { bubbles: true })); else document.querySelectorAll('.pop.show').forEach(p => p.classList.remove('show')); });
+  document.addEventListener('mouseout', e => {
+    const dot = e.target.closest('.tdot'); if (!dot || dot.contains(e.relatedTarget)) return;
+    $('pop-' + dot.parentNode.dataset.tl).classList.remove('show');
+  });
+
+  // ---------- purchases ----------
+  const dayLabel = iso => new Date(iso + 'T12:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+  function fbset(p) {
+    if (p.ess) return '<span class="chip mute">Essential</span>';
+    return '<span class="fbset" role="group" aria-label="How did ' + esc(p.it) + ' go">' + ['happy', 'unsure', 'regretted'].map(v => '<button class="fb ' + v + (p.fb === v ? ' on' : '') + '" data-id="' + p.id + '" data-v="' + v + '" aria-label="' + FBNAME[v] + '" aria-pressed="' + (p.fb === v) + '" title="' + FBNAME[v] + '">' + ICON[v] + '</button>').join('') + '</span>';
+  }
+  function riskCell(p) {
+    if (p.risk == null) return '<span class="risk" style="width:56px"></span>';
+    const c = p.risk >= 70 ? 'var(--stop)' : p.risk >= 40 ? 'var(--think)' : 'var(--go)';
+    return '<span class="risk" style="width:56px;text-align:right;font-weight:600;color:' + c + '" title="Predicted regret">' + p.risk + '%</span>';
+  }
+  function rowHTML(p, compact) {
+    return '<div class="li' + (compact ? ' compact' : ' full') + '"><span class="mark">' + p.m[0] + '</span><div class="txt" style="flex:1;min-width:0"><div class="nm" style="font-weight:500">' + esc(p.it) + '</div><div class="lbl">' + esc(p.m) + ' · ' + p.cat + (compact ? ' · ' + new Date(p.d + 'T12:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '') + '</div></div>' +
+      riskCell(p) + '<span class="amt" style="width:84px;text-align:right">−' + gbp(p.amt) + '</span><span class="act" style="width:130px;display:flex;justify-content:flex-end">' + (compact ? chipFor(p) : fbset(p)) + '</span></div>';
+  }
+  function chipFor(p) {
+    if (p.ess) return '<span class="chip mute">Essential</span>';
+    if (!p.fb) return '<button class="chip acc" data-go="purchases">Rate it</button>';
+    return '<span class="chip ' + (p.fb === 'happy' ? 'go' : p.fb === 'regretted' ? 'stop' : 'think') + '">' + FBNAME[p.fb] + '</span>';
+  }
+  function renderPurchases() {
+    const f = state.filter;
+    const list = P.filter(p => f === 'all' || (f === 'ess' && p.ess) || (f === 'want' && !p.ess) || (f === 'regretted' && p.fb === 'regretted'));
+    let html = '', last = '';
+    list.forEach(p => { if (p.d !== last) { html += '<div class="day">' + dayLabel(p.d) + '</div>'; last = p.d; } html += rowHTML(p, false); });
+    $('pList').innerHTML = html || '<div class="muted" style="padding:24px 4px">Nothing here yet.</div>';
+    $('homeList').innerHTML = P.slice(0, 5).map(p => rowHTML(p, true)).join('');
+    const due = P.find(p => p.due && !p.fb);
+    $('reflectCard').innerHTML = due
+      ? '<div class="row" style="align-items:flex-start"><div><div class="lbl">Due for a rating · bought ' + dayLabel(due.d) + ', 11:40pm</div><div style="font-size:22px;font-weight:600;letter-spacing:-0.02em;margin-top:6px">How do you feel about the ' + esc(due.it.split(',')[0].toLowerCase()) + ' now?</div><div class="muted" style="margin-top:4px">' + esc(due.m) + ' · −' + gbp(due.amt) + ' · I guessed ' + due.risk + '% regret risk</div></div><span class="mark" style="width:48px;height:48px;font-size:16px;border-radius:14px">' + due.m[0] + '</span></div>' +
+        '<div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap">' + ['happy', 'unsure', 'regretted'].map(v => '<button class="bigfb" data-id="' + due.id + '" data-v="' + v + '">' + ICON[v] + FBNAME[v] + '</button>').join('') + '</div>'
+      : '<div class="row"><div><div style="font-size:18px;font-weight:500">All caught up.</div><div class="muted" style="margin-top:4px">I’ll ask about new purchases a few days after you buy them.</div></div><span class="chip go">✓ Done</span></div>';
+    $('reflectCard').style.display = '';
+    $('navDot').classList.toggle('gone', !due);
+    $('homeReflect').textContent = due ? 'Reflect on 1 purchase' : 'All caught up';
+    document.querySelectorAll('#pFilter button').forEach(b => b.classList.toggle('on', b.dataset.f === f));
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.fb, .bigfb'); if (!b) return;
+    const p = P.find(x => x.id === b.dataset.id);
+    p.fb = p.fb === b.dataset.v && b.classList.contains('fb') ? null : b.dataset.v;
+    if (b.classList.contains('bigfb')) { p.due = false; toast('Noted: ' + FBNAME[p.fb].toLowerCase() + '. I’ll weigh late-night clothes accordingly.'); }
+    renderPurchases();
+  });
+  $('pFilter').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.filter = b.dataset.f; renderPurchases(); });
+
+  // ---------- waiting ----------
+  function renderWaiting() {
+    const now = nowSim();
+    $('wGrid').innerHTML = WAIT.map((w, i) => {
+      const left = Math.max(0, w.until - now), total = w.until - w.saved, done = Math.min(100, (1 - left / total) * 100);
+      const h = Math.floor(left / 3.6e6), m = Math.floor(left % 3.6e6 / 6e4), s = Math.floor(left % 6e4 / 1e3);
+      const big = h >= 48 ? Math.round(h / 24) + ' days' : String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+      const when = w.until.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }) + ', 9am';
+      return '<section class="card wcard" style="--i:' + i + '" id="' + w.id + '"><div class="row"><div style="display:flex;align-items:center;gap:12px"><span class="mark">' + w.m[0] + '</span><div><div style="font-weight:500">' + esc(w.it) + '</div><div class="lbl">' + w.m + (w.extended ? ' · waited once already' : '') + '</div></div></div><span style="font-size:18px;font-weight:600">£' + w.amt + '</span></div>' +
+        '<div class="count" style="margin-top:22px" data-count="' + w.id + '">' + big + '</div><div class="lbl" style="margin-top:6px">until I ask again · ' + when + '</div>' +
+        '<div class="bar" style="margin-top:16px"><i style="width:' + done.toFixed(1) + '%;background:var(--text);animation:none"></i></div>' +
+        '<div style="display:flex;gap:8px;margin-top:18px"><button class="btn acc" data-w="wait" data-id="' + w.id + '">Wait another day</button><button class="btn sec" data-w="buy" data-id="' + w.id + '">Buy it</button><button class="btn sec" data-w="remove" data-id="' + w.id + '" style="margin-left:auto">Remove</button></div></section>';
+    }).join('') || '<section class="card" style="grid-column:1/-1"><div style="font-size:18px;font-weight:500">Nothing waiting.</div><div class="muted" style="margin-top:4px">Press “Wait until payday” in a nudge and it lands here.</div></section>';
+    $('waitCount').textContent = WAIT.length;
+  }
+  setInterval(() => {
+    const now = nowSim();
+    WAIT.forEach(w => { const el = document.querySelector('[data-count="' + w.id + '"]'); if (!el) return; const left = Math.max(0, w.until - now), h = Math.floor(left / 3.6e6); if (h >= 48) return; el.textContent = String(h).padStart(2, '0') + ':' + String(Math.floor(left % 3.6e6 / 6e4)).padStart(2, '0') + ':' + String(Math.floor(left % 6e4 / 1e3)).padStart(2, '0'); });
+  }, 1000);
+  $('wGrid').addEventListener('click', e => {
+    const b = e.target.closest('[data-w]'); if (!b) return;
+    const i = WAIT.findIndex(w => w.id === b.dataset.id), w = WAIT[i];
+    if (b.dataset.w === 'wait') { w.until = new Date(w.until.getTime() + 864e5); renderWaiting(); toast('Okay. I’ll ask again on ' + w.until.toLocaleDateString('en-GB', { weekday: 'long' }) + '.'); return; }
+    const card = $(w.id); card.classList.add('leaving');
+    setTimeout(() => { WAIT.splice(i, 1); renderWaiting(); }, 240);
+    toast(b.dataset.w === 'buy' ? 'Opening ' + w.m + '. I’ll check in on it in a few days.' : 'Removed. One less thing.');
+  });
+
+  // ---------- insights ----------
+  const barRow = (name, pctv, right, col, sub) => '<div style="padding:8px 0"><div class="row" style="font-size:14px"><span>' + name + '</span><span style="font-weight:600;color:' + col + '">' + right + '</span></div><div class="bar" style="margin-top:8px"><i style="width:' + pctv + '%;background:' + col + '"></i></div>' + (sub ? '<div class="lbl" style="margin-top:6px">' + sub + '</div>' : '') + '</div>';
+  const colFor = v => v >= 70 ? 'var(--stop)' : v >= 40 ? 'var(--think)' : 'var(--go)';
+  $('regretCat').innerHTML = [['Accessories', 75, '3 of 4'], ['Clothes', 60, '3 of 5'], ['Eating out', 40, '2 of 5'], ['Books', 0, '0 of 3']].map(r => barRow(r[0], Math.max(r[1], 2), r[1] + '%', colFor(r[1]), r[2] + ' regretted')).join('');
+  $('risky').innerHTML = [['Friday after 10pm', 100, '5 of 5'], ['11pm to 2am', 86, '6 of 7'], ['48h after payday', 57, '4 of 7']].map(r => barRow(r[0], r[1], r[1] + '%', colFor(r[1]), r[2] + ' regretted')).join('');
+  $('limits').innerHTML = [['Groceries', 24, 45], ['Clothes', 13, 60], ['Eating out', 0, 40], ['Fun', 0, 30]].map(r => barRow(r[0], Math.max(r[1] / r[2] * 100, 2), '£' + r[1] + ' <span class="muted" style="font-weight:400">of £' + r[2] + '</span>', 'var(--text)')).join('');
+  $('calib').innerHTML = [['Books', 90, 6], ['Accessories', 81, 14], ['Clothes', 78, 9], ['Eating out', 70, 5]].map(r => '<div class="row" style="padding:7px 0;border-top:1px solid var(--line)"><span>' + r[0] + '</span><span><span class="lbl" style="color:var(--go);margin-right:10px">+' + r[2] + '</span><b style="font-weight:600">' + r[1] + '%</b></span></div>').join('');
+
+  // ---------- profile ----------
+  function renderProfile() {
+    $('pfIn').innerHTML = '<div class="prow"><span>Part-time job</span><span><span class="muted">every other Fri · </span>£198</span></div><div class="prow"><span>Maintenance loan</span><span><span class="muted">12 Jan · </span>£2,140</span></div>';
+    $('pfBills').innerHTML = state.bills.map(b => '<div class="prow"><span>' + esc(b[0]) + '</span><span><span class="muted">' + esc(b[2]) + ' · </span>£' + b[1] + '</span></div>').join('');
+    $('pfRules').innerHTML = state.rules.map(r => '<div class="prow"><span>' + esc(r) + '</span></div>').join('');
+  }
+  const CHAT = [
+    ['bot', 'Tell me how your money works in plain words. I’ll turn it into rules.'],
+    ['me', 'rent is £650 on the 1st'], ['ok', 'Bill saved · Rent · £650 · 1st'],
+    ['me', 'no trainers until exams are over'], ['ok', 'Rule saved · No trainers until exams are over']
+  ];
+  function addMsg(kind, text, isNew) {
+    const el = document.createElement('div');
+    el.className = (kind === 'ok' ? 'confirm' : 'msg ' + kind) + (isNew ? ' new' : '');
+    el.innerHTML = kind === 'ok' ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>' + esc(text) : esc(text);
+    $('msgs').appendChild(el); $('msgs').scrollTop = $('msgs').scrollHeight;
+  }
+  CHAT.forEach(c => addMsg(c[0], c[1], false));
+  $('chatForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const t = $('chatIn').value.trim(); if (!t) return;
+    $('chatIn').value = ''; addMsg('me', t, true);
+    const amt = t.match(/£\s?(\d+)/), day = t.match(/(\d{1,2})(st|nd|rd|th)/);
+    setTimeout(() => {
+      if (amt) {
+        const name = (t.match(/^\s*(?:my\s+)?([a-z]+)/i) || [, 'Bill'])[1]; const nm = name.charAt(0).toUpperCase() + name.slice(1);
+        const ex = state.bills.find(b => b[0].toLowerCase() === nm.toLowerCase());
+        if (ex) { ex[1] = +amt[1]; if (day) ex[2] = day[0]; } else state.bills.push([nm, +amt[1], day ? day[0] : 'monthly']);
+        addMsg('bot', ex ? 'Updated.' : 'Got it.', true); addMsg('ok', 'Bill saved · ' + nm + ' · £' + amt[1] + (day ? ' · ' + day[0] : ''), true);
+      } else {
+        const rule = t.charAt(0).toUpperCase() + t.slice(1);
+        state.rules.push(rule);
+        addMsg('bot', 'Noted. I’ll hold you to it.', true); addMsg('ok', 'Rule saved · ' + rule, true);
+      }
+      renderProfile();
+    }, 450);
+  });
+
+  renderPurchases(); renderWaiting(); renderProfile();
+  show(location.hash.slice(1) || 'home');
+  window.addEventListener('hashchange', () => show(location.hash.slice(1)));
+})();
+</script>
+</body>
+</html>
