@@ -33,7 +33,7 @@ export function useApi<T>(path: string) {
 }
 
 export function Card({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
-  return <section id={id} className={`scroll-mt-6 border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-card)] ${className}`} style={{ borderRadius: "var(--radius-lg)" }}>{children}</section>;
+  return <section id={id} className={`dashboard-card scroll-mt-6 border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-card)] ${className}`} style={{ borderRadius: "var(--radius-lg)" }}>{children}</section>;
 }
 export function Label({ children }: { children: React.ReactNode }) { return <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">{children}</p>; }
 export function Button({ children, onClick, disabled, variant = "default", type = "button" }: { children: React.ReactNode; onClick?: () => void; disabled?: boolean; variant?: "default" | "quiet" | "danger"; type?: "button" | "submit" }) {
@@ -42,15 +42,15 @@ export function Button({ children, onClick, disabled, variant = "default", type 
 }
 export function Chip({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | "accent" | "go" | "think" | "stop" }) {
   const colors = tone === "accent" ? "bg-[var(--color-accent-bg)] text-[var(--color-accent)]" : tone === "go" ? "bg-[var(--color-go-bg)] text-[var(--color-go)]" : tone === "think" ? "bg-[var(--color-think-bg)] text-[var(--color-think)]" : tone === "stop" ? "bg-[var(--color-stop-bg)] text-[var(--color-stop)]" : "bg-[var(--color-surface-2)] text-[var(--color-text-muted)]";
-  return <span className={`inline-flex px-2 py-1 text-xs font-medium ${colors}`} style={{ borderRadius: "var(--radius-sm)" }}>{children}</span>;
+  return <span className={`dashboard-chip inline-flex px-2 py-1 text-xs font-medium ${colors}`} style={{ borderRadius: "var(--radius-sm)" }}>{children}</span>;
 }
 export function Bar({ value, max = 100, tone = "accent" }: { value: number; max?: number; tone?: "accent" | "go" | "think" | "stop" }) {
   const color = { accent: "var(--color-accent)", go: "var(--color-go)", think: "var(--color-think)", stop: "var(--color-stop)" }[tone];
-  return <div className="h-2 w-full overflow-hidden bg-[var(--color-surface-2)]" style={{ borderRadius: "var(--radius-sm)" }}><div className="h-full" style={{ width: `${Math.min(100, Math.max(0, max ? value / max * 100 : 0))}%`, backgroundColor: color, borderRadius: "var(--radius-sm)" }} /></div>;
+  return <div className="h-2 w-full overflow-hidden bg-[var(--color-surface-2)]" style={{ borderRadius: "var(--radius-sm)" }}><div className="dashboard-bar-fill h-full" style={{ width: `${Math.min(100, Math.max(0, max ? value / max * 100 : 0))}%`, backgroundColor: color, borderRadius: "var(--radius-sm)" }} /></div>;
 }
 export function ScoreDial({ value, tone }: { value: number; tone: "accent" | "go" | "think" | "stop" }) {
   const score = Math.min(100, Math.max(0, value));
-  return <div role="meter" aria-label="Spend Score" aria-valuemin={0} aria-valuemax={100} aria-valuenow={score} className="flex h-32 w-32 shrink-0 items-center justify-center p-2" style={{ borderRadius: "50%", background: `conic-gradient(var(--color-${tone}) ${score}%, var(--color-surface-2) ${score}%)` }}><div className="flex h-full w-full flex-col items-center justify-center bg-[var(--color-surface)]" style={{ borderRadius: "50%" }}><span className="text-4xl font-bold">{score}</span><span className="text-xs text-[var(--color-text-muted)]">of 100</span></div></div>;
+  return <div role="meter" aria-label="Spend Score" aria-valuemin={0} aria-valuemax={100} aria-valuenow={score} className="dashboard-score-dial flex h-32 w-32 shrink-0 items-center justify-center p-2" style={{ borderRadius: "50%", background: `conic-gradient(var(--color-${tone}) ${score}%, var(--color-surface-2) ${score}%)` }}><div className="flex h-full w-full flex-col items-center justify-center bg-[var(--color-surface)]" style={{ borderRadius: "50%" }}><span className="text-4xl font-bold">{score}</span><span className="text-xs text-[var(--color-text-muted)]">of 100</span></div></div>;
 }
 export function PageState({ loading, error, retry }: { loading: boolean; error: string; retry: () => void }) {
   if (loading) return <Card><p role="status" className="text-[var(--color-text-muted)]">Loading your dashboard…</p></Card>;

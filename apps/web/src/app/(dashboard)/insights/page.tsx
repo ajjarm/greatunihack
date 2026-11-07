@@ -6,6 +6,13 @@ import { Bar, Card, Chip, Label, PageState, category, date, money, useApi } from
 import { AssessmentFactors } from "@/components/dashboard/factors";
 import { Timeline } from "@/components/dashboard/timeline";
 
+const insightSections = [
+  { title: "What you buy", keys: ["category", "duplicates"] },
+  { title: "When you shop", keys: ["late_night", "friday", "payday"] },
+  { title: "Checkout pressure", keys: ["pressure"] },
+  { title: "How the agent learns", keys: ["calibration"] },
+];
+
 export default function InsightsPage() {
   const insights = useApi<Insights>("insights");
   const timeline = useApi<TimelineResponse>("timeline");
@@ -14,6 +21,9 @@ export default function InsightsPage() {
   useEffect(() => { const timer = setInterval(() => { void home.reload(); }, 10000); return () => clearInterval(timer); }, [home.reload]);
   if (!insights.data || !timeline.data) return <PageState loading={insights.loading || timeline.loading} error={insights.error || timeline.error} retry={() => { void insights.reload(); void timeline.reload(); }} />;
   const data = insights.data;
+  const groupedInsights = insightSections.map(section => ({ title: section.title, items: data.sentences.filter(sentence => section.keys.includes(sentence.key)) })).filter(section => section.items.length > 0);
+  const remainingInsights = data.sentences.filter(sentence => !insightSections.some(section => section.keys.includes(sentence.key)));
+  if (remainingInsights.length) groupedInsights.push({ title: "More findings", items: remainingInsights });
   const regretted = purchases.data?.filter(purchase => purchase.feedback === "regretted" && purchase.amountPence > 0) ?? [];
   const regrettedPence = regretted.reduce((total, purchase) => total + purchase.amountPence, 0);
   return <div className="space-y-5"><header><Label>Patterns</Label><h1 className="mt-1 text-3xl font-bold">Insights</h1><p className="mt-2 text-sm text-[var(--color-text-muted)]">What your spending has been telling us.</p></header>
@@ -22,7 +32,11 @@ export default function InsightsPage() {
       <div className="mt-5"><Timeline points={timeline.data.points} regrettedPence={regrettedPence} /></div>
       {purchases.data && <p className="mt-3 text-xs text-[var(--color-text-muted)]">The green line adds back the full cost of purchases you marked “Regretted.” It assumes future income and bills stay the same.</p>}
     </Card>
-    <div className="grid gap-4 lg:grid-cols-2">{data.sentences.map(s => <Card key={s.key}><p className="text-lg font-semibold leading-snug">{s.text}</p><p className="mt-3 text-sm text-[var(--color-text-muted)]">{s.evidence}</p></Card>)}</div>
+    <Card><div className="flex flex-wrap items-center justify-between gap-3"><div><Label>Your patterns</Label><h2 className="mt-1 text-xl font-bold">What we noticed</h2></div><Chip tone="accent">{data.sentences.length} findings</Chip></div><p className="mt-2 text-sm text-[var(--color-text-muted)]">Findings from your purchase history, with the evidence behind each one.</p>
+      {groupedInsights.length ? <div role="region" aria-label="Spending insight findings" tabIndex={0} className="dashboard-scrollbar mt-5 max-h-[28rem] space-y-6 overflow-y-auto pr-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]">
+        {groupedInsights.map(section => <section key={section.title} aria-label={section.title}><h3 className="mb-3 text-xs font-bold uppercase tracking-widest text-[var(--color-accent)]">{section.title}</h3><ul className="space-y-3">{section.items.map(item => <li key={item.key} className="dashboard-insight-row border-l-2 border-[var(--color-accent)] bg-[var(--color-surface-2)] p-4" style={{ borderRadius: "var(--radius-sm)" }}><p className="font-semibold leading-snug">{item.text}</p><p className="mt-2 text-xs leading-relaxed text-[var(--color-text-muted)]"><span className="font-semibold">Evidence:</span> {item.evidence}</p></li>)}</ul></section>)}
+      </div> : <p className="mt-4 text-sm text-[var(--color-text-muted)]">No patterns yet. Check back after you review some purchases.</p>}
+    </Card>
     <div className="grid gap-5 lg:grid-cols-2"><Card><h2 className="text-xl font-bold">Regret by category</h2><div className="mt-5 space-y-5">{data.regretByCategory.map(row => <div key={row.category}><div className="mb-2 flex justify-between gap-2 text-sm"><span>{category(row.category)} <span className="text-[var(--color-text-muted)]">· {row.regretted}/{row.reviewed} reviewed</span></span><strong>{row.ratePct}%</strong></div><Bar value={row.ratePct} tone="think" /></div>)}{!data.regretByCategory.length && <p className="text-sm text-[var(--color-text-muted)]">Rate some purchases to see patterns.</p>}</div></Card>
       <Card><h2 className="text-xl font-bold">Risky windows</h2><div className="mt-5 space-y-5">{data.riskyWindows.map(w => <div key={w.label}><div className="mb-2 flex justify-between gap-2 text-sm"><span className="font-semibold">{w.label}</span><strong>{w.ratePct}%</strong></div><Bar value={w.ratePct} tone="stop" /><p className="mt-2 text-xs text-[var(--color-text-muted)]">{w.evidence}</p></div>)}{!data.riskyWindows.length && <p className="text-sm text-[var(--color-text-muted)]">No clear time pattern yet.</p>}</div></Card></div>
     <Card><h2 className="text-xl font-bold">Sales pressure</h2><p className="mt-3 text-sm leading-relaxed">{data.pressure.sentence}</p><div className="mt-5 grid grid-cols-2 gap-4"><div><Label>With a cue</Label><p className="mt-1 text-3xl font-bold text-[var(--color-think)]">{data.pressure.withCueRatePct}%</p></div><div><Label>Without a cue</Label><p className="mt-1 text-3xl font-bold">{data.pressure.withoutCueRatePct}%</p></div></div></Card>
