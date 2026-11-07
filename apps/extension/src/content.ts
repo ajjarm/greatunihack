@@ -60,12 +60,18 @@ async function getScenarios(): Promise<ScenarioSummary[]> {
 
 async function assessParsed(req: AssessRequest): Promise<Assessment> {
   let body: AssessRequest = req;
-  try {
-    const scenarios = await getScenarios();
-    const match = scenarios.find((s) => Math.abs(s.totalPence - req.totalPence) <= 1);
-    if (match) body = { ...req, scenarioId: match.id };
-  } catch (e) {
-    console.warn("[st] could not load scenarios; assessing the parsed basket only", e);
+  // Fixture matching by total is ONLY for the local test checkout page. On real Amazon every
+  // basket is judged for real (the server pins the demo products by name); otherwise a real
+  // £39.99 item would be handed the £39.99 fixture's canned card.
+  const onTestPage = location.hostname === "localhost" || location.hostname === "127.0.0.1";
+  if (onTestPage) {
+    try {
+      const scenarios = await getScenarios();
+      const match = scenarios.find((s) => Math.abs(s.totalPence - req.totalPence) <= 1);
+      if (match) body = { ...req, scenarioId: match.id };
+    } catch (e) {
+      console.warn("[st] could not load scenarios; assessing the parsed basket only", e);
+    }
   }
   return api<Assessment>("/api/assess", "POST", body);
 }
