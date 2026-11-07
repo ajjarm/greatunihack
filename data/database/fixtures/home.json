@@ -1,0 +1,140 @@
+{
+  "demoNow": "2026-11-08T23:40:00+00:00",
+  "spendScore": {
+    "value": 72,
+    "band": "amber",
+    "trend": "up",
+    "explanation": "An illustrative demo score. You paused before some optional purchases. Review your later feedback to see what helped.",
+    "history": [
+      {
+        "weekStart": "2026-09-14",
+        "value": 58
+      },
+      {
+        "weekStart": "2026-09-21",
+        "value": 60
+      },
+      {
+        "weekStart": "2026-09-28",
+        "value": 61
+      },
+      {
+        "weekStart": "2026-10-05",
+        "value": 67
+      },
+      {
+        "weekStart": "2026-10-12",
+        "value": 65
+      },
+      {
+        "weekStart": "2026-10-19",
+        "value": 70
+      },
+      {
+        "weekStart": "2026-10-26",
+        "value": 69
+      },
+      {
+        "weekStart": "2026-11-02",
+        "value": 72
+      }
+    ]
+  },
+  "balancePence": 100000,
+  "safeToSpendPence": 15000,
+  "daysToNextIncome": 5,
+  "nextIncome": {
+    "name": "Monthly salary",
+    "date": "2026-11-13",
+    "amountPence": 125000
+  },
+  "nextBill": {
+    "name": "Rent",
+    "date": "2026-11-10",
+    "amountPence": 85000
+  },
+  "insight": "You regretted 3 of your last 5 reviewed clothing orders. Pause before buying more trainers.",
+  "recentAssessments": [
+    {
+      "id": "online-assessment-18",
+      "createdAt": "2026-11-08T13:00:00+00:00",
+      "merchant": "Amazon",
+      "totalPence": 1499,
+      "verdict": "essential_cover",
+      "regretRisk": 18,
+      "headline": "This fits your plans.",
+      "decision": "buy_anyway"
+    },
+    {
+      "id": "online-paused-2",
+      "createdAt": "2026-11-07T21:00:00+00:00",
+      "merchant": "Amazon",
+      "totalPence": 8500,
+      "verdict": "strong_nudge",
+      "regretRisk": 75,
+      "headline": "Try a short pause before deciding.",
+      "decision": "wait"
+    },
+    {
+      "id": "online-paused-1",
+      "createdAt": "2026-11-07T20:00:00+00:00",
+      "merchant": "Amazon",
+      "totalPence": 6999,
+      "verdict": "strong_nudge",
+      "regretRisk": 75,
+      "headline": "Try a short pause before deciding.",
+      "decision": "wait"
+    },
+    {
+      "id": "online-assessment-12",
+      "createdAt": "2026-10-28T23:00:00+00:00",
+      "merchant": "Steam",
+      "totalPence": 1499,
+      "verdict": "go_ahead",
+      "regretRisk": 28,
+      "headline": "This fits your plans.",
+      "decision": "buy_anyway"
+    },
+    {
+      "id": "online-assessment-03",
+      "createdAt": "2026-10-15T13:00:00+01:00",
+      "merchant": "Amazon",
+      "totalPence": 1299,
+      "verdict": "go_ahead",
+      "regretRisk": 28,
+      "headline": "This fits your plans.",
+      "decision": "buy_anyway"
+    },
+    {
+      "id": "online-assessment-11",
+      "createdAt": "2026-10-06T23:00:00+01:00",
+      "merchant": "Steam",
+      "totalPence": 2499,
+      "verdict": "nudge",
+      "regretRisk": 58,
+      "headline": "Worth pausing to check what you already own.",
+      "decision": "buy_anyway"
+    },
+    {
+      "id": "online-assessment-17",
+      "createdAt": "2026-10-05T13:00:00+01:00",
+      "merchant": "Tesco online",
+      "totalPence": 4873,
+      "verdict": "essential_cover",
+      "regretRisk": 18,
+      "headline": "This fits your plans.",
+      "decision": "buy_anyway"
+    },
+    {
+      "id": "online-assessment-09",
+      "createdAt": "2026-10-03T13:00:00+01:00",
+      "merchant": "Amazon",
+      "totalPence": 4599,
+      "verdict": "nudge",
+      "regretRisk": 58,
+      "headline": "Worth pausing to check what you already own.",
+      "decision": "buy_anyway"
+    }
+  ],
+  "pendingReflections": 1
+}

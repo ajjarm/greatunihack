@@ -1,0 +1,67 @@
+[
+  {
+    "category": "groceries",
+    "multiplier": 0.9,
+    "tunedPct": 100
+  },
+  {
+    "category": "eating_out",
+    "multiplier": 0.8,
+    "tunedPct": 100
+  },
+  {
+    "category": "clothes",
+    "multiplier": 1.1,
+    "tunedPct": 100
+  },
+  {
+    "category": "tech",
+    "multiplier": 0.9,
+    "tunedPct": 100
+  },
+  {
+    "category": "accessories",
+    "multiplier": 1.2,
+    "tunedPct": 100
+  },
+  {
+    "category": "books",
+    "multiplier": 0.7,
+    "tunedPct": 100
+  },
+  {
+    "category": "transport",
+    "multiplier": 1.0,
+    "tunedPct": 0
+  },
+  {
+    "category": "health",
+    "multiplier": 0.9,
+    "tunedPct": 100
+  },
+  {
+    "category": "subscriptions",
+    "multiplier": 1.0,
+    "tunedPct": 0
+  },
+  {
+    "category": "fun",
+    "multiplier": 1.1,
+    "tunedPct": 100
+  },
+  {
+    "category": "gifts",
+    "multiplier": 0.9,
+    "tunedPct": 100
+  },
+  {
+    "category": "household",
+    "multiplier": 0.9,
+    "tunedPct": 100
+  },
+  {
+    "category": "other",
+    "multiplier": 1.0,
+    "tunedPct": 0
+  }
+]
