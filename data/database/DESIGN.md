@@ -1,80 +1,80 @@
-# Supabase spending database
+# Online spending demo database
 
-Deployed project: **Great Uni Hack**, `edajmmyqcuufnilxgckk`.
-Persona: **Alex Morgan**, one fictional adult, for the requested ADHD-focused product.
-History: **11 August–8 November 2026**, 90 inclusive London calendar dates.
-Demo time: **8 November 2026, 23:40 Europe/London**.
-All records are synthetic. No diagnosis or clinical attributes are stored.
+Supabase project: **Great Uni Hack**, `edajmmyqcuufnilxgckk`.
 
-## What is included
+One fictional adult: **Alex Morgan**. The persona supports the requested ADHD-focused product without storing diagnosis or clinical information. **66 completed online purchases** span **11 August–8 November 2026**, with realistic gaps. Demo time is **8 November, 23:40 Europe/London**.
 
-| Table | Purpose |
+## Main demo
+
+An Amazon basket contains a **£45 hoodie and £85 trainers**. Alex has **£1,000**, rent of **£850 due 10 November**, and take-home pay of **£1,250 due 13 November**. Safe-to-spend before payday is **£150**, after reserving rent.
+
+The basket leaves **£20**; dropping the trainers leaves **£105**. The clothes budget is £60, with no earlier clothes orders in the exact preceding seven days: the basket is £70 over; keeping the hoodie leaves £15 in that category budget. Three of five reviewed clothing orders were regretted. The personal rule is “No more trainers this month.”
+
+Prepared risk is 80 before negotiation and 45 after (strong_nudge -> nudge). Do not describe the remaining optional hoodie as green: its score is still in the nudge band. The separate £6 paperback scenario demonstrates a green go-ahead. These are labelled demonstration predictions; money is calculated.
+
+The dashboard supports the same story: Purchases shows the earlier clothing orders and feedback, Home shows cash context and recent assessments, Insights shows the exact evidence and calibration, Waiting contains two postponed purchases, and Profile contains the salary, bills, rules and goal. A prior unreviewed clothing order is already due for reflection so feedback can demonstrate a clothes-calibration change without depending on the frozen clock.
+
+## Tables and records
+
+Fourteen tables are retained. Counts after replacement:
+
+| Table | Records / purpose |
 |---|---|
-| spending_profiles | Profile, ownership, opening balance and full Persona JSON |
-| spending_categories | All 13 shared categories |
-| spending_income_sources | Monthly salary and schedule |
-| spending_bills | Five recurring bills |
-| spending_budgets | Weekly category limits |
-| spending_rules | Personal avoid/always-fine rules |
-| spending_purchases | 171 completed purchases, feedback, cues and reflection dates |
-| spending_transactions | 189 signed ledger entries: purchases, salary and bills |
-| spending_assessments | 21 historical assessments, indexed fields and complete Assessment JSON |
-| spending_assessment_items | Items, factors, necessity, confidence and duplicate references |
-| spending_waiting_items | Four paused purchases, linked to assessments |
-| spending_calibration | Category multipliers and calibration percentages |
-| spending_scenarios | All five demo Scenario objects, with variants |
-| spending_snapshots | Home, Insights, Report and TimelineResponse contract snapshots |
+| spending_profiles | 1 profile, opening balance, ownership and Persona payload |
+| spending_categories | 13 fixed shared categories |
+| spending_income_sources | 1 monthly income source |
+| spending_bills | 5 recurring commitments, separate from shopping |
+| spending_budgets | 5 weekly limits |
+| spending_rules | 5 personal rules |
+| spending_purchases | 66 completed online orders and demo_context metadata |
+| spending_transactions | 83 signed confirmed ledger transactions |
+| spending_assessments | 20 past assessments with full nested API payloads |
+| spending_assessment_items | 20 assessed historical items |
+| spending_waiting_items | 2 postponed items; one due in 10 demo minutes |
+| spending_calibration | 13 category calibration records |
+| spending_scenarios | 5 Amazon checkout scenarios and variants |
+| spending_snapshots | 4 contract-compatible initial snapshots |
 
-## Alignment with the repository
+Category totals and review targets are in FORK-REVIEW.md. There are no offline bus fares, physical shop visits or arbitrary daily spending filler. Other online retailers and delivery services appear only in historical orders; every live checkout scenario is Amazon. Historical item references are explicitly Amazon **search links**, not claimed historical order receipts or verified product prices.
 
-Reviewed `AGENTS.md`, `docs/SPEC.md`, `docs/INTERFACES.md`, `docs/MOCK-DATA-GUIDE.md`, `plan/active/zack-data.md` and `apps/web/src/lib/types.ts`.
+## Dashboard data ownership
 
-- Money uses integer pence; currency is GBP; timestamps preserve time zones.
-- The existing category, feedback, decision, cue and verdict values are retained.
-- SQL columns use snake_case. JSON payloads use the exact existing camelCase API names.
-- `contract-data.json` contains nine API shapes that compile against the existing shared TypeScript types, including every required nested Assessment field.
-- The scenario IDs remain `scn_1_impulse`, `scn_2_essential`, `scn_3_duplicate`, `scn_4_fine`, `scn_5_deal`; reason, negotiated and essentialYes variants are preserved.
-- Full payload JSON stores impact, topFactors, cues, negotiation, timeline, calibration, optional reason and spokenLine. Item JSON includes necessityConfidence, essentialPrompt, limitedHistory and duplicateOf.
-- Duplicates refer to purchases in this adult dataset. Monthly income replaces the student loan and shift income. Books refer to personal reading.
-- Reviewed category samples retain clothes 3/5 regretted, accessories 3/4, books 0/3 and eating out 4/10; unsure is excluded from percentages. Late-night, Friday-night, cue and repeated-item examples coexist with ordinary groceries and transport.
-- The existing source-of-truth JSON fixtures remain unchanged. These adult records live separately under `data/database/`, so existing app demos continue to work.
+Database: stores profile facts, online orders, decision history and feedback. API: computes aggregates, cash projections, calibration changes and contract responses. Dashboard and nudge: display the same results through the API.
 
-The user's adult ADHD-focused persona and requested hosted database supersede the spec's student persona and no-database deployment choice. No shared API types or UI files were changed. Database-only identifiers, ownership, ledger reconciliation and synthetic-data markers are internal metadata, not new API fields.
+| API response | Database inputs | Recompute after |
+|---|---|---|
+| Home | ledger balance, profile commitments, recent assessments, due unanswered reflections | confirmed transaction, decision, feedback or clock change |
+| Purchases | purchases sorted by purchased_at; category and feedback filters | buy/ingest/feedback |
+| Waiting | waiting rows and original assessments | wait, buy, remove or extend |
+| Insights | happy/regretted outcomes, cues, duplicate IDs, calibration, rolling seven-day limits, future timeline | feedback, purchase, decision or profile change |
+| Profile / memory | persona, incomes, bills, budgets, rules, goal | settings change |
+| Weekly report | assessment decisions/outcomes, budgets and estimated avoided spend | decision, feedback or clock change |
 
-## Financial consistency
+`dashboard-queries.sql` supplies live relational examples for the integrator. Snapshot payloads are initial fixture caches. Do not serve stale snapshot values after a write: recompute the affected response or invalidate/rebuild the snapshot in the same transaction. Update normalized records and their JSON projections together. Do not subtract a buy-anyway intent and its matching confirmed transaction twice.
 
-Opening balance plus all signed ledger transactions equals **41,200 pence (£412)**. Each completed purchase has exactly one matching negative transaction. A wait decision does not create a completed purchase. Income and recurring bills have their own transactions. Income is take-home salary.
+## Compatibility and integration limits
 
-The 60-day future projection uses salary and recurring bills; it is a projection, not a promise about future discretionary spending. Safe-to-spend is the minimum projected balance before the next income. Snapshot aggregation uses the guide's rolling seven-day budget window.
+`types.ts` remains unchanged. SQL uses snake_case and complete API payload JSON uses camelCase. Money is integer pence, timestamps retain time zones, and now is persona.demoNow. Demo references are internal `demo_context`, excluded from the shared Purchase shape.
 
-## What is mocked
+The existing API still reads the original root data/*.json in memory, **not Supabase**. Its database adapter is Ajjar's lane. `fixtures/` contains a matching export for a fixture-mode fallback. The original root fixture files have not been overwritten. Keeping the fallback and database seed identical prevents two conflicting demo datasets.
 
-Assessments, scenarios, verdict predictions and the illustrative Spend Score are demonstration fixtures, not live AI output. Cash arithmetic, category feedback rates, calibration replay, purchase references, report counts and ledger reconciliation are computed. Future negotiations and justifications are stored examples; this database alone does not implement those API actions. The report score remains an explicitly illustrative 72.
+Two shared-checker differences are explicit: the fork still expects `scn_5_steam`, while the supplied spec says Amazon `scn_5_deal`; and its bill coverage test compares already-reserved safe-to-spend against the bill again. `check_export.py` uses a temporary copy of that checker with only these two adaptations. Bill coverage is evaluated at the bill date in the projected balance. No shared checker or API file is edited. See FORK-REVIEW.md for frozen timers, feed sign conversion and other integration findings.
 
-## Files and reproduction
+The six future feed rows in `feed-rows.csv` are unseeded examples, with positive expense amounts for the existing transaction API. They are not part of the signed reconciliation ledger.
 
-- `schema.sql`: create the 14 tables, constraints, indexes, RLS and grants once in a new Supabase database.
-- `seed.sql`: insert deterministic sample records after the schema; rerunning preserves existing rows with the same IDs.
-- `generate_seed.py` and `enrich_seed.py`: regenerate both SQL and JSON from seed 20261107. Run from the repository root: `python data/database/generate_seed.py`.
-- `sample-data.json`: database records.
-- `contract-data.json`: API-shaped export.
-- `check_contract.py`: compile the exported literal values against shared types; requires the app's installed TypeScript. Run `python data/database/check_contract.py`.
-- `validate.sql`: checks on the deployed database, plus category feedback counts.
+## Files and verification
 
-Do not run schema.sql again against existing tables. Use a new reviewed migration for changes. seed.sql uses `ON CONFLICT DO NOTHING`; it will not overwrite later user edits. Generated files can be large because historical cash projections and scenario variants are complete.
+- `schema.sql`: full creation script for a fresh database. Existing hosted database additionally received `demo_metadata.sql` as a migration.
+- `seed.sql`: deterministic seed; `ON CONFLICT DO NOTHING` preserves rows on ordinary reruns. It is not a reset script.
+- `generate_seed.py`, `enrich_seed.py`, `scenario_details.py`: generate the final seed and exports.
+- `sample-data.json`: SQL-shaped records; `contract-data.json`: nine API surfaces.
+- `demo-links.json`: purchase-to-demo evidence mapping for all 66 orders.
+- `export_fixtures.py`: regenerate `fixtures/`.
+- `check_contract.py`: TypeScript literal checks against shared types.
+- `check_export.py`: semantic checks and online/demo-specific assertions.
+- `validate.sql`: hosted data integrity, counts, old-row removal, ledger, references and RLS checks.
+- `DEMO.md`: short presenter sequence and expected numbers.
 
-## Ownership and app integration
+All 25 adapted cross-file checks, all nine TypeScript surfaces and additional demo checks pass. Hosted validation passed after replacement. Supabase security advisor reported no findings. Access remains owner-scoped; the fictional profile is unclaimed and administrative/server access is required until explicitly assigned to an Auth user. Never expose a service-role key in browser code.
 
-RLS is enabled on every table. Anonymous access to personal records is revoked. Authenticated owners can access their own profile and children; authenticated users can read the fixed category vocabulary. The sample profile has **auth_user_id = NULL**, so its data is available only through administrative/server access until explicitly assigned to a real Supabase Auth user. Do not place a service-role key in browser code.
-
-The current Next.js API still reads the original in-memory fixture store. Ajjar must implement the database adapter in the API lane. Read `spending_profiles.persona`, `spending_assessments.payload`, `spending_scenarios.payload` and `spending_snapshots.payload` for complete contract shapes. `contract-data.json` is an example adapter export. On writes, update the relational columns and JSON payload together in one transaction; cached snapshots need recomputing when purchases, feedback, rules or balances change. These snapshots are fixture caches, not automatically maintained materialized views.
-
-The ledger's `id` maps to `TransactionIn.externalId`, `occurred_at` to `date`, with merchant, description, signed amount and category retained. Matching an incoming transaction to an assessment remains API logic. Preserve unique external IDs for idempotent ingestion.
-
-## Verification completed
-
-- Nine exported contract surfaces compiled against the repository's shared types.
-- `validate.sql` passed against the populated hosted PostgreSQL database.
-- Existing app fixture check remains 25/25 passing (separate original fixtures).
-- Supabase security advisor: no findings. Performance advisor: informational unused-index notices on this newly created database; no warning/error findings.
-- Authenticated access with no assigned profile returned zero purchases.
+The previous 171-purchase seed was replaced atomically, limited to the unassigned synthetic profile. Existing schema and security policies were retained. The opening balance is explicit and reconciles with all 83 ledger entries to **£1,000**.

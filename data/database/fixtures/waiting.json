@@ -1,0 +1,24 @@
+[
+  {
+    "id": "online-wait-1",
+    "assessmentId": "online-paused-1",
+    "itemName": "Mechanical keyboard",
+    "pricePence": 6999,
+    "merchant": "Amazon",
+    "savedAt": "2026-11-07T20:00:00+00:00",
+    "reconsiderAt": "2026-11-08T23:50:00+00:00",
+    "status": "waiting",
+    "url": "https://www.amazon.co.uk/"
+  },
+  {
+    "id": "online-wait-2",
+    "assessmentId": "online-paused-2",
+    "itemName": "Running trainers",
+    "pricePence": 8500,
+    "merchant": "Amazon",
+    "savedAt": "2026-11-07T21:00:00+00:00",
+    "reconsiderAt": "2026-11-09T23:40:00+00:00",
+    "status": "waiting",
+    "url": "https://www.amazon.co.uk/"
+  }
+]

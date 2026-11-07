@@ -1,0 +1,860 @@
+[
+  {
+    "purchaseId": "online-clothes-01",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_1_impulse"
+    ],
+    "purpose": "Late-night clothing history and the trainers pause rule.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Cotton%20hoodie",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-clothes-02",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_1_impulse"
+    ],
+    "purpose": "Late-night clothing history and the trainers pause rule.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Running%20trainers",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-clothes-03",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_1_impulse"
+    ],
+    "purpose": "Late-night clothing history and the trainers pause rule.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Linen%20shirt",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-clothes-04",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_1_impulse"
+    ],
+    "purpose": "Late-night clothing history and the trainers pause rule.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Denim%20jacket",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-clothes-05",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_1_impulse"
+    ],
+    "purpose": "Late-night clothing history and the trainers pause rule.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Work%20trousers",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-clothes-06",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_1_impulse"
+    ],
+    "purpose": "Late-night clothing history and the trainers pause rule.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Winter%20gloves",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-clothes-07",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_1_impulse"
+    ],
+    "purpose": "Late-night clothing history and the trainers pause rule.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Overshirt",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-clothes-08",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_1_impulse"
+    ],
+    "purpose": "Late-night clothing history and the trainers pause rule.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Cotton%20T-shirt",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-clothes-09",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_1_impulse"
+    ],
+    "purpose": "Late-night clothing history and the trainers pause rule.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Sports%20socks",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-clothes-10",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_1_impulse"
+    ],
+    "purpose": "Late-night clothing history and the trainers pause rule.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Rain%20jacket",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-accessories-01",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Duplicate-case history and reviewed accessory regret.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Phone%20case",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-accessories-02",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Duplicate-case history and reviewed accessory regret.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Phone%20case",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-accessories-03",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Duplicate-case history and reviewed accessory regret.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Smartwatch%20strap",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-accessories-04",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Duplicate-case history and reviewed accessory regret.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Laptop%20sleeve",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-accessories-05",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Duplicate-case history and reviewed accessory regret.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Canvas%20tote%20bag",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-accessories-06",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Duplicate-case history and reviewed accessory regret.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Cable%20organiser",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-accessories-07",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Duplicate-case history and reviewed accessory regret.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Card%20holder",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-accessories-08",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Duplicate-case history and reviewed accessory regret.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Travel%20pouch",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-tech-01",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Useful headphones versus a repeated earbuds purchase.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Over-ear%20headphones",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-tech-02",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Useful headphones versus a repeated earbuds purchase.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Wireless%20earbuds",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-tech-03",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Useful headphones versus a repeated earbuds purchase.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Wireless%20earbuds",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-tech-04",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Useful headphones versus a repeated earbuds purchase.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=USB-C%20charger",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-tech-05",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Useful headphones versus a repeated earbuds purchase.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Portable%20power%20bank",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-tech-06",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "Useful headphones versus a repeated earbuds purchase.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Webcam%20for%20work%20calls",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-books-01",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_4_fine"
+    ],
+    "purpose": "Happy reading purchases support a go-ahead.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Paperback%20novel",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-books-02",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_4_fine"
+    ],
+    "purpose": "Happy reading purchases support a go-ahead.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Evening%20reading",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-books-03",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_4_fine"
+    ],
+    "purpose": "Happy reading purchases support a go-ahead.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Recipe%20book",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-books-04",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_4_fine"
+    ],
+    "purpose": "Happy reading purchases support a go-ahead.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Paperback%20mystery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-books-05",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_4_fine"
+    ],
+    "purpose": "Happy reading purchases support a go-ahead.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Illustrated%20nonfiction",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-health-01",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Essential override and sparse category history.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Prescription%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-health-02",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Essential override and sparse category history.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Paracetamol%20500mg",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-health-03",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Essential override and sparse category history.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Toiletries%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-health-04",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Essential override and sparse category history.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=First-aid%20refill",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-fun-01",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_5_deal"
+    ],
+    "purpose": "Countdown and Friday-night spending evidence.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Video%20game",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-fun-02",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_5_deal"
+    ],
+    "purpose": "Countdown and Friday-night spending evidence.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=PC%20game%20download",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-fun-03",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_5_deal"
+    ],
+    "purpose": "Countdown and Friday-night spending evidence.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Board%20game",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-fun-04",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_5_deal"
+    ],
+    "purpose": "Countdown and Friday-night spending evidence.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Game%20expansion",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-fun-05",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_5_deal"
+    ],
+    "purpose": "Countdown and Friday-night spending evidence.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Puzzle",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-fun-06",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_5_deal"
+    ],
+    "purpose": "Countdown and Friday-night spending evidence.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Controller%20accessory",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-household-01",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Practical online spending balances discretionary orders.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Storage%20boxes",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-household-02",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Practical online spending balances discretionary orders.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Desk%20lamp",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-household-03",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Practical online spending balances discretionary orders.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Laundry%20detergent%20refill",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-household-04",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Practical online spending balances discretionary orders.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Kitchen%20containers",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-household-05",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Practical online spending balances discretionary orders.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Cleaning%20supplies%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-groceries-01",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Ordinary online essentials and budget context.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Grocery%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-groceries-02",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Ordinary online essentials and budget context.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Grocery%20top-up%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-groceries-03",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Ordinary online essentials and budget context.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Weekly%20grocery%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-groceries-04",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Ordinary online essentials and budget context.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Pantry%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-groceries-05",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Ordinary online essentials and budget context.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Fresh%20food%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-groceries-06",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Ordinary online essentials and budget context.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Grocery%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-eating_out-01",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Takeaway budget provides the essential cover-it option.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Thai%20takeaway%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-eating_out-02",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Takeaway budget provides the essential cover-it option.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Pizza%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-eating_out-03",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Takeaway budget provides the essential cover-it option.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Weeknight%20burger%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-eating_out-04",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Takeaway budget provides the essential cover-it option.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Late%20takeaway%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-eating_out-05",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Takeaway budget provides the essential cover-it option.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Weekend%20sushi%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-eating_out-06",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Takeaway budget provides the essential cover-it option.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Curry%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-eating_out-07",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Takeaway budget provides the essential cover-it option.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Noodle%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-eating_out-08",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Takeaway budget provides the essential cover-it option.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Dinner%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-eating_out-09",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Takeaway budget provides the essential cover-it option.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Weekend%20meal%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-eating_out-10",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_2_essential"
+    ],
+    "purpose": "Takeaway budget provides the essential cover-it option.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Lunch%20delivery",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-gifts-01",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "A genuine gift can change regret risk without changing price.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Birthday%20gift%20book",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-gifts-02",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "A genuine gift can change regret risk without changing price.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Birthday%20gift%20mug",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-gifts-03",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_3_duplicate"
+    ],
+    "purpose": "A genuine gift can change regret risk without changing price.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Personalised%20gift%20print",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-subscriptions-01",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_5_deal"
+    ],
+    "purpose": "Online recurring spending; limited purchase history.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Creative%20app%20monthly%20subscription",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-subscriptions-02",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_5_deal"
+    ],
+    "purpose": "Online recurring spending; limited purchase history.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Digital%20magazine%20subscription",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  },
+  {
+    "purchaseId": "online-other-01",
+    "channel": "online",
+    "scenarioIds": [
+      "scn_4_fine"
+    ],
+    "purpose": "An unfamiliar online item demonstrates limited history.",
+    "productReference": {
+      "kind": "amazon_search",
+      "url": "https://www.amazon.co.uk/s?k=Packing%20materials%20for%20online%20resale",
+      "note": "Search reference for demonstrating the item; not a historical order, verified listing or price."
+    }
+  }
+]

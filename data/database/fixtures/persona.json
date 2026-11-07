@@ -1,0 +1,115 @@
+{
+  "name": "Alex Morgan",
+  "demoDate": "2026-11-08",
+  "demoNow": "2026-11-08T23:40:00+00:00",
+  "hourlyRatePence": 1700,
+  "balancePence": 100000,
+  "incomes": [
+    {
+      "id": "salary",
+      "name": "Monthly salary",
+      "amountPence": 125000,
+      "schedule": {
+        "type": "monthly",
+        "dayOfMonth": 13
+      },
+      "nextDate": "2026-11-13"
+    }
+  ],
+  "outgoings": [
+    {
+      "id": "rent",
+      "name": "Rent",
+      "amountPence": 85000,
+      "dayOfMonth": 10,
+      "category": "household"
+    },
+    {
+      "id": "phone",
+      "name": "Phone plan",
+      "amountPence": 2200,
+      "dayOfMonth": 14,
+      "category": "subscriptions"
+    },
+    {
+      "id": "internet",
+      "name": "Broadband",
+      "amountPence": 2900,
+      "dayOfMonth": 18,
+      "category": "household"
+    },
+    {
+      "id": "gym",
+      "name": "Gym membership",
+      "amountPence": 2800,
+      "dayOfMonth": 20,
+      "category": "health"
+    },
+    {
+      "id": "music",
+      "name": "Music subscription",
+      "amountPence": 1199,
+      "dayOfMonth": 5,
+      "category": "subscriptions"
+    }
+  ],
+  "limits": [
+    {
+      "category": "groceries",
+      "weeklyLimitPence": 6500
+    },
+    {
+      "category": "eating_out",
+      "weeklyLimitPence": 4500
+    },
+    {
+      "category": "clothes",
+      "weeklyLimitPence": 6000
+    },
+    {
+      "category": "fun",
+      "weeklyLimitPence": 3500
+    },
+    {
+      "category": "tech",
+      "weeklyLimitPence": 5000
+    }
+  ],
+  "rules": [
+    {
+      "id": "trainers",
+      "text": "No more trainers this month",
+      "category": "clothes",
+      "direction": "avoid"
+    },
+    {
+      "id": "books",
+      "text": "Books for personal reading are always fine",
+      "category": "books",
+      "direction": "always_fine"
+    },
+    {
+      "id": "pause",
+      "text": "Wait 24 hours before buying non-essential tech",
+      "category": "tech",
+      "direction": "avoid"
+    },
+    {
+      "id": "case",
+      "text": "Check the drawer before buying another phone case",
+      "category": "accessories",
+      "direction": "avoid"
+    },
+    {
+      "id": "health",
+      "text": "Health essentials are always fine",
+      "category": "health",
+      "direction": "always_fine"
+    }
+  ],
+  "goal": {
+    "name": "A quieter weekend away",
+    "targetPence": 80000,
+    "savedPence": 23500
+  }
+}

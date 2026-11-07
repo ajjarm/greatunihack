@@ -1,0 +1,5967 @@
+[
+  {
+    "id": "scn_1_impulse",
+    "title": "Late-night trainers under a scarcity banner",
+    "trigger": {
+      "merchant": "Amazon",
+      "keywords": [
+        "Place your order"
+      ],
+      "urlPattern": "amazon.co.uk/gp/buy"
+    },
+    "request": {
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "items": [
+        {
+          "name": "Champion reverse weave hoodie",
+          "pricePence": 4500,
+          "qty": 1,
+          "category": "clothes"
+        },
+        {
+          "name": "Nike Air Max 90",
+          "pricePence": 8500,
+          "qty": 1,
+          "category": "clothes"
+        }
+      ],
+      "deliveryPence": 0,
+      "totalPence": 13000,
+      "cues": [
+        {
+          "key": "scarcity",
+          "text": "Only 2 left in stock"
+        }
+      ],
+      "capturedAt": "2026-11-08T23:40:00+00:00",
+      "basketHash": "amazon|champion reverse weave hoodie:4500|nike air max 90:8500|13000"
+    },
+    "response": {
+      "id": "asm_scn_1",
+      "createdAt": "2026-11-08T23:40:00+00:00",
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "totalPence": 13000,
+      "verdict": "strong_nudge",
+      "headline": "Hold on, this looks like an impulse buy.",
+      "spokenLine": "Hold on, this looks like an impulse buy.",
+      "regretRisk": 80,
+      "affordability": 52,
+      "items": [
+        {
+          "index": 0,
+          "name": "Champion reverse weave hoodie",
+          "pricePence": 4500,
+          "qty": 1,
+          "category": "clothes",
+          "necessity": 35,
+          "necessityTag": "want",
+          "necessityConfidence": "medium",
+          "essentialPrompt": false,
+          "essential": null,
+          "regretRisk": 41,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 12,
+              "max": 25,
+              "text": "A hoodie at 11:40pm is a want, not a plan"
+            },
+            {
+              "key": "history",
+              "points": 10,
+              "max": 20,
+              "text": "You regretted 3 of 5 reviewed clothes orders.",
+              "evidence": "ASOS on 14 Aug, 2 Oct and 30 Oct, all regretted; cargos on 17 Oct were fine"
+            },
+            {
+              "key": "pressure",
+              "points": 6,
+              "max": 10,
+              "text": "There is a scarcity banner on the page"
+            },
+            {
+              "key": "timing",
+              "points": 8,
+              "max": 10,
+              "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+            },
+            {
+              "key": "money_strain",
+              "points": 5,
+              "max": 15,
+              "text": "£20 safe to spend after this until your next salary."
+            }
+          ],
+          "limitedHistory": false
+        },
+        {
+          "index": 1,
+          "name": "Nike Air Max 90",
+          "pricePence": 8500,
+          "qty": 1,
+          "category": "clothes",
+          "necessity": 20,
+          "necessityTag": "want",
+          "necessityConfidence": "high",
+          "essentialPrompt": false,
+          "essential": null,
+          "regretRisk": 89,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 22,
+              "max": 25,
+              "text": "Your rule asks for a pause on optional purchases.",
+              "evidence": "Rule added 4 October"
+            },
+            {
+              "key": "history",
+              "points": 18,
+              "max": 20,
+              "text": "You regretted 3 of 5 reviewed clothes orders.",
+              "evidence": "Nike Dunk Low on 2 Oct was one of them"
+            },
+            {
+              "key": "duplicate",
+              "points": 15,
+              "max": 15,
+              "text": "You bought Nike Dunks five weeks ago and regretted them",
+              "evidence": "p_11, 2 October, £95"
+            },
+            {
+              "key": "pressure",
+              "points": 9,
+              "max": 10,
+              "text": "Only 2 left is the oldest trick there is"
+            },
+            {
+              "key": "timing",
+              "points": 10,
+              "max": 10,
+              "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+            },
+            {
+              "key": "money_strain",
+              "points": 15,
+              "max": 15,
+              "text": "£20 safe to spend after this until your next salary."
+            }
+          ],
+          "limitedHistory": false
+        }
+      ],
+      "impact": {
+        "safeToSpendBeforePence": 15000,
+        "safeToSpendAfterPence": 2000,
+        "daysToNextIncome": 5,
+        "nextIncome": {
+          "name": "Monthly salary",
+          "date": "2026-11-13",
+          "amountPence": 125000
+        },
+        "nextBill": {
+          "name": "Rent",
+          "date": "2026-11-10",
+          "amountPence": 85000,
+          "coveredAfter": true
+        },
+        "workingHours": 7.6,
+        "goalSharePct": 16.2,
+        "overdraftUntil": null,
+        "limit": {
+          "category": "clothes",
+          "weeklyLimitPence": 6000,
+          "spentThisWeekPence": 0,
+          "remainingAfterPence": -7000,
+          "overByPence": 7000
+        }
+      },
+      "topFactors": [
+        {
+          "key": "money_strain",
+          "text": "£20 safe to spend after this until payday on 13 November."
+        },
+        {
+          "key": "history",
+          "text": "You regretted 3 of 5 reviewed clothing orders."
+        },
+        {
+          "key": "want_level",
+          "text": "Your rule: no more trainers this month."
+        }
+      ],
+      "cues": [
+        {
+          "key": "scarcity",
+          "text": "Only 2 left in stock",
+          "note": "Scarcity banners are there to make you hurry. Amazon restocks."
+        }
+      ],
+      "negotiation": [
+        {
+          "id": "neg_drop_1",
+          "action": "drop",
+          "itemIndex": 1,
+          "text": "Drop the trainers, keep the hoodie",
+          "resultRegretRisk": 45,
+          "resultSafeToSpendAfterPence": 10500,
+          "resultVerdict": "nudge"
+        },
+        {
+          "id": "neg_delay_1",
+          "action": "delay",
+          "itemIndex": 1,
+          "text": "Wait until payday on 13 November.",
+          "resultRegretRisk": 48,
+          "resultSafeToSpendAfterPence": 15000,
+          "resultVerdict": "nudge",
+          "delayUntil": "2026-11-13"
+        }
+      ],
+      "reflectionDays": 3,
+      "reasoning": "The cash projection reserves £850 for rent on 10 November before payday on 13 November. Purchase feedback supplies the history evidence; regret risk is a prepared demonstration estimate.",
+      "timeline": [
+        {
+          "date": "2026-11-08",
+          "projectedPence": 100000,
+          "projectedAfterPence": 87000,
+          "events": []
+        },
+        {
+          "date": "2026-11-09",
+          "projectedPence": 100000,
+          "projectedAfterPence": 87000,
+          "events": []
+        },
+        {
+          "date": "2026-11-10",
+          "projectedPence": 15000,
+          "projectedAfterPence": 2000,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 85000
+            }
+          ]
+        },
+        {
+          "date": "2026-11-11",
+          "projectedPence": 15000,
+          "projectedAfterPence": 2000,
+          "events": []
+        },
+        {
+          "date": "2026-11-12",
+          "projectedPence": 15000,
+          "projectedAfterPence": 2000,
+          "events": []
+        },
+        {
+          "date": "2026-11-13",
+          "projectedPence": 140000,
+          "projectedAfterPence": 127000,
+          "events": [
+            {
+              "type": "income",
+              "name": "Monthly salary",
+              "amountPence": 125000
+            }
+          ]
+        },
+        {
+          "date": "2026-11-14",
+          "projectedPence": 137800,
+          "projectedAfterPence": 124800,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone plan",
+              "amountPence": 2200
+            }
+          ]
+        },
+        {
+          "date": "2026-11-15",
+          "projectedPence": 137800,
+          "projectedAfterPence": 124800,
+          "events": []
+        },
+        {
+          "date": "2026-11-16",
+          "projectedPence": 137800,
+          "projectedAfterPence": 124800,
+          "events": []
+        },
+        {
+          "date": "2026-11-17",
+          "projectedPence": 137800,
+          "projectedAfterPence": 124800,
+          "events": []
+        },
+        {
+          "date": "2026-11-18",
+          "projectedPence": 134900,
+          "projectedAfterPence": 121900,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Broadband",
+              "amountPence": 2900
+            }
+          ]
+        },
+        {
+          "date": "2026-11-19",
+          "projectedPence": 134900,
+          "projectedAfterPence": 121900,
+          "events": []
+        },
+        {
+          "date": "2026-11-20",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym membership",
+              "amountPence": 2800
+            }
+          ]
+        },
+        {
+          "date": "2026-11-21",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-11-22",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-11-23",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-11-24",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-11-25",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-11-26",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-11-27",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-11-28",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-11-29",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-11-30",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-12-01",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-12-02",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-12-03",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-12-04",
+          "projectedPence": 132100,
+          "projectedAfterPence": 119100,
+          "events": []
+        },
+        {
+          "date": "2026-12-05",
+          "projectedPence": 130901,
+          "projectedAfterPence": 117901,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Music subscription",
+              "amountPence": 1199
+            }
+          ]
+        },
+        {
+          "date": "2026-12-06",
+          "projectedPence": 130901,
+          "projectedAfterPence": 117901,
+          "events": []
+        },
+        {
+          "date": "2026-12-07",
+          "projectedPence": 130901,
+          "projectedAfterPence": 117901,
+          "events": []
+        },
+        {
+          "date": "2026-12-08",
+          "projectedPence": 130901,
+          "projectedAfterPence": 117901,
+          "events": []
+        },
+        {
+          "date": "2026-12-09",
+          "projectedPence": 130901,
+          "projectedAfterPence": 117901,
+          "events": []
+        },
+        {
+          "date": "2026-12-10",
+          "projectedPence": 45901,
+          "projectedAfterPence": 32901,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 85000
+            }
+          ]
+        },
+        {
+          "date": "2026-12-11",
+          "projectedPence": 45901,
+          "projectedAfterPence": 32901,
+          "events": []
+        },
+        {
+          "date": "2026-12-12",
+          "projectedPence": 45901,
+          "projectedAfterPence": 32901,
+          "events": []
+        },
+        {
+          "date": "2026-12-13",
+          "projectedPence": 170901,
+          "projectedAfterPence": 157901,
+          "events": [
+            {
+              "type": "income",
+              "name": "Monthly salary",
+              "amountPence": 125000
+            }
+          ]
+        },
+        {
+          "date": "2026-12-14",
+          "projectedPence": 168701,
+          "projectedAfterPence": 155701,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone plan",
+              "amountPence": 2200
+            }
+          ]
+        },
+        {
+          "date": "2026-12-15",
+          "projectedPence": 168701,
+          "projectedAfterPence": 155701,
+          "events": []
+        },
+        {
+          "date": "2026-12-16",
+          "projectedPence": 168701,
+          "projectedAfterPence": 155701,
+          "events": []
+        },
+        {
+          "date": "2026-12-17",
+          "projectedPence": 168701,
+          "projectedAfterPence": 155701,
+          "events": []
+        },
+        {
+          "date": "2026-12-18",
+          "projectedPence": 165801,
+          "projectedAfterPence": 152801,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Broadband",
+              "amountPence": 2900
+            }
+          ]
+        },
+        {
+          "date": "2026-12-19",
+          "projectedPence": 165801,
+          "projectedAfterPence": 152801,
+          "events": []
+        },
+        {
+          "date": "2026-12-20",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym membership",
+              "amountPence": 2800
+            }
+          ]
+        },
+        {
+          "date": "2026-12-21",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2026-12-22",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2026-12-23",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2026-12-24",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2026-12-25",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2026-12-26",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2026-12-27",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2026-12-28",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2026-12-29",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2026-12-30",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2026-12-31",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2027-01-01",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2027-01-02",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2027-01-03",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2027-01-04",
+          "projectedPence": 163001,
+          "projectedAfterPence": 150001,
+          "events": []
+        },
+        {
+          "date": "2027-01-05",
+          "projectedPence": 161802,
+          "projectedAfterPence": 148802,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Music subscription",
+              "amountPence": 1199
+            }
+          ]
+        },
+        {
+          "date": "2027-01-06",
+          "projectedPence": 161802,
+          "projectedAfterPence": 148802,
+          "events": []
+        }
+      ],
+      "calibration": {
+        "category": "clothes",
+        "multiplier": 1.1,
+        "tunedPct": 100
+      },
+      "decision": "none"
+    },
+    "variants": {
+      "reason": {
+        "input": "they're for my sister's birthday",
+        "response": {
+          "id": "asm_scn_1",
+          "createdAt": "2026-11-08T23:40:00+00:00",
+          "source": "watcher",
+          "merchant": "Amazon",
+          "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+          "totalPence": 13000,
+          "verdict": "nudge",
+          "headline": "Fair enough, a gift changes this.",
+          "spokenLine": "Fair enough, a gift changes this.",
+          "regretRisk": 47,
+          "affordability": 52,
+          "items": [
+            {
+              "index": 0,
+              "name": "Champion reverse weave hoodie",
+              "pricePence": 4500,
+              "qty": 1,
+              "category": "clothes",
+              "necessity": 35,
+              "necessityTag": "want",
+              "necessityConfidence": "medium",
+              "essentialPrompt": false,
+              "essential": null,
+              "regretRisk": 11,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 12,
+                  "max": 25,
+                  "text": "A hoodie at 11:40pm is a want, not a plan"
+                },
+                {
+                  "key": "history",
+                  "points": 10,
+                  "max": 20,
+                  "text": "You regretted 3 of 5 reviewed clothes orders.",
+                  "evidence": "ASOS on 14 Aug, 2 Oct and 30 Oct, all regretted; cargos on 17 Oct were fine"
+                },
+                {
+                  "key": "pressure",
+                  "points": 6,
+                  "max": 10,
+                  "text": "There is a scarcity banner on the page"
+                },
+                {
+                  "key": "timing",
+                  "points": 8,
+                  "max": 10,
+                  "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+                },
+                {
+                  "key": "money_strain",
+                  "points": 5,
+                  "max": 15,
+                  "text": "£20 safe to spend after this until your next salary."
+                },
+                {
+                  "key": "reason",
+                  "points": -30,
+                  "max": 0,
+                  "text": "Gift for your sister's birthday"
+                }
+              ],
+              "limitedHistory": false
+            },
+            {
+              "index": 1,
+              "name": "Nike Air Max 90",
+              "pricePence": 8500,
+              "qty": 1,
+              "category": "clothes",
+              "necessity": 20,
+              "necessityTag": "want",
+              "necessityConfidence": "high",
+              "essentialPrompt": false,
+              "essential": null,
+              "regretRisk": 59,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 22,
+                  "max": 25,
+                  "text": "Your rule asks for a pause on optional purchases.",
+                  "evidence": "Rule added 4 October"
+                },
+                {
+                  "key": "history",
+                  "points": 18,
+                  "max": 20,
+                  "text": "You regretted 3 of 5 reviewed clothes orders.",
+                  "evidence": "Nike Dunk Low on 2 Oct was one of them"
+                },
+                {
+                  "key": "duplicate",
+                  "points": 15,
+                  "max": 15,
+                  "text": "You bought Nike Dunks five weeks ago and regretted them",
+                  "evidence": "p_11, 2 October, £95"
+                },
+                {
+                  "key": "pressure",
+                  "points": 9,
+                  "max": 10,
+                  "text": "Only 2 left is the oldest trick there is"
+                },
+                {
+                  "key": "timing",
+                  "points": 10,
+                  "max": 10,
+                  "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+                },
+                {
+                  "key": "money_strain",
+                  "points": 15,
+                  "max": 15,
+                  "text": "£20 safe to spend after this until your next salary."
+                },
+                {
+                  "key": "reason",
+                  "points": -30,
+                  "max": 0,
+                  "text": "Gift for your sister's birthday"
+                }
+              ],
+              "limitedHistory": false
+            }
+          ],
+          "impact": {
+            "safeToSpendBeforePence": 15000,
+            "safeToSpendAfterPence": 2000,
+            "daysToNextIncome": 5,
+            "nextIncome": {
+              "name": "Monthly salary",
+              "date": "2026-11-13",
+              "amountPence": 125000
+            },
+            "nextBill": {
+              "name": "Rent",
+              "date": "2026-11-10",
+              "amountPence": 85000,
+              "coveredAfter": true
+            },
+            "workingHours": 7.6,
+            "goalSharePct": 16.2,
+            "overdraftUntil": null,
+            "limit": {
+              "category": "clothes",
+              "weeklyLimitPence": 6000,
+              "spentThisWeekPence": 0,
+              "remainingAfterPence": -7000,
+              "overByPence": 7000
+            }
+          },
+          "topFactors": [
+            {
+              "key": "money_strain",
+              "text": "£20 safe to spend after this until payday on 13 November."
+            },
+            {
+              "key": "history",
+              "text": "You regretted 3 of 5 reviewed clothing orders."
+            },
+            {
+              "key": "want_level",
+              "text": "Your rule: no more trainers this month."
+            }
+          ],
+          "cues": [
+            {
+              "key": "scarcity",
+              "text": "Only 2 left in stock",
+              "note": "Scarcity banners are there to make you hurry. Amazon restocks."
+            }
+          ],
+          "negotiation": [
+            {
+              "id": "neg_drop_1",
+              "action": "drop",
+              "itemIndex": 1,
+              "text": "Drop the trainers, keep the hoodie",
+              "resultRegretRisk": 41,
+              "resultSafeToSpendAfterPence": 10500,
+              "resultVerdict": "nudge"
+            },
+            {
+              "id": "neg_delay_1",
+              "action": "delay",
+              "itemIndex": 1,
+              "text": "Wait until payday on 13 November.",
+              "resultRegretRisk": 48,
+              "resultSafeToSpendAfterPence": 15000,
+              "resultVerdict": "nudge",
+              "delayUntil": "2026-11-13"
+            }
+          ],
+          "reflectionDays": 3,
+          "reasoning": "The cash projection reserves £850 for rent on 10 November before payday on 13 November. Purchase feedback supplies the history evidence; regret risk is a prepared demonstration estimate.",
+          "timeline": [
+            {
+              "date": "2026-11-08",
+              "projectedPence": 100000,
+              "projectedAfterPence": 87000,
+              "events": []
+            },
+            {
+              "date": "2026-11-09",
+              "projectedPence": 100000,
+              "projectedAfterPence": 87000,
+              "events": []
+            },
+            {
+              "date": "2026-11-10",
+              "projectedPence": 15000,
+              "projectedAfterPence": 2000,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 85000
+                }
+              ]
+            },
+            {
+              "date": "2026-11-11",
+              "projectedPence": 15000,
+              "projectedAfterPence": 2000,
+              "events": []
+            },
+            {
+              "date": "2026-11-12",
+              "projectedPence": 15000,
+              "projectedAfterPence": 2000,
+              "events": []
+            },
+            {
+              "date": "2026-11-13",
+              "projectedPence": 140000,
+              "projectedAfterPence": 127000,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Monthly salary",
+                  "amountPence": 125000
+                }
+              ]
+            },
+            {
+              "date": "2026-11-14",
+              "projectedPence": 137800,
+              "projectedAfterPence": 124800,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone plan",
+                  "amountPence": 2200
+                }
+              ]
+            },
+            {
+              "date": "2026-11-15",
+              "projectedPence": 137800,
+              "projectedAfterPence": 124800,
+              "events": []
+            },
+            {
+              "date": "2026-11-16",
+              "projectedPence": 137800,
+              "projectedAfterPence": 124800,
+              "events": []
+            },
+            {
+              "date": "2026-11-17",
+              "projectedPence": 137800,
+              "projectedAfterPence": 124800,
+              "events": []
+            },
+            {
+              "date": "2026-11-18",
+              "projectedPence": 134900,
+              "projectedAfterPence": 121900,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Broadband",
+                  "amountPence": 2900
+                }
+              ]
+            },
+            {
+              "date": "2026-11-19",
+              "projectedPence": 134900,
+              "projectedAfterPence": 121900,
+              "events": []
+            },
+            {
+              "date": "2026-11-20",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym membership",
+                  "amountPence": 2800
+                }
+              ]
+            },
+            {
+              "date": "2026-11-21",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-11-22",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-11-23",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-11-24",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-11-25",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-11-26",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-11-27",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-11-28",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-11-29",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-11-30",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-12-01",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-12-02",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-12-03",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-12-04",
+              "projectedPence": 132100,
+              "projectedAfterPence": 119100,
+              "events": []
+            },
+            {
+              "date": "2026-12-05",
+              "projectedPence": 130901,
+              "projectedAfterPence": 117901,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Music subscription",
+                  "amountPence": 1199
+                }
+              ]
+            },
+            {
+              "date": "2026-12-06",
+              "projectedPence": 130901,
+              "projectedAfterPence": 117901,
+              "events": []
+            },
+            {
+              "date": "2026-12-07",
+              "projectedPence": 130901,
+              "projectedAfterPence": 117901,
+              "events": []
+            },
+            {
+              "date": "2026-12-08",
+              "projectedPence": 130901,
+              "projectedAfterPence": 117901,
+              "events": []
+            },
+            {
+              "date": "2026-12-09",
+              "projectedPence": 130901,
+              "projectedAfterPence": 117901,
+              "events": []
+            },
+            {
+              "date": "2026-12-10",
+              "projectedPence": 45901,
+              "projectedAfterPence": 32901,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 85000
+                }
+              ]
+            },
+            {
+              "date": "2026-12-11",
+              "projectedPence": 45901,
+              "projectedAfterPence": 32901,
+              "events": []
+            },
+            {
+              "date": "2026-12-12",
+              "projectedPence": 45901,
+              "projectedAfterPence": 32901,
+              "events": []
+            },
+            {
+              "date": "2026-12-13",
+              "projectedPence": 170901,
+              "projectedAfterPence": 157901,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Monthly salary",
+                  "amountPence": 125000
+                }
+              ]
+            },
+            {
+              "date": "2026-12-14",
+              "projectedPence": 168701,
+              "projectedAfterPence": 155701,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone plan",
+                  "amountPence": 2200
+                }
+              ]
+            },
+            {
+              "date": "2026-12-15",
+              "projectedPence": 168701,
+              "projectedAfterPence": 155701,
+              "events": []
+            },
+            {
+              "date": "2026-12-16",
+              "projectedPence": 168701,
+              "projectedAfterPence": 155701,
+              "events": []
+            },
+            {
+              "date": "2026-12-17",
+              "projectedPence": 168701,
+              "projectedAfterPence": 155701,
+              "events": []
+            },
+            {
+              "date": "2026-12-18",
+              "projectedPence": 165801,
+              "projectedAfterPence": 152801,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Broadband",
+                  "amountPence": 2900
+                }
+              ]
+            },
+            {
+              "date": "2026-12-19",
+              "projectedPence": 165801,
+              "projectedAfterPence": 152801,
+              "events": []
+            },
+            {
+              "date": "2026-12-20",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym membership",
+                  "amountPence": 2800
+                }
+              ]
+            },
+            {
+              "date": "2026-12-21",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2026-12-22",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2026-12-23",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2026-12-24",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2026-12-25",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2026-12-26",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2026-12-27",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2026-12-28",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2026-12-29",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2026-12-30",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2026-12-31",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2027-01-01",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2027-01-02",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2027-01-03",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2027-01-04",
+              "projectedPence": 163001,
+              "projectedAfterPence": 150001,
+              "events": []
+            },
+            {
+              "date": "2027-01-05",
+              "projectedPence": 161802,
+              "projectedAfterPence": 148802,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Music subscription",
+                  "amountPence": 1199
+                }
+              ]
+            },
+            {
+              "date": "2027-01-06",
+              "projectedPence": 161802,
+              "projectedAfterPence": 148802,
+              "events": []
+            }
+          ],
+          "calibration": {
+            "category": "clothes",
+            "multiplier": 1.1,
+            "tunedPct": 100
+          },
+          "decision": "none",
+          "reason": {
+            "text": "they're for my sister's birthday",
+            "accepted": true,
+            "adjustment": -30,
+            "verdictText": "A gift changes the risk, not the money. Risk drops from 78 to 44; rent is still tight on 1 December."
+          }
+        }
+      },
+      "negotiated": {
+        "optionId": "neg_drop_1",
+        "response": {
+          "id": "asm_scn_1",
+          "createdAt": "2026-11-08T23:40:00+00:00",
+          "source": "watcher",
+          "merchant": "Amazon",
+          "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+          "totalPence": 4500,
+          "verdict": "nudge",
+          "headline": "Better. Just the hoodie now.",
+          "spokenLine": "Better. Just the hoodie now.",
+          "regretRisk": 45,
+          "affordability": 74,
+          "items": [
+            {
+              "index": 0,
+              "name": "Champion reverse weave hoodie",
+              "pricePence": 4500,
+              "qty": 1,
+              "category": "clothes",
+              "necessity": 35,
+              "necessityTag": "want",
+              "necessityConfidence": "medium",
+              "essentialPrompt": false,
+              "essential": null,
+              "regretRisk": 41,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 12,
+                  "max": 25,
+                  "text": "A hoodie at 11:40pm is a want, not a plan"
+                },
+                {
+                  "key": "history",
+                  "points": 10,
+                  "max": 20,
+                  "text": "You regretted 3 of 5 reviewed clothes orders.",
+                  "evidence": "ASOS on 14 Aug, 2 Oct and 30 Oct, all regretted; cargos on 17 Oct were fine"
+                },
+                {
+                  "key": "pressure",
+                  "points": 6,
+                  "max": 10,
+                  "text": "There is a scarcity banner on the page"
+                },
+                {
+                  "key": "timing",
+                  "points": 8,
+                  "max": 10,
+                  "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+                },
+                {
+                  "key": "money_strain",
+                  "points": 5,
+                  "max": 15,
+                  "text": "£105 safe to spend after this until your next salary."
+                }
+              ],
+              "limitedHistory": false
+            }
+          ],
+          "impact": {
+            "safeToSpendBeforePence": 15000,
+            "safeToSpendAfterPence": 10500,
+            "daysToNextIncome": 5,
+            "nextIncome": {
+              "name": "Monthly salary",
+              "date": "2026-11-13",
+              "amountPence": 125000
+            },
+            "nextBill": {
+              "name": "Rent",
+              "date": "2026-11-10",
+              "amountPence": 85000,
+              "coveredAfter": true
+            },
+            "workingHours": 2.6,
+            "goalSharePct": 5.6,
+            "overdraftUntil": null,
+            "limit": {
+              "category": "clothes",
+              "weeklyLimitPence": 6000,
+              "spentThisWeekPence": 0,
+              "remainingAfterPence": 1500,
+              "overByPence": 0
+            }
+          },
+          "topFactors": [
+            {
+              "key": "money_strain",
+              "text": "£105 safe to spend after this until payday on 13 November."
+            },
+            {
+              "key": "history",
+              "text": "You regretted 3 of 5 reviewed clothing orders."
+            },
+            {
+              "key": "want_level",
+              "text": "Your rule: no more trainers this month."
+            }
+          ],
+          "cues": [
+            {
+              "key": "scarcity",
+              "text": "Only 2 left in stock",
+              "note": "Scarcity banners are there to make you hurry. Amazon restocks."
+            }
+          ],
+          "negotiation": [
+            {
+              "id": "neg_delay_0",
+              "action": "delay",
+              "itemIndex": 0,
+              "text": "Wait until payday on 13 November.",
+              "resultRegretRisk": 20,
+              "resultSafeToSpendAfterPence": 15000,
+              "resultVerdict": "go_ahead",
+              "delayUntil": "2026-11-13"
+            }
+          ],
+          "reflectionDays": 3,
+          "reasoning": "The cash projection reserves £850 for rent on 10 November before payday on 13 November. Purchase feedback supplies the history evidence; regret risk is a prepared demonstration estimate.",
+          "timeline": [
+            {
+              "date": "2026-11-08",
+              "projectedPence": 100000,
+              "projectedAfterPence": 95500,
+              "events": []
+            },
+            {
+              "date": "2026-11-09",
+              "projectedPence": 100000,
+              "projectedAfterPence": 95500,
+              "events": []
+            },
+            {
+              "date": "2026-11-10",
+              "projectedPence": 15000,
+              "projectedAfterPence": 10500,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 85000
+                }
+              ]
+            },
+            {
+              "date": "2026-11-11",
+              "projectedPence": 15000,
+              "projectedAfterPence": 10500,
+              "events": []
+            },
+            {
+              "date": "2026-11-12",
+              "projectedPence": 15000,
+              "projectedAfterPence": 10500,
+              "events": []
+            },
+            {
+              "date": "2026-11-13",
+              "projectedPence": 140000,
+              "projectedAfterPence": 135500,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Monthly salary",
+                  "amountPence": 125000
+                }
+              ]
+            },
+            {
+              "date": "2026-11-14",
+              "projectedPence": 137800,
+              "projectedAfterPence": 133300,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone plan",
+                  "amountPence": 2200
+                }
+              ]
+            },
+            {
+              "date": "2026-11-15",
+              "projectedPence": 137800,
+              "projectedAfterPence": 133300,
+              "events": []
+            },
+            {
+              "date": "2026-11-16",
+              "projectedPence": 137800,
+              "projectedAfterPence": 133300,
+              "events": []
+            },
+            {
+              "date": "2026-11-17",
+              "projectedPence": 137800,
+              "projectedAfterPence": 133300,
+              "events": []
+            },
+            {
+              "date": "2026-11-18",
+              "projectedPence": 134900,
+              "projectedAfterPence": 130400,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Broadband",
+                  "amountPence": 2900
+                }
+              ]
+            },
+            {
+              "date": "2026-11-19",
+              "projectedPence": 134900,
+              "projectedAfterPence": 130400,
+              "events": []
+            },
+            {
+              "date": "2026-11-20",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym membership",
+                  "amountPence": 2800
+                }
+              ]
+            },
+            {
+              "date": "2026-11-21",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-11-22",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-11-23",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-11-24",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-11-25",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-11-26",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-11-27",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-11-28",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-11-29",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-11-30",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-12-01",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-12-02",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-12-03",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-12-04",
+              "projectedPence": 132100,
+              "projectedAfterPence": 127600,
+              "events": []
+            },
+            {
+              "date": "2026-12-05",
+              "projectedPence": 130901,
+              "projectedAfterPence": 126401,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Music subscription",
+                  "amountPence": 1199
+                }
+              ]
+            },
+            {
+              "date": "2026-12-06",
+              "projectedPence": 130901,
+              "projectedAfterPence": 126401,
+              "events": []
+            },
+            {
+              "date": "2026-12-07",
+              "projectedPence": 130901,
+              "projectedAfterPence": 126401,
+              "events": []
+            },
+            {
+              "date": "2026-12-08",
+              "projectedPence": 130901,
+              "projectedAfterPence": 126401,
+              "events": []
+            },
+            {
+              "date": "2026-12-09",
+              "projectedPence": 130901,
+              "projectedAfterPence": 126401,
+              "events": []
+            },
+            {
+              "date": "2026-12-10",
+              "projectedPence": 45901,
+              "projectedAfterPence": 41401,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 85000
+                }
+              ]
+            },
+            {
+              "date": "2026-12-11",
+              "projectedPence": 45901,
+              "projectedAfterPence": 41401,
+              "events": []
+            },
+            {
+              "date": "2026-12-12",
+              "projectedPence": 45901,
+              "projectedAfterPence": 41401,
+              "events": []
+            },
+            {
+              "date": "2026-12-13",
+              "projectedPence": 170901,
+              "projectedAfterPence": 166401,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Monthly salary",
+                  "amountPence": 125000
+                }
+              ]
+            },
+            {
+              "date": "2026-12-14",
+              "projectedPence": 168701,
+              "projectedAfterPence": 164201,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone plan",
+                  "amountPence": 2200
+                }
+              ]
+            },
+            {
+              "date": "2026-12-15",
+              "projectedPence": 168701,
+              "projectedAfterPence": 164201,
+              "events": []
+            },
+            {
+              "date": "2026-12-16",
+              "projectedPence": 168701,
+              "projectedAfterPence": 164201,
+              "events": []
+            },
+            {
+              "date": "2026-12-17",
+              "projectedPence": 168701,
+              "projectedAfterPence": 164201,
+              "events": []
+            },
+            {
+              "date": "2026-12-18",
+              "projectedPence": 165801,
+              "projectedAfterPence": 161301,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Broadband",
+                  "amountPence": 2900
+                }
+              ]
+            },
+            {
+              "date": "2026-12-19",
+              "projectedPence": 165801,
+              "projectedAfterPence": 161301,
+              "events": []
+            },
+            {
+              "date": "2026-12-20",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym membership",
+                  "amountPence": 2800
+                }
+              ]
+            },
+            {
+              "date": "2026-12-21",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2026-12-22",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2026-12-23",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2026-12-24",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2026-12-25",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2026-12-26",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2026-12-27",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2026-12-28",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2026-12-29",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2026-12-30",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2026-12-31",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2027-01-01",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2027-01-02",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2027-01-03",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2027-01-04",
+              "projectedPence": 163001,
+              "projectedAfterPence": 158501,
+              "events": []
+            },
+            {
+              "date": "2027-01-05",
+              "projectedPence": 161802,
+              "projectedAfterPence": 157302,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Music subscription",
+                  "amountPence": 1199
+                }
+              ]
+            },
+            {
+              "date": "2027-01-06",
+              "projectedPence": 161802,
+              "projectedAfterPence": 157302,
+              "events": []
+            }
+          ],
+          "calibration": {
+            "category": "clothes",
+            "multiplier": 1.1,
+            "tunedPct": 100
+          },
+          "decision": "negotiated"
+        }
+      }
+    }
+  },
+  {
+    "id": "scn_2_essential",
+    "title": "Paracetamol and a prescription top-up",
+    "trigger": {
+      "merchant": "Amazon",
+      "keywords": [
+        "Place your order"
+      ],
+      "urlPattern": "amazon.co.uk/gp/buy"
+    },
+    "request": {
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "items": [
+        {
+          "name": "Paracetamol 500mg, 32 tablets",
+          "pricePence": 349,
+          "qty": 1,
+          "category": "health"
+        },
+        {
+          "name": "Prescription prepayment top-up",
+          "pricePence": 1050,
+          "qty": 1,
+          "category": "health"
+        }
+      ],
+      "deliveryPence": 0,
+      "totalPence": 1399,
+      "cues": [],
+      "capturedAt": "2026-11-08T23:40:00+00:00",
+      "basketHash": "amazon|paracetamol 500mg, 32 tablets:349|prescription prepayment top-up:1050|1399"
+    },
+    "response": {
+      "id": "asm_scn_2",
+      "createdAt": "2026-11-08T23:40:00+00:00",
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "totalPence": 1399,
+      "verdict": "nudge",
+      "headline": "Looks essential. Is it?",
+      "spokenLine": "Looks essential. Is it?",
+      "regretRisk": 9,
+      "affordability": 88,
+      "items": [
+        {
+          "index": 0,
+          "name": "Paracetamol 500mg, 32 tablets",
+          "pricePence": 349,
+          "qty": 1,
+          "category": "health",
+          "necessity": 92,
+          "necessityTag": "need",
+          "necessityConfidence": "high",
+          "essentialPrompt": true,
+          "essential": null,
+          "regretRisk": 12,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 2,
+              "max": 25,
+              "text": "Medicine, not a treat"
+            },
+            {
+              "key": "timing",
+              "points": 6,
+              "max": 10,
+              "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+            },
+            {
+              "key": "money_strain",
+              "points": 4,
+              "max": 15,
+              "text": "£136 safe to spend after this until your next salary."
+            }
+          ],
+          "limitedHistory": true
+        },
+        {
+          "index": 1,
+          "name": "Prescription prepayment top-up",
+          "pricePence": 1050,
+          "qty": 1,
+          "category": "health",
+          "necessity": 92,
+          "necessityTag": "need",
+          "necessityConfidence": "high",
+          "essentialPrompt": true,
+          "essential": null,
+          "regretRisk": 10,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 1,
+              "max": 25,
+              "text": "A prescription is a need"
+            },
+            {
+              "key": "timing",
+              "points": 5,
+              "max": 10,
+              "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+            },
+            {
+              "key": "money_strain",
+              "points": 4,
+              "max": 15,
+              "text": "£136 safe to spend after this until your next salary."
+            }
+          ],
+          "limitedHistory": true
+        }
+      ],
+      "impact": {
+        "safeToSpendBeforePence": 15000,
+        "safeToSpendAfterPence": 13601,
+        "daysToNextIncome": 5,
+        "nextIncome": {
+          "name": "Monthly salary",
+          "date": "2026-11-13",
+          "amountPence": 125000
+        },
+        "nextBill": {
+          "name": "Rent",
+          "date": "2026-11-10",
+          "amountPence": 85000,
+          "coveredAfter": true
+        },
+        "workingHours": 0.8,
+        "goalSharePct": 1.7,
+        "overdraftUntil": null
+      },
+      "topFactors": [
+        {
+          "key": "money_strain",
+          "text": "£136 safe to spend after this until payday on 13 November."
+        }
+      ],
+      "cues": [],
+      "negotiation": [],
+      "reflectionDays": 14,
+      "reasoning": "The cash projection reserves £850 for rent on 10 November before payday on 13 November. Purchase feedback supplies the history evidence; regret risk is a prepared demonstration estimate.",
+      "timeline": [
+        {
+          "date": "2026-11-08",
+          "projectedPence": 100000,
+          "projectedAfterPence": 98601,
+          "events": []
+        },
+        {
+          "date": "2026-11-09",
+          "projectedPence": 100000,
+          "projectedAfterPence": 98601,
+          "events": []
+        },
+        {
+          "date": "2026-11-10",
+          "projectedPence": 15000,
+          "projectedAfterPence": 13601,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 85000
+            }
+          ]
+        },
+        {
+          "date": "2026-11-11",
+          "projectedPence": 15000,
+          "projectedAfterPence": 13601,
+          "events": []
+        },
+        {
+          "date": "2026-11-12",
+          "projectedPence": 15000,
+          "projectedAfterPence": 13601,
+          "events": []
+        },
+        {
+          "date": "2026-11-13",
+          "projectedPence": 140000,
+          "projectedAfterPence": 138601,
+          "events": [
+            {
+              "type": "income",
+              "name": "Monthly salary",
+              "amountPence": 125000
+            }
+          ]
+        },
+        {
+          "date": "2026-11-14",
+          "projectedPence": 137800,
+          "projectedAfterPence": 136401,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone plan",
+              "amountPence": 2200
+            }
+          ]
+        },
+        {
+          "date": "2026-11-15",
+          "projectedPence": 137800,
+          "projectedAfterPence": 136401,
+          "events": []
+        },
+        {
+          "date": "2026-11-16",
+          "projectedPence": 137800,
+          "projectedAfterPence": 136401,
+          "events": []
+        },
+        {
+          "date": "2026-11-17",
+          "projectedPence": 137800,
+          "projectedAfterPence": 136401,
+          "events": []
+        },
+        {
+          "date": "2026-11-18",
+          "projectedPence": 134900,
+          "projectedAfterPence": 133501,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Broadband",
+              "amountPence": 2900
+            }
+          ]
+        },
+        {
+          "date": "2026-11-19",
+          "projectedPence": 134900,
+          "projectedAfterPence": 133501,
+          "events": []
+        },
+        {
+          "date": "2026-11-20",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym membership",
+              "amountPence": 2800
+            }
+          ]
+        },
+        {
+          "date": "2026-11-21",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-11-22",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-11-23",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-11-24",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-11-25",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-11-26",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-11-27",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-11-28",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-11-29",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-11-30",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-12-01",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-12-02",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-12-03",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-12-04",
+          "projectedPence": 132100,
+          "projectedAfterPence": 130701,
+          "events": []
+        },
+        {
+          "date": "2026-12-05",
+          "projectedPence": 130901,
+          "projectedAfterPence": 129502,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Music subscription",
+              "amountPence": 1199
+            }
+          ]
+        },
+        {
+          "date": "2026-12-06",
+          "projectedPence": 130901,
+          "projectedAfterPence": 129502,
+          "events": []
+        },
+        {
+          "date": "2026-12-07",
+          "projectedPence": 130901,
+          "projectedAfterPence": 129502,
+          "events": []
+        },
+        {
+          "date": "2026-12-08",
+          "projectedPence": 130901,
+          "projectedAfterPence": 129502,
+          "events": []
+        },
+        {
+          "date": "2026-12-09",
+          "projectedPence": 130901,
+          "projectedAfterPence": 129502,
+          "events": []
+        },
+        {
+          "date": "2026-12-10",
+          "projectedPence": 45901,
+          "projectedAfterPence": 44502,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 85000
+            }
+          ]
+        },
+        {
+          "date": "2026-12-11",
+          "projectedPence": 45901,
+          "projectedAfterPence": 44502,
+          "events": []
+        },
+        {
+          "date": "2026-12-12",
+          "projectedPence": 45901,
+          "projectedAfterPence": 44502,
+          "events": []
+        },
+        {
+          "date": "2026-12-13",
+          "projectedPence": 170901,
+          "projectedAfterPence": 169502,
+          "events": [
+            {
+              "type": "income",
+              "name": "Monthly salary",
+              "amountPence": 125000
+            }
+          ]
+        },
+        {
+          "date": "2026-12-14",
+          "projectedPence": 168701,
+          "projectedAfterPence": 167302,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone plan",
+              "amountPence": 2200
+            }
+          ]
+        },
+        {
+          "date": "2026-12-15",
+          "projectedPence": 168701,
+          "projectedAfterPence": 167302,
+          "events": []
+        },
+        {
+          "date": "2026-12-16",
+          "projectedPence": 168701,
+          "projectedAfterPence": 167302,
+          "events": []
+        },
+        {
+          "date": "2026-12-17",
+          "projectedPence": 168701,
+          "projectedAfterPence": 167302,
+          "events": []
+        },
+        {
+          "date": "2026-12-18",
+          "projectedPence": 165801,
+          "projectedAfterPence": 164402,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Broadband",
+              "amountPence": 2900
+            }
+          ]
+        },
+        {
+          "date": "2026-12-19",
+          "projectedPence": 165801,
+          "projectedAfterPence": 164402,
+          "events": []
+        },
+        {
+          "date": "2026-12-20",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym membership",
+              "amountPence": 2800
+            }
+          ]
+        },
+        {
+          "date": "2026-12-21",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2026-12-22",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2026-12-23",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2026-12-24",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2026-12-25",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2026-12-26",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2026-12-27",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2026-12-28",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2026-12-29",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2026-12-30",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2026-12-31",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2027-01-01",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2027-01-02",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2027-01-03",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2027-01-04",
+          "projectedPence": 163001,
+          "projectedAfterPence": 161602,
+          "events": []
+        },
+        {
+          "date": "2027-01-05",
+          "projectedPence": 161802,
+          "projectedAfterPence": 160403,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Music subscription",
+              "amountPence": 1199
+            }
+          ]
+        },
+        {
+          "date": "2027-01-06",
+          "projectedPence": 161802,
+          "projectedAfterPence": 160403,
+          "events": []
+        }
+      ],
+      "calibration": {
+        "category": "health",
+        "multiplier": 0.9,
+        "tunedPct": 100
+      },
+      "decision": "none"
+    },
+    "variants": {
+      "essentialYes": {
+        "itemIndex": 0,
+        "response": {
+          "id": "asm_scn_2",
+          "createdAt": "2026-11-08T23:40:00+00:00",
+          "source": "watcher",
+          "merchant": "Amazon",
+          "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+          "totalPence": 1399,
+          "verdict": "essential_cover",
+          "headline": "Buy it. Skip one takeaway this week and you're covered.",
+          "spokenLine": "Buy it. Skip one takeaway this week and you're covered.",
+          "regretRisk": 6,
+          "affordability": 90,
+          "items": [
+            {
+              "index": 0,
+              "name": "Paracetamol 500mg, 32 tablets",
+              "pricePence": 349,
+              "qty": 1,
+              "category": "health",
+              "necessity": 92,
+              "necessityTag": "need",
+              "necessityConfidence": "high",
+              "essentialPrompt": true,
+              "essential": true,
+              "regretRisk": 8,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 2,
+                  "max": 25,
+                  "text": "Medicine, not a treat"
+                },
+                {
+                  "key": "timing",
+                  "points": 2,
+                  "max": 10,
+                  "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+                },
+                {
+                  "key": "money_strain",
+                  "points": 4,
+                  "max": 15,
+                  "text": "£136 safe to spend after this until your next salary."
+                }
+              ],
+              "limitedHistory": true
+            },
+            {
+              "index": 1,
+              "name": "Prescription prepayment top-up",
+              "pricePence": 1050,
+              "qty": 1,
+              "category": "health",
+              "necessity": 92,
+              "necessityTag": "need",
+              "necessityConfidence": "high",
+              "essentialPrompt": true,
+              "essential": true,
+              "regretRisk": 6,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 1,
+                  "max": 25,
+                  "text": "A prescription is a need"
+                },
+                {
+                  "key": "timing",
+                  "points": 1,
+                  "max": 10,
+                  "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+                },
+                {
+                  "key": "money_strain",
+                  "points": 4,
+                  "max": 15,
+                  "text": "£136 safe to spend after this until your next salary."
+                }
+              ],
+              "limitedHistory": true
+            }
+          ],
+          "impact": {
+            "safeToSpendBeforePence": 15000,
+            "safeToSpendAfterPence": 13601,
+            "daysToNextIncome": 5,
+            "nextIncome": {
+              "name": "Monthly salary",
+              "date": "2026-11-13",
+              "amountPence": 125000
+            },
+            "nextBill": {
+              "name": "Rent",
+              "date": "2026-11-10",
+              "amountPence": 85000,
+              "coveredAfter": true
+            },
+            "workingHours": 0.8,
+            "goalSharePct": 1.7,
+            "overdraftUntil": null
+          },
+          "topFactors": [
+            {
+              "key": "money_strain",
+              "text": "£136 safe to spend after this until payday on 13 November."
+            }
+          ],
+          "cues": [],
+          "negotiation": [],
+          "reflectionDays": 14,
+          "reasoning": "The cash projection reserves £850 for rent on 10 November before payday on 13 November. Purchase feedback supplies the history evidence; regret risk is a prepared demonstration estimate.",
+          "timeline": [
+            {
+              "date": "2026-11-08",
+              "projectedPence": 100000,
+              "projectedAfterPence": 98601,
+              "events": []
+            },
+            {
+              "date": "2026-11-09",
+              "projectedPence": 100000,
+              "projectedAfterPence": 98601,
+              "events": []
+            },
+            {
+              "date": "2026-11-10",
+              "projectedPence": 15000,
+              "projectedAfterPence": 13601,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 85000
+                }
+              ]
+            },
+            {
+              "date": "2026-11-11",
+              "projectedPence": 15000,
+              "projectedAfterPence": 13601,
+              "events": []
+            },
+            {
+              "date": "2026-11-12",
+              "projectedPence": 15000,
+              "projectedAfterPence": 13601,
+              "events": []
+            },
+            {
+              "date": "2026-11-13",
+              "projectedPence": 140000,
+              "projectedAfterPence": 138601,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Monthly salary",
+                  "amountPence": 125000
+                }
+              ]
+            },
+            {
+              "date": "2026-11-14",
+              "projectedPence": 137800,
+              "projectedAfterPence": 136401,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone plan",
+                  "amountPence": 2200
+                }
+              ]
+            },
+            {
+              "date": "2026-11-15",
+              "projectedPence": 137800,
+              "projectedAfterPence": 136401,
+              "events": []
+            },
+            {
+              "date": "2026-11-16",
+              "projectedPence": 137800,
+              "projectedAfterPence": 136401,
+              "events": []
+            },
+            {
+              "date": "2026-11-17",
+              "projectedPence": 137800,
+              "projectedAfterPence": 136401,
+              "events": []
+            },
+            {
+              "date": "2026-11-18",
+              "projectedPence": 134900,
+              "projectedAfterPence": 133501,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Broadband",
+                  "amountPence": 2900
+                }
+              ]
+            },
+            {
+              "date": "2026-11-19",
+              "projectedPence": 134900,
+              "projectedAfterPence": 133501,
+              "events": []
+            },
+            {
+              "date": "2026-11-20",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym membership",
+                  "amountPence": 2800
+                }
+              ]
+            },
+            {
+              "date": "2026-11-21",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-11-22",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-11-23",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-11-24",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-11-25",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-11-26",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-11-27",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-11-28",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-11-29",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-11-30",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-12-01",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-12-02",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-12-03",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-12-04",
+              "projectedPence": 132100,
+              "projectedAfterPence": 130701,
+              "events": []
+            },
+            {
+              "date": "2026-12-05",
+              "projectedPence": 130901,
+              "projectedAfterPence": 129502,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Music subscription",
+                  "amountPence": 1199
+                }
+              ]
+            },
+            {
+              "date": "2026-12-06",
+              "projectedPence": 130901,
+              "projectedAfterPence": 129502,
+              "events": []
+            },
+            {
+              "date": "2026-12-07",
+              "projectedPence": 130901,
+              "projectedAfterPence": 129502,
+              "events": []
+            },
+            {
+              "date": "2026-12-08",
+              "projectedPence": 130901,
+              "projectedAfterPence": 129502,
+              "events": []
+            },
+            {
+              "date": "2026-12-09",
+              "projectedPence": 130901,
+              "projectedAfterPence": 129502,
+              "events": []
+            },
+            {
+              "date": "2026-12-10",
+              "projectedPence": 45901,
+              "projectedAfterPence": 44502,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 85000
+                }
+              ]
+            },
+            {
+              "date": "2026-12-11",
+              "projectedPence": 45901,
+              "projectedAfterPence": 44502,
+              "events": []
+            },
+            {
+              "date": "2026-12-12",
+              "projectedPence": 45901,
+              "projectedAfterPence": 44502,
+              "events": []
+            },
+            {
+              "date": "2026-12-13",
+              "projectedPence": 170901,
+              "projectedAfterPence": 169502,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Monthly salary",
+                  "amountPence": 125000
+                }
+              ]
+            },
+            {
+              "date": "2026-12-14",
+              "projectedPence": 168701,
+              "projectedAfterPence": 167302,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone plan",
+                  "amountPence": 2200
+                }
+              ]
+            },
+            {
+              "date": "2026-12-15",
+              "projectedPence": 168701,
+              "projectedAfterPence": 167302,
+              "events": []
+            },
+            {
+              "date": "2026-12-16",
+              "projectedPence": 168701,
+              "projectedAfterPence": 167302,
+              "events": []
+            },
+            {
+              "date": "2026-12-17",
+              "projectedPence": 168701,
+              "projectedAfterPence": 167302,
+              "events": []
+            },
+            {
+              "date": "2026-12-18",
+              "projectedPence": 165801,
+              "projectedAfterPence": 164402,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Broadband",
+                  "amountPence": 2900
+                }
+              ]
+            },
+            {
+              "date": "2026-12-19",
+              "projectedPence": 165801,
+              "projectedAfterPence": 164402,
+              "events": []
+            },
+            {
+              "date": "2026-12-20",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym membership",
+                  "amountPence": 2800
+                }
+              ]
+            },
+            {
+              "date": "2026-12-21",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2026-12-22",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2026-12-23",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2026-12-24",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2026-12-25",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2026-12-26",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2026-12-27",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2026-12-28",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2026-12-29",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2026-12-30",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2026-12-31",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2027-01-01",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2027-01-02",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2027-01-03",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2027-01-04",
+              "projectedPence": 163001,
+              "projectedAfterPence": 161602,
+              "events": []
+            },
+            {
+              "date": "2027-01-05",
+              "projectedPence": 161802,
+              "projectedAfterPence": 160403,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Music subscription",
+                  "amountPence": 1199
+                }
+              ]
+            },
+            {
+              "date": "2027-01-06",
+              "projectedPence": 161802,
+              "projectedAfterPence": 160403,
+              "events": []
+            }
+          ],
+          "calibration": {
+            "category": "health",
+            "multiplier": 0.9,
+            "tunedPct": 100
+          },
+          "decision": "none"
+        }
+      }
+    }
+  },
+  {
+    "id": "scn_3_duplicate",
+    "title": "Headphones plus a third phone case",
+    "trigger": {
+      "merchant": "Amazon",
+      "keywords": [
+        "Place your order"
+      ],
+      "urlPattern": "amazon.co.uk/gp/buy"
+    },
+    "request": {
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "items": [
+        {
+          "name": "Anker Soundcore Q20i noise-cancelling headphones",
+          "pricePence": 5400,
+          "qty": 1,
+          "category": "tech"
+        },
+        {
+          "name": "Spigen phone case, clear",
+          "pricePence": 3500,
+          "qty": 1,
+          "category": "accessories"
+        }
+      ],
+      "deliveryPence": 0,
+      "totalPence": 8900,
+      "cues": [],
+      "capturedAt": "2026-11-08T23:40:00+00:00",
+      "basketHash": "amazon|anker soundcore q20i noise-cancelling headphones:5400|spigen phone case, clear:3500|8900"
+    },
+    "response": {
+      "id": "asm_scn_3",
+      "createdAt": "2026-11-08T23:40:00+00:00",
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "totalPence": 8900,
+      "verdict": "nudge",
+      "headline": "The headphones make sense. You own two phone cases.",
+      "spokenLine": "The headphones make sense. You own two phone cases.",
+      "regretRisk": 41,
+      "affordability": 70,
+      "items": [
+        {
+          "index": 0,
+          "name": "Anker Soundcore Q20i noise-cancelling headphones",
+          "pricePence": 5400,
+          "qty": 1,
+          "category": "tech",
+          "necessity": 55,
+          "necessityTag": "useful",
+          "necessityConfidence": "medium",
+          "essentialPrompt": false,
+          "essential": null,
+          "regretRisk": 22,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 8,
+              "max": 25,
+              "text": "Useful for the library, and you have used the Sony pair since September"
+            },
+            {
+              "key": "history",
+              "points": 4,
+              "max": 20,
+              "text": "You regretted 1 of 3 reviewed tech orders.",
+              "evidence": "p_08, £50, happy"
+            },
+            {
+              "key": "timing",
+              "points": 4,
+              "max": 10,
+              "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+            },
+            {
+              "key": "money_strain",
+              "points": 6,
+              "max": 15,
+              "text": "£61 safe to spend after this until your next salary."
+            }
+          ],
+          "limitedHistory": false
+        },
+        {
+          "index": 1,
+          "name": "Spigen phone case, clear",
+          "pricePence": 3500,
+          "qty": 1,
+          "category": "accessories",
+          "necessity": 15,
+          "necessityTag": "want",
+          "necessityConfidence": "high",
+          "essentialPrompt": false,
+          "essential": null,
+          "regretRisk": 81,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 24,
+              "max": 25,
+              "text": "This would be your third phone case this term"
+            },
+            {
+              "key": "history",
+              "points": 18,
+              "max": 20,
+              "text": "You regretted 3 of 4 reviewed accessories orders.",
+              "evidence": "Leather case 27 Sep, earbuds 10 Oct, grip ring 24 Oct"
+            },
+            {
+              "key": "duplicate",
+              "points": 15,
+              "max": 15,
+              "text": "You own two cases already; the leather one from 27 September was a regret",
+              "evidence": "p_02 clear case 18 Aug, p_10 leather case 27 Sep"
+            },
+            {
+              "key": "timing",
+              "points": 10,
+              "max": 10,
+              "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+            },
+            {
+              "key": "money_strain",
+              "points": 14,
+              "max": 15,
+              "text": "£61 safe to spend after this until your next salary."
+            }
+          ],
+          "duplicateOf": {
+            "purchaseId": "online-accessories-02",
+            "item": "Phone case",
+            "purchasedAt": "2026-09-27T23:00:00+01:00"
+          },
+          "limitedHistory": false
+        }
+      ],
+      "impact": {
+        "safeToSpendBeforePence": 15000,
+        "safeToSpendAfterPence": 6100,
+        "daysToNextIncome": 5,
+        "nextIncome": {
+          "name": "Monthly salary",
+          "date": "2026-11-13",
+          "amountPence": 125000
+        },
+        "nextBill": {
+          "name": "Rent",
+          "date": "2026-11-10",
+          "amountPence": 85000,
+          "coveredAfter": true
+        },
+        "workingHours": 5.2,
+        "goalSharePct": 11.1,
+        "overdraftUntil": null,
+        "limit": {
+          "category": "tech",
+          "weeklyLimitPence": 5000,
+          "spentThisWeekPence": 0,
+          "remainingAfterPence": -400,
+          "overByPence": 400
+        }
+      },
+      "topFactors": [
+        {
+          "key": "money_strain",
+          "text": "£61 safe to spend after this until payday on 13 November."
+        },
+        {
+          "key": "duplicate",
+          "text": "Your order history already contains two phone cases."
+        }
+      ],
+      "cues": [],
+      "negotiation": [
+        {
+          "id": "neg_drop_case",
+          "action": "drop",
+          "itemIndex": 1,
+          "text": "Drop the case, keep the headphones",
+          "resultRegretRisk": 20,
+          "resultSafeToSpendAfterPence": 9600,
+          "resultVerdict": "go_ahead"
+        }
+      ],
+      "reflectionDays": 7,
+      "reasoning": "The cash projection reserves £850 for rent on 10 November before payday on 13 November. Purchase feedback supplies the history evidence; regret risk is a prepared demonstration estimate.",
+      "timeline": [
+        {
+          "date": "2026-11-08",
+          "projectedPence": 100000,
+          "projectedAfterPence": 91100,
+          "events": []
+        },
+        {
+          "date": "2026-11-09",
+          "projectedPence": 100000,
+          "projectedAfterPence": 91100,
+          "events": []
+        },
+        {
+          "date": "2026-11-10",
+          "projectedPence": 15000,
+          "projectedAfterPence": 6100,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 85000
+            }
+          ]
+        },
+        {
+          "date": "2026-11-11",
+          "projectedPence": 15000,
+          "projectedAfterPence": 6100,
+          "events": []
+        },
+        {
+          "date": "2026-11-12",
+          "projectedPence": 15000,
+          "projectedAfterPence": 6100,
+          "events": []
+        },
+        {
+          "date": "2026-11-13",
+          "projectedPence": 140000,
+          "projectedAfterPence": 131100,
+          "events": [
+            {
+              "type": "income",
+              "name": "Monthly salary",
+              "amountPence": 125000
+            }
+          ]
+        },
+        {
+          "date": "2026-11-14",
+          "projectedPence": 137800,
+          "projectedAfterPence": 128900,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone plan",
+              "amountPence": 2200
+            }
+          ]
+        },
+        {
+          "date": "2026-11-15",
+          "projectedPence": 137800,
+          "projectedAfterPence": 128900,
+          "events": []
+        },
+        {
+          "date": "2026-11-16",
+          "projectedPence": 137800,
+          "projectedAfterPence": 128900,
+          "events": []
+        },
+        {
+          "date": "2026-11-17",
+          "projectedPence": 137800,
+          "projectedAfterPence": 128900,
+          "events": []
+        },
+        {
+          "date": "2026-11-18",
+          "projectedPence": 134900,
+          "projectedAfterPence": 126000,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Broadband",
+              "amountPence": 2900
+            }
+          ]
+        },
+        {
+          "date": "2026-11-19",
+          "projectedPence": 134900,
+          "projectedAfterPence": 126000,
+          "events": []
+        },
+        {
+          "date": "2026-11-20",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym membership",
+              "amountPence": 2800
+            }
+          ]
+        },
+        {
+          "date": "2026-11-21",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-11-22",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-11-23",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-11-24",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-11-25",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-11-26",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-11-27",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-11-28",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-11-29",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-11-30",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-12-01",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-12-02",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-12-03",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-12-04",
+          "projectedPence": 132100,
+          "projectedAfterPence": 123200,
+          "events": []
+        },
+        {
+          "date": "2026-12-05",
+          "projectedPence": 130901,
+          "projectedAfterPence": 122001,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Music subscription",
+              "amountPence": 1199
+            }
+          ]
+        },
+        {
+          "date": "2026-12-06",
+          "projectedPence": 130901,
+          "projectedAfterPence": 122001,
+          "events": []
+        },
+        {
+          "date": "2026-12-07",
+          "projectedPence": 130901,
+          "projectedAfterPence": 122001,
+          "events": []
+        },
+        {
+          "date": "2026-12-08",
+          "projectedPence": 130901,
+          "projectedAfterPence": 122001,
+          "events": []
+        },
+        {
+          "date": "2026-12-09",
+          "projectedPence": 130901,
+          "projectedAfterPence": 122001,
+          "events": []
+        },
+        {
+          "date": "2026-12-10",
+          "projectedPence": 45901,
+          "projectedAfterPence": 37001,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 85000
+            }
+          ]
+        },
+        {
+          "date": "2026-12-11",
+          "projectedPence": 45901,
+          "projectedAfterPence": 37001,
+          "events": []
+        },
+        {
+          "date": "2026-12-12",
+          "projectedPence": 45901,
+          "projectedAfterPence": 37001,
+          "events": []
+        },
+        {
+          "date": "2026-12-13",
+          "projectedPence": 170901,
+          "projectedAfterPence": 162001,
+          "events": [
+            {
+              "type": "income",
+              "name": "Monthly salary",
+              "amountPence": 125000
+            }
+          ]
+        },
+        {
+          "date": "2026-12-14",
+          "projectedPence": 168701,
+          "projectedAfterPence": 159801,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone plan",
+              "amountPence": 2200
+            }
+          ]
+        },
+        {
+          "date": "2026-12-15",
+          "projectedPence": 168701,
+          "projectedAfterPence": 159801,
+          "events": []
+        },
+        {
+          "date": "2026-12-16",
+          "projectedPence": 168701,
+          "projectedAfterPence": 159801,
+          "events": []
+        },
+        {
+          "date": "2026-12-17",
+          "projectedPence": 168701,
+          "projectedAfterPence": 159801,
+          "events": []
+        },
+        {
+          "date": "2026-12-18",
+          "projectedPence": 165801,
+          "projectedAfterPence": 156901,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Broadband",
+              "amountPence": 2900
+            }
+          ]
+        },
+        {
+          "date": "2026-12-19",
+          "projectedPence": 165801,
+          "projectedAfterPence": 156901,
+          "events": []
+        },
+        {
+          "date": "2026-12-20",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym membership",
+              "amountPence": 2800
+            }
+          ]
+        },
+        {
+          "date": "2026-12-21",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2026-12-22",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2026-12-23",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2026-12-24",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2026-12-25",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2026-12-26",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2026-12-27",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2026-12-28",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2026-12-29",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2026-12-30",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2026-12-31",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2027-01-01",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2027-01-02",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2027-01-03",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2027-01-04",
+          "projectedPence": 163001,
+          "projectedAfterPence": 154101,
+          "events": []
+        },
+        {
+          "date": "2027-01-05",
+          "projectedPence": 161802,
+          "projectedAfterPence": 152902,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Music subscription",
+              "amountPence": 1199
+            }
+          ]
+        },
+        {
+          "date": "2027-01-06",
+          "projectedPence": 161802,
+          "projectedAfterPence": 152902,
+          "events": []
+        }
+      ],
+      "calibration": {
+        "category": "tech",
+        "multiplier": 0.9,
+        "tunedPct": 100
+      },
+      "decision": "none"
+    },
+    "variants": {
+      "negotiated": {
+        "optionId": "neg_drop_case",
+        "response": {
+          "id": "asm_scn_3",
+          "createdAt": "2026-11-08T23:40:00+00:00",
+          "source": "watcher",
+          "merchant": "Amazon",
+          "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+          "totalPence": 5400,
+          "verdict": "go_ahead",
+          "headline": "Just the headphones. Looks fine, £358 safe after this.",
+          "spokenLine": "Just the headphones. Looks fine, £358 safe after this.",
+          "regretRisk": 20,
+          "affordability": 80,
+          "items": [
+            {
+              "index": 0,
+              "name": "Anker Soundcore Q20i noise-cancelling headphones",
+              "pricePence": 5400,
+              "qty": 1,
+              "category": "tech",
+              "necessity": 55,
+              "necessityTag": "useful",
+              "necessityConfidence": "medium",
+              "essentialPrompt": false,
+              "essential": null,
+              "regretRisk": 22,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 8,
+                  "max": 25,
+                  "text": "Useful for the library, and you have used the Sony pair since September"
+                },
+                {
+                  "key": "history",
+                  "points": 4,
+                  "max": 20,
+                  "text": "You regretted 1 of 3 reviewed tech orders.",
+                  "evidence": "p_08, £50, happy"
+                },
+                {
+                  "key": "timing",
+                  "points": 4,
+                  "max": 10,
+                  "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+                },
+                {
+                  "key": "money_strain",
+                  "points": 6,
+                  "max": 15,
+                  "text": "£96 safe to spend after this until your next salary."
+                }
+              ],
+              "limitedHistory": false
+            }
+          ],
+          "impact": {
+            "safeToSpendBeforePence": 15000,
+            "safeToSpendAfterPence": 9600,
+            "daysToNextIncome": 5,
+            "nextIncome": {
+              "name": "Monthly salary",
+              "date": "2026-11-13",
+              "amountPence": 125000
+            },
+            "nextBill": {
+              "name": "Rent",
+              "date": "2026-11-10",
+              "amountPence": 85000,
+              "coveredAfter": true
+            },
+            "workingHours": 3.2,
+            "goalSharePct": 6.8,
+            "overdraftUntil": null,
+            "limit": {
+              "category": "tech",
+              "weeklyLimitPence": 5000,
+              "spentThisWeekPence": 0,
+              "remainingAfterPence": -400,
+              "overByPence": 400
+            }
+          },
+          "topFactors": [
+            {
+              "key": "money_strain",
+              "text": "£96 safe to spend after this until payday on 13 November."
+            },
+            {
+              "key": "duplicate",
+              "text": "Your order history already contains two phone cases."
+            }
+          ],
+          "cues": [],
+          "negotiation": [],
+          "reflectionDays": 7,
+          "reasoning": "The cash projection reserves £850 for rent on 10 November before payday on 13 November. Purchase feedback supplies the history evidence; regret risk is a prepared demonstration estimate.",
+          "timeline": [
+            {
+              "date": "2026-11-08",
+              "projectedPence": 100000,
+              "projectedAfterPence": 94600,
+              "events": []
+            },
+            {
+              "date": "2026-11-09",
+              "projectedPence": 100000,
+              "projectedAfterPence": 94600,
+              "events": []
+            },
+            {
+              "date": "2026-11-10",
+              "projectedPence": 15000,
+              "projectedAfterPence": 9600,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 85000
+                }
+              ]
+            },
+            {
+              "date": "2026-11-11",
+              "projectedPence": 15000,
+              "projectedAfterPence": 9600,
+              "events": []
+            },
+            {
+              "date": "2026-11-12",
+              "projectedPence": 15000,
+              "projectedAfterPence": 9600,
+              "events": []
+            },
+            {
+              "date": "2026-11-13",
+              "projectedPence": 140000,
+              "projectedAfterPence": 134600,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Monthly salary",
+                  "amountPence": 125000
+                }
+              ]
+            },
+            {
+              "date": "2026-11-14",
+              "projectedPence": 137800,
+              "projectedAfterPence": 132400,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone plan",
+                  "amountPence": 2200
+                }
+              ]
+            },
+            {
+              "date": "2026-11-15",
+              "projectedPence": 137800,
+              "projectedAfterPence": 132400,
+              "events": []
+            },
+            {
+              "date": "2026-11-16",
+              "projectedPence": 137800,
+              "projectedAfterPence": 132400,
+              "events": []
+            },
+            {
+              "date": "2026-11-17",
+              "projectedPence": 137800,
+              "projectedAfterPence": 132400,
+              "events": []
+            },
+            {
+              "date": "2026-11-18",
+              "projectedPence": 134900,
+              "projectedAfterPence": 129500,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Broadband",
+                  "amountPence": 2900
+                }
+              ]
+            },
+            {
+              "date": "2026-11-19",
+              "projectedPence": 134900,
+              "projectedAfterPence": 129500,
+              "events": []
+            },
+            {
+              "date": "2026-11-20",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym membership",
+                  "amountPence": 2800
+                }
+              ]
+            },
+            {
+              "date": "2026-11-21",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-11-22",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-11-23",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-11-24",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-11-25",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-11-26",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-11-27",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-11-28",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-11-29",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-11-30",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-12-01",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-12-02",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-12-03",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-12-04",
+              "projectedPence": 132100,
+              "projectedAfterPence": 126700,
+              "events": []
+            },
+            {
+              "date": "2026-12-05",
+              "projectedPence": 130901,
+              "projectedAfterPence": 125501,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Music subscription",
+                  "amountPence": 1199
+                }
+              ]
+            },
+            {
+              "date": "2026-12-06",
+              "projectedPence": 130901,
+              "projectedAfterPence": 125501,
+              "events": []
+            },
+            {
+              "date": "2026-12-07",
+              "projectedPence": 130901,
+              "projectedAfterPence": 125501,
+              "events": []
+            },
+            {
+              "date": "2026-12-08",
+              "projectedPence": 130901,
+              "projectedAfterPence": 125501,
+              "events": []
+            },
+            {
+              "date": "2026-12-09",
+              "projectedPence": 130901,
+              "projectedAfterPence": 125501,
+              "events": []
+            },
+            {
+              "date": "2026-12-10",
+              "projectedPence": 45901,
+              "projectedAfterPence": 40501,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 85000
+                }
+              ]
+            },
+            {
+              "date": "2026-12-11",
+              "projectedPence": 45901,
+              "projectedAfterPence": 40501,
+              "events": []
+            },
+            {
+              "date": "2026-12-12",
+              "projectedPence": 45901,
+              "projectedAfterPence": 40501,
+              "events": []
+            },
+            {
+              "date": "2026-12-13",
+              "projectedPence": 170901,
+              "projectedAfterPence": 165501,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Monthly salary",
+                  "amountPence": 125000
+                }
+              ]
+            },
+            {
+              "date": "2026-12-14",
+              "projectedPence": 168701,
+              "projectedAfterPence": 163301,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone plan",
+                  "amountPence": 2200
+                }
+              ]
+            },
+            {
+              "date": "2026-12-15",
+              "projectedPence": 168701,
+              "projectedAfterPence": 163301,
+              "events": []
+            },
+            {
+              "date": "2026-12-16",
+              "projectedPence": 168701,
+              "projectedAfterPence": 163301,
+              "events": []
+            },
+            {
+              "date": "2026-12-17",
+              "projectedPence": 168701,
+              "projectedAfterPence": 163301,
+              "events": []
+            },
+            {
+              "date": "2026-12-18",
+              "projectedPence": 165801,
+              "projectedAfterPence": 160401,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Broadband",
+                  "amountPence": 2900
+                }
+              ]
+            },
+            {
+              "date": "2026-12-19",
+              "projectedPence": 165801,
+              "projectedAfterPence": 160401,
+              "events": []
+            },
+            {
+              "date": "2026-12-20",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym membership",
+                  "amountPence": 2800
+                }
+              ]
+            },
+            {
+              "date": "2026-12-21",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2026-12-22",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2026-12-23",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2026-12-24",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2026-12-25",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2026-12-26",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2026-12-27",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2026-12-28",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2026-12-29",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2026-12-30",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2026-12-31",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2027-01-01",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2027-01-02",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2027-01-03",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2027-01-04",
+              "projectedPence": 163001,
+              "projectedAfterPence": 157601,
+              "events": []
+            },
+            {
+              "date": "2027-01-05",
+              "projectedPence": 161802,
+              "projectedAfterPence": 156402,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Music subscription",
+                  "amountPence": 1199
+                }
+              ]
+            },
+            {
+              "date": "2027-01-06",
+              "projectedPence": 161802,
+              "projectedAfterPence": 156402,
+              "events": []
+            }
+          ],
+          "calibration": {
+            "category": "tech",
+            "multiplier": 0.9,
+            "tunedPct": 100
+          },
+          "decision": "negotiated"
+        }
+      },
+      "reason": {
+        "input": "the case is a gift",
+        "response": {
+          "id": "asm_scn_3",
+          "createdAt": "2026-11-08T23:40:00+00:00",
+          "source": "watcher",
+          "merchant": "Amazon",
+          "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+          "totalPence": 8900,
+          "verdict": "go_ahead",
+          "headline": "That explains the case. The cash impact stays the same.",
+          "spokenLine": "That explains the case. The cash impact stays the same.",
+          "regretRisk": 30,
+          "affordability": 70,
+          "items": [
+            {
+              "index": 0,
+              "name": "Anker Soundcore Q20i noise-cancelling headphones",
+              "pricePence": 5400,
+              "qty": 1,
+              "category": "tech",
+              "necessity": 55,
+              "necessityTag": "useful",
+              "necessityConfidence": "medium",
+              "essentialPrompt": false,
+              "essential": null,
+              "regretRisk": 22,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 8,
+                  "max": 25,
+                  "text": "Useful for the library, and you have used the Sony pair since September"
+                },
+                {
+                  "key": "history",
+                  "points": 4,
+                  "max": 20,
+                  "text": "You regretted 1 of 3 reviewed tech orders.",
+                  "evidence": "p_08, £50, happy"
+                },
+                {
+                  "key": "timing",
+                  "points": 4,
+                  "max": 10,
+                  "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+                },
+                {
+                  "key": "money_strain",
+                  "points": 6,
+                  "max": 15,
+                  "text": "£61 safe to spend after this until your next salary."
+                }
+              ],
+              "limitedHistory": false
+            },
+            {
+              "index": 1,
+              "name": "Spigen phone case, clear",
+              "pricePence": 3500,
+              "qty": 1,
+              "category": "accessories",
+              "necessity": 15,
+              "necessityTag": "want",
+              "necessityConfidence": "high",
+              "essentialPrompt": false,
+              "essential": null,
+              "regretRisk": 51,
+              "factors": [
+                {
+                  "key": "want_level",
+                  "points": 24,
+                  "max": 25,
+                  "text": "This would be your third phone case this term"
+                },
+                {
+                  "key": "history",
+                  "points": 18,
+                  "max": 20,
+                  "text": "You regretted 3 of 4 reviewed accessories orders.",
+                  "evidence": "Leather case 27 Sep, earbuds 10 Oct, grip ring 24 Oct"
+                },
+                {
+                  "key": "duplicate",
+                  "points": 15,
+                  "max": 15,
+                  "text": "You own two cases already; the leather one from 27 September was a regret",
+                  "evidence": "p_02 clear case 18 Aug, p_10 leather case 27 Sep"
+                },
+                {
+                  "key": "timing",
+                  "points": 10,
+                  "max": 10,
+                  "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+                },
+                {
+                  "key": "money_strain",
+                  "points": 14,
+                  "max": 15,
+                  "text": "£61 safe to spend after this until your next salary."
+                },
+                {
+                  "key": "reason",
+                  "points": -30,
+                  "max": 0,
+                  "text": "The case is a birthday gift."
+                }
+              ],
+              "duplicateOf": {
+                "purchaseId": "online-accessories-02",
+                "item": "Phone case",
+                "purchasedAt": "2026-09-27T23:00:00+01:00"
+              },
+              "limitedHistory": false
+            }
+          ],
+          "impact": {
+            "safeToSpendBeforePence": 15000,
+            "safeToSpendAfterPence": 6100,
+            "daysToNextIncome": 5,
+            "nextIncome": {
+              "name": "Monthly salary",
+              "date": "2026-11-13",
+              "amountPence": 125000
+            },
+            "nextBill": {
+              "name": "Rent",
+              "date": "2026-11-10",
+              "amountPence": 85000,
+              "coveredAfter": true
+            },
+            "workingHours": 5.2,
+            "goalSharePct": 11.1,
+            "overdraftUntil": null,
+            "limit": {
+              "category": "tech",
+              "weeklyLimitPence": 5000,
+              "spentThisWeekPence": 0,
+              "remainingAfterPence": -400,
+              "overByPence": 400
+            }
+          },
+          "topFactors": [
+            {
+              "key": "money_strain",
+              "text": "£61 safe to spend after this until payday on 13 November."
+            },
+            {
+              "key": "duplicate",
+              "text": "Your order history already contains two phone cases."
+            }
+          ],
+          "cues": [],
+          "negotiation": [
+            {
+              "id": "neg_drop_case",
+              "action": "drop",
+              "itemIndex": 1,
+              "text": "Drop the case, keep the headphones",
+              "resultRegretRisk": 22,
+              "resultSafeToSpendAfterPence": 9600,
+              "resultVerdict": "go_ahead"
+            }
+          ],
+          "reflectionDays": 7,
+          "reasoning": "The cash projection reserves £850 for rent on 10 November before payday on 13 November. Purchase feedback supplies the history evidence; regret risk is a prepared demonstration estimate.",
+          "timeline": [
+            {
+              "date": "2026-11-08",
+              "projectedPence": 100000,
+              "projectedAfterPence": 91100,
+              "events": []
+            },
+            {
+              "date": "2026-11-09",
+              "projectedPence": 100000,
+              "projectedAfterPence": 91100,
+              "events": []
+            },
+            {
+              "date": "2026-11-10",
+              "projectedPence": 15000,
+              "projectedAfterPence": 6100,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 85000
+                }
+              ]
+            },
+            {
+              "date": "2026-11-11",
+              "projectedPence": 15000,
+              "projectedAfterPence": 6100,
+              "events": []
+            },
+            {
+              "date": "2026-11-12",
+              "projectedPence": 15000,
+              "projectedAfterPence": 6100,
+              "events": []
+            },
+            {
+              "date": "2026-11-13",
+              "projectedPence": 140000,
+              "projectedAfterPence": 131100,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Monthly salary",
+                  "amountPence": 125000
+                }
+              ]
+            },
+            {
+              "date": "2026-11-14",
+              "projectedPence": 137800,
+              "projectedAfterPence": 128900,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone plan",
+                  "amountPence": 2200
+                }
+              ]
+            },
+            {
+              "date": "2026-11-15",
+              "projectedPence": 137800,
+              "projectedAfterPence": 128900,
+              "events": []
+            },
+            {
+              "date": "2026-11-16",
+              "projectedPence": 137800,
+              "projectedAfterPence": 128900,
+              "events": []
+            },
+            {
+              "date": "2026-11-17",
+              "projectedPence": 137800,
+              "projectedAfterPence": 128900,
+              "events": []
+            },
+            {
+              "date": "2026-11-18",
+              "projectedPence": 134900,
+              "projectedAfterPence": 126000,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Broadband",
+                  "amountPence": 2900
+                }
+              ]
+            },
+            {
+              "date": "2026-11-19",
+              "projectedPence": 134900,
+              "projectedAfterPence": 126000,
+              "events": []
+            },
+            {
+              "date": "2026-11-20",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym membership",
+                  "amountPence": 2800
+                }
+              ]
+            },
+            {
+              "date": "2026-11-21",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-11-22",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-11-23",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-11-24",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-11-25",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-11-26",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-11-27",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-11-28",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-11-29",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-11-30",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-12-01",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-12-02",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-12-03",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-12-04",
+              "projectedPence": 132100,
+              "projectedAfterPence": 123200,
+              "events": []
+            },
+            {
+              "date": "2026-12-05",
+              "projectedPence": 130901,
+              "projectedAfterPence": 122001,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Music subscription",
+                  "amountPence": 1199
+                }
+              ]
+            },
+            {
+              "date": "2026-12-06",
+              "projectedPence": 130901,
+              "projectedAfterPence": 122001,
+              "events": []
+            },
+            {
+              "date": "2026-12-07",
+              "projectedPence": 130901,
+              "projectedAfterPence": 122001,
+              "events": []
+            },
+            {
+              "date": "2026-12-08",
+              "projectedPence": 130901,
+              "projectedAfterPence": 122001,
+              "events": []
+            },
+            {
+              "date": "2026-12-09",
+              "projectedPence": 130901,
+              "projectedAfterPence": 122001,
+              "events": []
+            },
+            {
+              "date": "2026-12-10",
+              "projectedPence": 45901,
+              "projectedAfterPence": 37001,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Rent",
+                  "amountPence": 85000
+                }
+              ]
+            },
+            {
+              "date": "2026-12-11",
+              "projectedPence": 45901,
+              "projectedAfterPence": 37001,
+              "events": []
+            },
+            {
+              "date": "2026-12-12",
+              "projectedPence": 45901,
+              "projectedAfterPence": 37001,
+              "events": []
+            },
+            {
+              "date": "2026-12-13",
+              "projectedPence": 170901,
+              "projectedAfterPence": 162001,
+              "events": [
+                {
+                  "type": "income",
+                  "name": "Monthly salary",
+                  "amountPence": 125000
+                }
+              ]
+            },
+            {
+              "date": "2026-12-14",
+              "projectedPence": 168701,
+              "projectedAfterPence": 159801,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Phone plan",
+                  "amountPence": 2200
+                }
+              ]
+            },
+            {
+              "date": "2026-12-15",
+              "projectedPence": 168701,
+              "projectedAfterPence": 159801,
+              "events": []
+            },
+            {
+              "date": "2026-12-16",
+              "projectedPence": 168701,
+              "projectedAfterPence": 159801,
+              "events": []
+            },
+            {
+              "date": "2026-12-17",
+              "projectedPence": 168701,
+              "projectedAfterPence": 159801,
+              "events": []
+            },
+            {
+              "date": "2026-12-18",
+              "projectedPence": 165801,
+              "projectedAfterPence": 156901,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Broadband",
+                  "amountPence": 2900
+                }
+              ]
+            },
+            {
+              "date": "2026-12-19",
+              "projectedPence": 165801,
+              "projectedAfterPence": 156901,
+              "events": []
+            },
+            {
+              "date": "2026-12-20",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Gym membership",
+                  "amountPence": 2800
+                }
+              ]
+            },
+            {
+              "date": "2026-12-21",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2026-12-22",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2026-12-23",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2026-12-24",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2026-12-25",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2026-12-26",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2026-12-27",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2026-12-28",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2026-12-29",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2026-12-30",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2026-12-31",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2027-01-01",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2027-01-02",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2027-01-03",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2027-01-04",
+              "projectedPence": 163001,
+              "projectedAfterPence": 154101,
+              "events": []
+            },
+            {
+              "date": "2027-01-05",
+              "projectedPence": 161802,
+              "projectedAfterPence": 152902,
+              "events": [
+                {
+                  "type": "bill",
+                  "name": "Music subscription",
+                  "amountPence": 1199
+                }
+              ]
+            },
+            {
+              "date": "2027-01-06",
+              "projectedPence": 161802,
+              "projectedAfterPence": 152902,
+              "events": []
+            }
+          ],
+          "calibration": {
+            "category": "tech",
+            "multiplier": 0.9,
+            "tunedPct": 100
+          },
+          "decision": "none",
+          "reason": {
+            "text": "the case is a gift",
+            "accepted": true,
+            "adjustment": -30,
+            "verdictText": "That explains the case. The cash impact stays the same."
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "scn_4_fine",
+    "title": "A £6 paperback",
+    "trigger": {
+      "merchant": "Amazon",
+      "keywords": [
+        "Place your order"
+      ],
+      "urlPattern": "amazon.co.uk/gp/buy"
+    },
+    "request": {
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "items": [
+        {
+          "name": "Paperback novel",
+          "pricePence": 600,
+          "qty": 1,
+          "category": "books"
+        }
+      ],
+      "deliveryPence": 0,
+      "totalPence": 600,
+      "cues": [],
+      "capturedAt": "2026-11-08T23:40:00+00:00",
+      "basketHash": "amazon|paperback novel:600|600"
+    },
+    "response": {
+      "id": "asm_scn_4",
+      "createdAt": "2026-11-08T23:40:00+00:00",
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/spc/handlers/display.html",
+      "totalPence": 600,
+      "verdict": "go_ahead",
+      "headline": "Looks fine. £144 safe after this.",
+      "spokenLine": "Looks fine. £144 safe after this.",
+      "regretRisk": 4,
+      "affordability": 96,
+      "items": [
+        {
+          "index": 0,
+          "name": "Paperback novel",
+          "pricePence": 600,
+          "qty": 1,
+          "category": "books",
+          "necessity": 85,
+          "necessityTag": "need",
+          "necessityConfidence": "high",
+          "essentialPrompt": false,
+          "essential": null,
+          "regretRisk": 6,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 2,
+              "max": 25,
+              "text": "Your rule says books for personal reading are always fine.",
+              "evidence": "Rule: books are always fine"
+            },
+            {
+              "key": "history",
+              "points": 0,
+              "max": 20,
+              "text": "You regretted 0 of 3 reviewed books orders.",
+              "evidence": "p_09, p_13, p_22"
+            },
+            {
+              "key": "timing",
+              "points": 4,
+              "max": 10,
+              "text": "This checkout is at 23:40; late-night purchases are worth a pause."
+            }
+          ],
+          "limitedHistory": false
+        }
+      ],
+      "impact": {
+        "safeToSpendBeforePence": 15000,
+        "safeToSpendAfterPence": 14400,
+        "daysToNextIncome": 5,
+        "nextIncome": {
+          "name": "Monthly salary",
+          "date": "2026-11-13",
+          "amountPence": 125000
+        },
+        "nextBill": {
+          "name": "Rent",
+          "date": "2026-11-10",
+          "amountPence": 85000,
+          "coveredAfter": true
+        },
+        "workingHours": 0.4,
+        "goalSharePct": 0.8,
+        "overdraftUntil": null
+      },
+      "topFactors": [
+        {
+          "key": "money_strain",
+          "text": "£144 safe to spend after this until payday on 13 November."
+        }
+      ],
+      "cues": [],
+      "negotiation": [],
+      "reflectionDays": 14,
+      "reasoning": "The cash projection reserves £850 for rent on 10 November before payday on 13 November. Purchase feedback supplies the history evidence; regret risk is a prepared demonstration estimate.",
+      "timeline": [
+        {
+          "date": "2026-11-08",
+          "projectedPence": 100000,
+          "projectedAfterPence": 99400,
+          "events": []
+        },
+        {
+          "date": "2026-11-09",
+          "projectedPence": 100000,
+          "projectedAfterPence": 99400,
+          "events": []
+        },
+        {
+          "date": "2026-11-10",
+          "projectedPence": 15000,
+          "projectedAfterPence": 14400,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 85000
+            }
+          ]
+        },
+        {
+          "date": "2026-11-11",
+          "projectedPence": 15000,
+          "projectedAfterPence": 14400,
+          "events": []
+        },
+        {
+          "date": "2026-11-12",
+          "projectedPence": 15000,
+          "projectedAfterPence": 14400,
+          "events": []
+        },
+        {
+          "date": "2026-11-13",
+          "projectedPence": 140000,
+          "projectedAfterPence": 139400,
+          "events": [
+            {
+              "type": "income",
+              "name": "Monthly salary",
+              "amountPence": 125000
+            }
+          ]
+        },
+        {
+          "date": "2026-11-14",
+          "projectedPence": 137800,
+          "projectedAfterPence": 137200,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone plan",
+              "amountPence": 2200
+            }
+          ]
+        },
+        {
+          "date": "2026-11-15",
+          "projectedPence": 137800,
+          "projectedAfterPence": 137200,
+          "events": []
+        },
+        {
+          "date": "2026-11-16",
+          "projectedPence": 137800,
+          "projectedAfterPence": 137200,
+          "events": []
+        },
+        {
+          "date": "2026-11-17",
+          "projectedPence": 137800,
+          "projectedAfterPence": 137200,
+          "events": []
+        },
+        {
+          "date": "2026-11-18",
+          "projectedPence": 134900,
+          "projectedAfterPence": 134300,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Broadband",
+              "amountPence": 2900
+            }
+          ]
+        },
+        {
+          "date": "2026-11-19",
+          "projectedPence": 134900,
+          "projectedAfterPence": 134300,
+          "events": []
+        },
+        {
+          "date": "2026-11-20",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym membership",
+              "amountPence": 2800
+            }
+          ]
+        },
+        {
+          "date": "2026-11-21",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-11-22",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-11-23",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-11-24",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-11-25",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-11-26",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-11-27",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-11-28",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-11-29",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-11-30",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-12-01",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-12-02",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-12-03",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-12-04",
+          "projectedPence": 132100,
+          "projectedAfterPence": 131500,
+          "events": []
+        },
+        {
+          "date": "2026-12-05",
+          "projectedPence": 130901,
+          "projectedAfterPence": 130301,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Music subscription",
+              "amountPence": 1199
+            }
+          ]
+        },
+        {
+          "date": "2026-12-06",
+          "projectedPence": 130901,
+          "projectedAfterPence": 130301,
+          "events": []
+        },
+        {
+          "date": "2026-12-07",
+          "projectedPence": 130901,
+          "projectedAfterPence": 130301,
+          "events": []
+        },
+        {
+          "date": "2026-12-08",
+          "projectedPence": 130901,
+          "projectedAfterPence": 130301,
+          "events": []
+        },
+        {
+          "date": "2026-12-09",
+          "projectedPence": 130901,
+          "projectedAfterPence": 130301,
+          "events": []
+        },
+        {
+          "date": "2026-12-10",
+          "projectedPence": 45901,
+          "projectedAfterPence": 45301,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 85000
+            }
+          ]
+        },
+        {
+          "date": "2026-12-11",
+          "projectedPence": 45901,
+          "projectedAfterPence": 45301,
+          "events": []
+        },
+        {
+          "date": "2026-12-12",
+          "projectedPence": 45901,
+          "projectedAfterPence": 45301,
+          "events": []
+        },
+        {
+          "date": "2026-12-13",
+          "projectedPence": 170901,
+          "projectedAfterPence": 170301,
+          "events": [
+            {
+              "type": "income",
+              "name": "Monthly salary",
+              "amountPence": 125000
+            }
+          ]
+        },
+        {
+          "date": "2026-12-14",
+          "projectedPence": 168701,
+          "projectedAfterPence": 168101,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone plan",
+              "amountPence": 2200
+            }
+          ]
+        },
+        {
+          "date": "2026-12-15",
+          "projectedPence": 168701,
+          "projectedAfterPence": 168101,
+          "events": []
+        },
+        {
+          "date": "2026-12-16",
+          "projectedPence": 168701,
+          "projectedAfterPence": 168101,
+          "events": []
+        },
+        {
+          "date": "2026-12-17",
+          "projectedPence": 168701,
+          "projectedAfterPence": 168101,
+          "events": []
+        },
+        {
+          "date": "2026-12-18",
+          "projectedPence": 165801,
+          "projectedAfterPence": 165201,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Broadband",
+              "amountPence": 2900
+            }
+          ]
+        },
+        {
+          "date": "2026-12-19",
+          "projectedPence": 165801,
+          "projectedAfterPence": 165201,
+          "events": []
+        },
+        {
+          "date": "2026-12-20",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym membership",
+              "amountPence": 2800
+            }
+          ]
+        },
+        {
+          "date": "2026-12-21",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2026-12-22",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2026-12-23",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2026-12-24",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2026-12-25",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2026-12-26",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2026-12-27",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2026-12-28",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2026-12-29",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2026-12-30",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2026-12-31",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2027-01-01",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2027-01-02",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2027-01-03",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2027-01-04",
+          "projectedPence": 163001,
+          "projectedAfterPence": 162401,
+          "events": []
+        },
+        {
+          "date": "2027-01-05",
+          "projectedPence": 161802,
+          "projectedAfterPence": 161202,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Music subscription",
+              "amountPence": 1199
+            }
+          ]
+        },
+        {
+          "date": "2027-01-06",
+          "projectedPence": 161802,
+          "projectedAfterPence": 161202,
+          "events": []
+        }
+      ],
+      "calibration": {
+        "category": "books",
+        "multiplier": 0.7,
+        "tunedPct": 100
+      },
+      "decision": "none"
+    }
+  },
+  {
+    "id": "scn_5_deal",
+    "title": "Late-night game under a countdown; Friday-night history",
+    "trigger": {
+      "merchant": "Amazon",
+      "keywords": [
+        "Place your order"
+      ],
+      "urlPattern": "amazon.co.uk/gp/buy"
+    },
+    "request": {
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/",
+      "items": [
+        {
+          "name": "Hollow Knight: Silksong",
+          "pricePence": 3999,
+          "qty": 1,
+          "category": "fun"
+        }
+      ],
+      "deliveryPence": 0,
+      "totalPence": 3999,
+      "cues": [
+        {
+          "key": "countdown",
+          "text": "-40% ends in 2 days"
+        },
+        {
+          "key": "sale",
+          "text": "Save 40%"
+        }
+      ],
+      "capturedAt": "2026-11-08T23:40:00+00:00",
+      "basketHash": "amazon|hollow knight: silksong:3999|3999",
+      "scenarioId": "scn_5_deal"
+    },
+    "response": {
+      "id": "asm_scn_5",
+      "createdAt": "2026-11-08T23:40:00+00:00",
+      "source": "watcher",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/",
+      "totalPence": 3999,
+      "verdict": "strong_nudge",
+      "headline": "Friday after ten, and a sale timer.",
+      "spokenLine": "Friday after ten, and a sale timer.",
+      "regretRisk": 70,
+      "affordability": 72,
+      "items": [
+        {
+          "index": 0,
+          "name": "Hollow Knight: Silksong",
+          "pricePence": 3999,
+          "qty": 1,
+          "category": "fun",
+          "necessity": 20,
+          "necessityTag": "want",
+          "necessityConfidence": "high",
+          "essentialPrompt": false,
+          "essential": null,
+          "regretRisk": 64,
+          "factors": [
+            {
+              "key": "want_level",
+              "points": 18,
+              "max": 25,
+              "text": "A game on a Friday night is a treat, which is fine when the budget has room"
+            },
+            {
+              "key": "history",
+              "points": 14,
+              "max": 20,
+              "text": "You regretted 2 of 3 reviewed fun orders.",
+              "evidence": "p_16, £24, regretted"
+            },
+            {
+              "key": "pressure",
+              "points": 9,
+              "max": 10,
+              "text": "A countdown and a discount together"
+            },
+            {
+              "key": "timing",
+              "points": 10,
+              "max": 10,
+              "text": "This checkout is at 23:40; late-night purchases are worth a pause.",
+              "evidence": "p_01, p_06, p_11, p_16, p_20"
+            },
+            {
+              "key": "money_strain",
+              "points": 13,
+              "max": 15,
+              "text": "£110 safe to spend after this until your next salary."
+            }
+          ],
+          "limitedHistory": false
+        }
+      ],
+      "impact": {
+        "safeToSpendBeforePence": 15000,
+        "safeToSpendAfterPence": 11001,
+        "daysToNextIncome": 5,
+        "nextIncome": {
+          "name": "Monthly salary",
+          "date": "2026-11-13",
+          "amountPence": 125000
+        },
+        "nextBill": {
+          "name": "Rent",
+          "date": "2026-11-10",
+          "amountPence": 85000,
+          "coveredAfter": true
+        },
+        "workingHours": 2.4,
+        "goalSharePct": 5.0,
+        "overdraftUntil": null,
+        "limit": {
+          "category": "fun",
+          "weeklyLimitPence": 3500,
+          "spentThisWeekPence": 0,
+          "remainingAfterPence": -499,
+          "overByPence": 499
+        }
+      },
+      "topFactors": [
+        {
+          "key": "money_strain",
+          "text": "£110 safe to spend after this until payday on 13 November."
+        }
+      ],
+      "cues": [
+        {
+          "key": "countdown",
+          "text": "-40% ends in 2 days",
+          "note": "Steam sales come round every few weeks. The timer is there to make you decide tonight."
+        },
+        {
+          "key": "sale",
+          "text": "Save 40%",
+          "note": "A discount only saves money on something you were going to buy anyway."
+        }
+      ],
+      "negotiation": [
+        {
+          "id": "neg_delay_game",
+          "action": "delay",
+          "itemIndex": 0,
+          "text": "Wait until payday on 13 November.",
+          "resultRegretRisk": 38,
+          "resultSafeToSpendAfterPence": 15000,
+          "resultVerdict": "go_ahead",
+          "delayUntil": "2026-11-13"
+        }
+      ],
+      "reflectionDays": 7,
+      "reasoning": "The cash projection reserves £850 for rent on 10 November before payday on 13 November. Purchase feedback supplies the history evidence; regret risk is a prepared demonstration estimate.",
+      "timeline": [
+        {
+          "date": "2026-11-08",
+          "projectedPence": 100000,
+          "projectedAfterPence": 96001,
+          "events": []
+        },
+        {
+          "date": "2026-11-09",
+          "projectedPence": 100000,
+          "projectedAfterPence": 96001,
+          "events": []
+        },
+        {
+          "date": "2026-11-10",
+          "projectedPence": 15000,
+          "projectedAfterPence": 11001,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 85000
+            }
+          ]
+        },
+        {
+          "date": "2026-11-11",
+          "projectedPence": 15000,
+          "projectedAfterPence": 11001,
+          "events": []
+        },
+        {
+          "date": "2026-11-12",
+          "projectedPence": 15000,
+          "projectedAfterPence": 11001,
+          "events": []
+        },
+        {
+          "date": "2026-11-13",
+          "projectedPence": 140000,
+          "projectedAfterPence": 136001,
+          "events": [
+            {
+              "type": "income",
+              "name": "Monthly salary",
+              "amountPence": 125000
+            }
+          ]
+        },
+        {
+          "date": "2026-11-14",
+          "projectedPence": 137800,
+          "projectedAfterPence": 133801,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone plan",
+              "amountPence": 2200
+            }
+          ]
+        },
+        {
+          "date": "2026-11-15",
+          "projectedPence": 137800,
+          "projectedAfterPence": 133801,
+          "events": []
+        },
+        {
+          "date": "2026-11-16",
+          "projectedPence": 137800,
+          "projectedAfterPence": 133801,
+          "events": []
+        },
+        {
+          "date": "2026-11-17",
+          "projectedPence": 137800,
+          "projectedAfterPence": 133801,
+          "events": []
+        },
+        {
+          "date": "2026-11-18",
+          "projectedPence": 134900,
+          "projectedAfterPence": 130901,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Broadband",
+              "amountPence": 2900
+            }
+          ]
+        },
+        {
+          "date": "2026-11-19",
+          "projectedPence": 134900,
+          "projectedAfterPence": 130901,
+          "events": []
+        },
+        {
+          "date": "2026-11-20",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym membership",
+              "amountPence": 2800
+            }
+          ]
+        },
+        {
+          "date": "2026-11-21",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-11-22",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-11-23",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-11-24",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-11-25",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-11-26",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-11-27",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-11-28",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-11-29",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-11-30",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-12-01",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-12-02",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-12-03",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-12-04",
+          "projectedPence": 132100,
+          "projectedAfterPence": 128101,
+          "events": []
+        },
+        {
+          "date": "2026-12-05",
+          "projectedPence": 130901,
+          "projectedAfterPence": 126902,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Music subscription",
+              "amountPence": 1199
+            }
+          ]
+        },
+        {
+          "date": "2026-12-06",
+          "projectedPence": 130901,
+          "projectedAfterPence": 126902,
+          "events": []
+        },
+        {
+          "date": "2026-12-07",
+          "projectedPence": 130901,
+          "projectedAfterPence": 126902,
+          "events": []
+        },
+        {
+          "date": "2026-12-08",
+          "projectedPence": 130901,
+          "projectedAfterPence": 126902,
+          "events": []
+        },
+        {
+          "date": "2026-12-09",
+          "projectedPence": 130901,
+          "projectedAfterPence": 126902,
+          "events": []
+        },
+        {
+          "date": "2026-12-10",
+          "projectedPence": 45901,
+          "projectedAfterPence": 41902,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Rent",
+              "amountPence": 85000
+            }
+          ]
+        },
+        {
+          "date": "2026-12-11",
+          "projectedPence": 45901,
+          "projectedAfterPence": 41902,
+          "events": []
+        },
+        {
+          "date": "2026-12-12",
+          "projectedPence": 45901,
+          "projectedAfterPence": 41902,
+          "events": []
+        },
+        {
+          "date": "2026-12-13",
+          "projectedPence": 170901,
+          "projectedAfterPence": 166902,
+          "events": [
+            {
+              "type": "income",
+              "name": "Monthly salary",
+              "amountPence": 125000
+            }
+          ]
+        },
+        {
+          "date": "2026-12-14",
+          "projectedPence": 168701,
+          "projectedAfterPence": 164702,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Phone plan",
+              "amountPence": 2200
+            }
+          ]
+        },
+        {
+          "date": "2026-12-15",
+          "projectedPence": 168701,
+          "projectedAfterPence": 164702,
+          "events": []
+        },
+        {
+          "date": "2026-12-16",
+          "projectedPence": 168701,
+          "projectedAfterPence": 164702,
+          "events": []
+        },
+        {
+          "date": "2026-12-17",
+          "projectedPence": 168701,
+          "projectedAfterPence": 164702,
+          "events": []
+        },
+        {
+          "date": "2026-12-18",
+          "projectedPence": 165801,
+          "projectedAfterPence": 161802,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Broadband",
+              "amountPence": 2900
+            }
+          ]
+        },
+        {
+          "date": "2026-12-19",
+          "projectedPence": 165801,
+          "projectedAfterPence": 161802,
+          "events": []
+        },
+        {
+          "date": "2026-12-20",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Gym membership",
+              "amountPence": 2800
+            }
+          ]
+        },
+        {
+          "date": "2026-12-21",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2026-12-22",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2026-12-23",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2026-12-24",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2026-12-25",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2026-12-26",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2026-12-27",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2026-12-28",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2026-12-29",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2026-12-30",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2026-12-31",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2027-01-01",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2027-01-02",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2027-01-03",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2027-01-04",
+          "projectedPence": 163001,
+          "projectedAfterPence": 159002,
+          "events": []
+        },
+        {
+          "date": "2027-01-05",
+          "projectedPence": 161802,
+          "projectedAfterPence": 157803,
+          "events": [
+            {
+              "type": "bill",
+              "name": "Music subscription",
+              "amountPence": 1199
+            }
+          ]
+        },
+        {
+          "date": "2027-01-06",
+          "projectedPence": 161802,
+          "projectedAfterPence": 157803,
+          "events": []
+        }
+      ],
+      "calibration": {
+        "category": "fun",
+        "multiplier": 1.1,
+        "tunedPct": 100
+      },
+      "decision": "none"
+    }
+  }
+]

@@ -1,0 +1,7 @@
+externalId,date,merchant,description,amountPence,category
+online-demo-feed-01,2026-11-08T23:41:00+00:00,Amazon,Cotton hoodie,4500,clothes
+online-demo-feed-02,2026-11-08T23:42:00+00:00,Amazon,Phone case birthday gift,3500,accessories
+online-demo-feed-03,2026-11-08T23:43:00+00:00,Amazon,Noise-cancelling headphones,5400,tech
+online-demo-feed-04,2026-11-08T23:44:00+00:00,Amazon,Paracetamol,349,health
+online-demo-feed-05,2026-11-08T23:45:00+00:00,Amazon,Paperback novel,600,books
+online-demo-feed-06,2026-11-08T23:46:00+00:00,Amazon,Video game,3999,fun

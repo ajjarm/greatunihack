@@ -171,3 +171,7 @@ create policy owner_access on public.spending_scenarios for all to authenticated
  with check(profile_id in (select id from public.spending_profiles where auth_user_id=(select auth.uid())));
 grant select,insert,update,delete on public.spending_snapshots, public.spending_scenarios to authenticated;
 revoke all on public.spending_snapshots, public.spending_scenarios from anon;
+
+-- Apply to the existing schema; internal metadata is excluded from Purchase API objects.
+alter table public.spending_purchases add column demo_context jsonb
+ check(demo_context is null or jsonb_typeof(demo_context)='object');

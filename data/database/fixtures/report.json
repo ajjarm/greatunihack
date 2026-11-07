@@ -1,0 +1,17 @@
+{
+  "weekStart": "2026-11-02",
+  "nudgesShown": 3,
+  "heeded": 2,
+  "overridden": 1,
+  "overriddenHappy": 0,
+  "overriddenRegretted": 0,
+  "limitsKept": 5,
+  "limitsExceeded": 0,
+  "avoidedPence": 0,
+  "spendScore": 72,
+  "sentences": [
+    "This report uses your recorded decisions and feedback.",
+    "Unanswered reflections are excluded from regret rates.",
+    "Avoided spending is an estimate."
+  ]
+}

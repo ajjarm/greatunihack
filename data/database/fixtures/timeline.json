@@ -1,0 +1,434 @@
+[
+  {
+    "date": "2026-11-08",
+    "projectedPence": 100000,
+    "projectedAfterPence": 100000,
+    "events": []
+  },
+  {
+    "date": "2026-11-09",
+    "projectedPence": 100000,
+    "projectedAfterPence": 100000,
+    "events": []
+  },
+  {
+    "date": "2026-11-10",
+    "projectedPence": 15000,
+    "projectedAfterPence": 15000,
+    "events": [
+      {
+        "type": "bill",
+        "name": "Rent",
+        "amountPence": 85000
+      }
+    ]
+  },
+  {
+    "date": "2026-11-11",
+    "projectedPence": 15000,
+    "projectedAfterPence": 15000,
+    "events": []
+  },
+  {
+    "date": "2026-11-12",
+    "projectedPence": 15000,
+    "projectedAfterPence": 15000,
+    "events": []
+  },
+  {
+    "date": "2026-11-13",
+    "projectedPence": 140000,
+    "projectedAfterPence": 140000,
+    "events": [
+      {
+        "type": "income",
+        "name": "Monthly salary",
+        "amountPence": 125000
+      }
+    ]
+  },
+  {
+    "date": "2026-11-14",
+    "projectedPence": 137800,
+    "projectedAfterPence": 137800,
+    "events": [
+      {
+        "type": "bill",
+        "name": "Phone plan",
+        "amountPence": 2200
+      }
+    ]
+  },
+  {
+    "date": "2026-11-15",
+    "projectedPence": 137800,
+    "projectedAfterPence": 137800,
+    "events": []
+  },
+  {
+    "date": "2026-11-16",
+    "projectedPence": 137800,
+    "projectedAfterPence": 137800,
+    "events": []
+  },
+  {
+    "date": "2026-11-17",
+    "projectedPence": 137800,
+    "projectedAfterPence": 137800,
+    "events": []
+  },
+  {
+    "date": "2026-11-18",
+    "projectedPence": 134900,
+    "projectedAfterPence": 134900,
+    "events": [
+      {
+        "type": "bill",
+        "name": "Broadband",
+        "amountPence": 2900
+      }
+    ]
+  },
+  {
+    "date": "2026-11-19",
+    "projectedPence": 134900,
+    "projectedAfterPence": 134900,
+    "events": []
+  },
+  {
+    "date": "2026-11-20",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": [
+      {
+        "type": "bill",
+        "name": "Gym membership",
+        "amountPence": 2800
+      }
+    ]
+  },
+  {
+    "date": "2026-11-21",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-11-22",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-11-23",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-11-24",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-11-25",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-11-26",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-11-27",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-11-28",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-11-29",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-11-30",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-12-01",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-12-02",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-12-03",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-12-04",
+    "projectedPence": 132100,
+    "projectedAfterPence": 132100,
+    "events": []
+  },
+  {
+    "date": "2026-12-05",
+    "projectedPence": 130901,
+    "projectedAfterPence": 130901,
+    "events": [
+      {
+        "type": "bill",
+        "name": "Music subscription",
+        "amountPence": 1199
+      }
+    ]
+  },
+  {
+    "date": "2026-12-06",
+    "projectedPence": 130901,
+    "projectedAfterPence": 130901,
+    "events": []
+  },
+  {
+    "date": "2026-12-07",
+    "projectedPence": 130901,
+    "projectedAfterPence": 130901,
+    "events": []
+  },
+  {
+    "date": "2026-12-08",
+    "projectedPence": 130901,
+    "projectedAfterPence": 130901,
+    "events": []
+  },
+  {
+    "date": "2026-12-09",
+    "projectedPence": 130901,
+    "projectedAfterPence": 130901,
+    "events": []
+  },
+  {
+    "date": "2026-12-10",
+    "projectedPence": 45901,
+    "projectedAfterPence": 45901,
+    "events": [
+      {
+        "type": "bill",
+        "name": "Rent",
+        "amountPence": 85000
+      }
+    ]
+  },
+  {
+    "date": "2026-12-11",
+    "projectedPence": 45901,
+    "projectedAfterPence": 45901,
+    "events": []
+  },
+  {
+    "date": "2026-12-12",
+    "projectedPence": 45901,
+    "projectedAfterPence": 45901,
+    "events": []
+  },
+  {
+    "date": "2026-12-13",
+    "projectedPence": 170901,
+    "projectedAfterPence": 170901,
+    "events": [
+      {
+        "type": "income",
+        "name": "Monthly salary",
+        "amountPence": 125000
+      }
+    ]
+  },
+  {
+    "date": "2026-12-14",
+    "projectedPence": 168701,
+    "projectedAfterPence": 168701,
+    "events": [
+      {
+        "type": "bill",
+        "name": "Phone plan",
+        "amountPence": 2200
+      }
+    ]
+  },
+  {
+    "date": "2026-12-15",
+    "projectedPence": 168701,
+    "projectedAfterPence": 168701,
+    "events": []
+  },
+  {
+    "date": "2026-12-16",
+    "projectedPence": 168701,
+    "projectedAfterPence": 168701,
+    "events": []
+  },
+  {
+    "date": "2026-12-17",
+    "projectedPence": 168701,
+    "projectedAfterPence": 168701,
+    "events": []
+  },
+  {
+    "date": "2026-12-18",
+    "projectedPence": 165801,
+    "projectedAfterPence": 165801,
+    "events": [
+      {
+        "type": "bill",
+        "name": "Broadband",
+        "amountPence": 2900
+      }
+    ]
+  },
+  {
+    "date": "2026-12-19",
+    "projectedPence": 165801,
+    "projectedAfterPence": 165801,
+    "events": []
+  },
+  {
+    "date": "2026-12-20",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": [
+      {
+        "type": "bill",
+        "name": "Gym membership",
+        "amountPence": 2800
+      }
+    ]
+  },
+  {
+    "date": "2026-12-21",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2026-12-22",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2026-12-23",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2026-12-24",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2026-12-25",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2026-12-26",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2026-12-27",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2026-12-28",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2026-12-29",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2026-12-30",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2026-12-31",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2027-01-01",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2027-01-02",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2027-01-03",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2027-01-04",
+    "projectedPence": 163001,
+    "projectedAfterPence": 163001,
+    "events": []
+  },
+  {
+    "date": "2027-01-05",
+    "projectedPence": 161802,
+    "projectedAfterPence": 161802,
+    "events": [
+      {
+        "type": "bill",
+        "name": "Music subscription",
+        "amountPence": 1199
+      }
+    ]
+  },
+  {
+    "date": "2027-01-06",
+    "projectedPence": 161802,
+    "projectedAfterPence": 161802,
+    "events": []
+  }
+]

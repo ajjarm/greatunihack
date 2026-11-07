@@ -1,0 +1,222 @@
+[
+  {
+    "id": "online-assessment-01",
+    "createdAt": "2026-08-14T23:00:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 4500,
+    "verdict": "nudge",
+    "regretRisk": 58,
+    "headline": "Worth pausing to check what you already own.",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
+  },
+  {
+    "id": "online-assessment-02",
+    "createdAt": "2026-09-04T23:00:00+01:00",
+    "merchant": "ASOS",
+    "totalPence": 7499,
+    "verdict": "nudge",
+    "regretRisk": 58,
+    "headline": "Worth pausing to check what you already own.",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
+  },
+  {
+    "id": "online-assessment-03",
+    "createdAt": "2026-10-15T13:00:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 1299,
+    "verdict": "go_ahead",
+    "regretRisk": 28,
+    "headline": "This fits your plans.",
+    "decision": "buy_anyway",
+    "outcome": null
+  },
+  {
+    "id": "online-assessment-04",
+    "createdAt": "2026-09-01T23:00:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 1799,
+    "verdict": "go_ahead",
+    "regretRisk": 25,
+    "headline": "This fits your plans.",
+    "decision": "buy_anyway",
+    "outcome": "happy"
+  },
+  {
+    "id": "online-assessment-05",
+    "createdAt": "2026-09-27T23:00:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 2199,
+    "verdict": "nudge",
+    "regretRisk": 58,
+    "headline": "Worth pausing to check what you already own.",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
+  },
+  {
+    "id": "online-assessment-06",
+    "createdAt": "2026-10-02T23:00:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 1399,
+    "verdict": "nudge",
+    "regretRisk": 58,
+    "headline": "Worth pausing to check what you already own.",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
+  },
+  {
+    "id": "online-assessment-07",
+    "createdAt": "2026-09-15T13:00:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 5499,
+    "verdict": "go_ahead",
+    "regretRisk": 25,
+    "headline": "This fits your plans.",
+    "decision": "buy_anyway",
+    "outcome": "happy"
+  },
+  {
+    "id": "online-assessment-08",
+    "createdAt": "2026-09-05T13:00:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 3999,
+    "verdict": "go_ahead",
+    "regretRisk": 25,
+    "headline": "This fits your plans.",
+    "decision": "buy_anyway",
+    "outcome": "happy"
+  },
+  {
+    "id": "online-assessment-09",
+    "createdAt": "2026-10-03T13:00:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 4599,
+    "verdict": "nudge",
+    "regretRisk": 58,
+    "headline": "Worth pausing to check what you already own.",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
+  },
+  {
+    "id": "online-assessment-10",
+    "createdAt": "2026-09-25T23:00:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 3999,
+    "verdict": "nudge",
+    "regretRisk": 58,
+    "headline": "Worth pausing to check what you already own.",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
+  },
+  {
+    "id": "online-assessment-11",
+    "createdAt": "2026-10-06T23:00:00+01:00",
+    "merchant": "Steam",
+    "totalPence": 2499,
+    "verdict": "nudge",
+    "regretRisk": 58,
+    "headline": "Worth pausing to check what you already own.",
+    "decision": "buy_anyway",
+    "outcome": "regretted"
+  },
+  {
+    "id": "online-assessment-12",
+    "createdAt": "2026-10-28T23:00:00+00:00",
+    "merchant": "Steam",
+    "totalPence": 1499,
+    "verdict": "go_ahead",
+    "regretRisk": 28,
+    "headline": "This fits your plans.",
+    "decision": "buy_anyway",
+    "outcome": null
+  },
+  {
+    "id": "online-assessment-13",
+    "createdAt": "2026-09-15T13:00:00+01:00",
+    "merchant": "Boots online",
+    "totalPence": 1050,
+    "verdict": "essential_cover",
+    "regretRisk": 18,
+    "headline": "This fits your plans.",
+    "decision": "buy_anyway",
+    "outcome": "happy"
+  },
+  {
+    "id": "online-assessment-14",
+    "createdAt": "2026-09-26T13:00:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 349,
+    "verdict": "essential_cover",
+    "regretRisk": 18,
+    "headline": "This fits your plans.",
+    "decision": "buy_anyway",
+    "outcome": null
+  },
+  {
+    "id": "online-assessment-15",
+    "createdAt": "2026-09-05T13:00:00+01:00",
+    "merchant": "Amazon",
+    "totalPence": 600,
+    "verdict": "go_ahead",
+    "regretRisk": 25,
+    "headline": "This fits your plans.",
+    "decision": "buy_anyway",
+    "outcome": "happy"
+  },
+  {
+    "id": "online-assessment-16",
+    "createdAt": "2026-09-16T13:00:00+01:00",
+    "merchant": "Waterstones online",
+    "totalPence": 999,
+    "verdict": "go_ahead",
+    "regretRisk": 25,
+    "headline": "This fits your plans.",
+    "decision": "buy_anyway",
+    "outcome": "happy"
+  },
+  {
+    "id": "online-assessment-17",
+    "createdAt": "2026-10-05T13:00:00+01:00",
+    "merchant": "Tesco online",
+    "totalPence": 4873,
+    "verdict": "essential_cover",
+    "regretRisk": 18,
+    "headline": "This fits your plans.",
+    "decision": "buy_anyway",
+    "outcome": null
+  },
+  {
+    "id": "online-assessment-18",
+    "createdAt": "2026-11-08T13:00:00+00:00",
+    "merchant": "Amazon",
+    "totalPence": 1499,
+    "verdict": "essential_cover",
+    "regretRisk": 18,
+    "headline": "This fits your plans.",
+    "decision": "buy_anyway",
+    "outcome": null
+  },
+  {
+    "id": "online-paused-1",
+    "createdAt": "2026-11-07T20:00:00+00:00",
+    "merchant": "Amazon",
+    "totalPence": 6999,
+    "verdict": "strong_nudge",
+    "regretRisk": 75,
+    "headline": "Try a short pause before deciding.",
+    "decision": "wait",
+    "outcome": null
+  },
+  {
+    "id": "online-paused-2",
+    "createdAt": "2026-11-07T21:00:00+00:00",
+    "merchant": "Amazon",
+    "totalPence": 8500,
+    "verdict": "strong_nudge",
+    "regretRisk": 75,
+    "headline": "Try a short pause before deciding.",
+    "decision": "wait",
+    "outcome": null
+  }
+]

@@ -1,45 +1,16 @@
-# Executed by generate_seed.py with its deterministic context.
-import copy, calendar
+import copy
 from collections import Counter
 from statistics import mean
-
-def feedback(p,value):
- p['feedback']=value
- p['feedback_at']=(datetime.fromisoformat(p['purchased_at'])+timedelta(days=3)).isoformat() if value else None
- p['feedback_reason']={'happy':'This fits my plans.','regretted':'I already had something that would do the job.','unsure':'I need more time to decide.'}.get(value)
-
-# Curated evidence supplements ordinary day-to-day spending.
-def curated(id,category,item,day,hour=23,merchant='Amazon',cue=False):
- owned('purchases',id=id,merchant=merchant,item=item,category=category,amount_pence=2199 if category=='accessories' else 2999,purchased_at=stamp(day,hour),source='feed',essential=False,cues=['sale'] if cue else [],predicted_regret=None,assessment_id=None,feedback=None,feedback_at=None,feedback_reason=None,reflection_due_at=None)
- owned('transactions',id='txn-'+id,occurred_at=stamp(day,hour),kind='purchase',description=item,amount_pence=-rows['spending_purchases'][-1]['amount_pence'],purchase_id=id,income_source_id=None,bill_id=None)
- return rows['spending_purchases'][-1]
-for i in range(6):curated(f'curated-clothes-{i}','clothes','Overshirt' if i%2 else 'Trainers',date(2026,9,4)+timedelta(days=i*7),cue=True)
-for i in range(4):curated(f'curated-case-{i}','accessories','Phone case',date(2026,9,20)+timedelta(days=i),cue=True)
-for i in range(3):curated(f'curated-book-{i}','books','Evening reading',date(2026,9,10)+timedelta(days=i),13,'Waterstones')
-for i in range(10):curated(f'curated-meal-{i}','eating_out','Evening takeaway',date(2026,9,7)+timedelta(days=i),20,'Deliveroo')
-for i in range(2):curated(f'curated-earbuds-{i}','tech','Wireless earbuds',date(2026,9,5)+timedelta(days=i),13)
-p=curated('curated-headphones','tech','Over-ear headphones',date(2026,9,15),13);feedback(p,'happy')
-# Exact reviewed-category rates from the data guide, with unreviewed ordinary purchases retained.
-for category,n,r in [('clothes',5,3),('accessories',4,3),('books',3,0),('eating_out',10,4)]:
- candidates=[p for p in rows['spending_purchases'] if p['category']==category]
- for p in candidates:feedback(p,None)
- chosen=sorted(candidates,key=lambda p:(not p['id'].startswith('curated'),p['purchased_at']))[:n]
- for i,p in enumerate(chosen):feedback(p,'regretted' if i<r else 'happy')
-# One further reviewed late-night purchase ensures 4+ late-night regrets.
-p=next(p for p in rows['spending_purchases'] if p['id']=='curated-clothes-5');feedback(p,'regretted')
-# Keep the exact five reviews: drop one happy review and review this late-night row instead.
-p=next(p for p in rows['spending_purchases'] if p['id']=='curated-clothes-2');feedback(p,'happy')
-p=next(p for p in rows['spending_purchases'] if p['id']=='curated-clothes-4');feedback(p,None)
 # Reconcile every transaction exactly. Opening balance is explicit, not invented income.
 for t in rows['spending_transactions']:
  p=next((p for p in rows['spending_purchases'] if p['id']==t['purchase_id']),None)
  t['merchant']=p['merchant'] if p else 'Employer' if t['kind']=='income' else next(b[1] for b in bills if b[0]==t['bill_id'])
  t['category']=p['category'] if p else None if t['kind']=='income' else next(b[4] for b in bills if b[0]==t['bill_id'])
-closing=41200
+closing=100000
 rows['spending_profiles'][0]['opening_balance_pence']=closing-sum(t['amount_pence'] for t in rows['spending_transactions'])
 assert rows['spending_profiles'][0]['opening_balance_pence']>=0
 persona={'name':'Alex Morgan','demoDate':str(end),'demoNow':now,'hourlyRatePence':1700,'balancePence':closing,
-'incomes':[{'id':'salary','name':'Monthly salary','amountPence':165000,'schedule':{'type':'monthly','dayOfMonth':28},'nextDate':'2026-11-28'}],
+'incomes':[{'id':'salary','name':'Monthly salary','amountPence':125000,'schedule':{'type':'monthly','dayOfMonth':13},'nextDate':'2026-11-13'}],
 'outgoings':[{'id':i,'name':n,'amountPence':a,'dayOfMonth':d,'category':c} for i,n,a,d,c in bills],
 'limits':[{'category':r['category'],'weeklyLimitPence':r['weekly_limit_pence']} for r in rows['spending_budgets']],
 'rules':[{'id':r['id'],'text':r['text'],'category':r['category'],'direction':r['direction']} for r in rows['spending_rules']],
@@ -50,29 +21,29 @@ for c in rows['spending_calibration']:
  mult=1.0
  for p in reviewed:mult=max(.5,min(1.5,round(mult+(.1 if p['feedback']=='regretted' else -.1),2)))
  predictions=[p for p in reviewed if p['predicted_regret'] is not None][-20:]
- c['multiplier']=mult;c['tuned_pct']=round(100*sum((p['predicted_regret']>=40)==(p['feedback']=='regretted') for p in predictions)/len(predictions)) if predictions else 0
+ c['multiplier']=mult;c['tuned_pct']=round(100*sum((p['predicted_regret']>=50)==(p['feedback']=='regretted') for p in predictions)/len(predictions)) if predictions else 0
 
 def projection(day,balance,total=0):
  points=[]
  for i in range(60):
   d=day+timedelta(days=i);events=[]
   if i>0:
-   if d.day==28:balance+=165000;events.append({'type':'income','name':'Monthly salary','amountPence':165000})
+   if d.day==13:balance+=125000;events.append({'type':'income','name':'Monthly salary','amountPence':125000})
    for id,n,a,bd,c in bills:
-    if d.day==bd:balance-=a;events.append({'type':'bill','name':n,'amountPence':-a})
+    if d.day==bd:balance-=a;events.append({'type':'bill','name':n,'amountPence':a})
   points.append({'date':str(d),'projectedPence':balance,'projectedAfterPence':balance-total,'events':events})
  return points
 
 def next_events(day):
- income_day=date(day.year,day.month,28)
- if income_day<=day:income_day=(income_day.replace(day=1)+timedelta(days=32)).replace(day=28)
+ income_day=date(day.year,day.month,13)
+ if income_day<=day:income_day=(income_day.replace(day=1)+timedelta(days=32)).replace(day=13)
  candidates=[]
  for id,n,a,bd,c in bills:
   d=day.replace(day=bd)
   if d<=day:d=(day.replace(day=1)+timedelta(days=32)).replace(day=bd)
   candidates.append((d,n,a))
  d,n,a=min(candidates)
- return {'name':'Monthly salary','date':str(income_day),'amountPence':165000},{'name':n,'date':str(d),'amountPence':a}
+ return {'name':'Monthly salary','date':str(income_day),'amountPence':125000},{'name':n,'date':str(d),'amountPence':a}
 
 def financials(day,balance,total,category):
  timeline=projection(day,balance,total);inc,bill=next_events(day)
@@ -80,7 +51,7 @@ def financials(day,balance,total,category):
  impact={'safeToSpendBeforePence':safe,'safeToSpendAfterPence':safe-total,'daysToNextIncome':(date.fromisoformat(inc['date'])-day).days,'nextIncome':inc,'nextBill':dict(bill,coveredAfter=next(p['projectedAfterPence'] for p in timeline if p['date']==bill['date'])>=0),'workingHours':round(total/1700,1),'goalSharePct':round(total/80000*100,1),'overdraftUntil':next((p['date'] for p in timeline if p['projectedAfterPence']>=0),None) if safe-total<0 else None}
  limit=next((b for b in persona['limits'] if b['category']==category),None)
  if limit:
-  spent=sum(p['amount_pence'] for p in rows['spending_purchases'] if p['category']==category and day-timedelta(days=6)<=datetime.fromisoformat(p['purchased_at']).date()<=day)
+  spent=sum(p['amount_pence'] for p in rows['spending_purchases'] if p['category']==category and datetime.fromisoformat(stamp(day,23))-timedelta(days=7)<datetime.fromisoformat(p['purchased_at'])<=datetime.fromisoformat(stamp(day,23))+timedelta(minutes=40))
   remaining=limit['weeklyLimitPence']-spent-total
   impact['limit']={**limit,'spentThisWeekPence':spent,'remainingAfterPence':remaining,'overByPence':max(0,-remaining)}
  return impact,timeline
@@ -92,14 +63,21 @@ def calibration(c):
 def camel(row):
  def key(k):
   a=k.split('_');return a[0]+''.join(v.title() for v in a[1:])
- return {key(k):v for k,v in row.items() if k!='profile_id' and (v is not None or k=='feedback')}
+ return {key(k):v for k,v in row.items() if k not in ('profile_id','demo_context') and (v is not None or k=='feedback')}
 # Complete historical Assessment payloads; all nested fields match types.ts.
 for a in rows['spending_assessments']:
  item=next(i for i in rows['spending_assessment_items'] if i['assessment_id']==a['id'])
- item.update(necessity_confidence='high',essential_prompt=item['essential'],limited_history=False,duplicate_of=None)
+ item.update(necessity_confidence='high',essential_prompt=item['essential'],limited_history=sum(p['category']==item['category'] and p['feedback'] in ('happy','regretted') and p['feedback_at']<a['created_at'] for p in rows['spending_purchases'])<3,duplicate_of=None)
+ if item['limited_history']:
+  removed=sum(f['points'] for f in item['factors'] if f['key']=='history')
+  item['factors']=[f for f in item['factors'] if f['key']!='history']
+  item['regret_risk']-=removed;a['regret_risk']=item['regret_risk']
+  a['verdict']='essential_cover' if item['essential'] else 'strong_nudge' if a['regret_risk']>=70 else 'nudge' if a['regret_risk']>=40 else 'go_ahead'
+  linked=next((p for p in rows['spending_purchases'] if p['assessment_id']==a['id']),None)
+  if linked:linked['predicted_regret']=a['regret_risk']
  ai=camel(item);ai.pop('assessmentId');ai['index']=ai.pop('itemIndex')
  day=datetime.fromisoformat(a['created_at']).date()
- bal=rows['spending_profiles'][0]['opening_balance_pence']+sum(t['amount_pence'] for t in rows['spending_transactions'] if t['occurred_at']<a['created_at'])
+ bal=rows['spending_profiles'][0]['opening_balance_pence']+sum(t['amount_pence'] for t in rows['spending_transactions'] if datetime.fromisoformat(t['occurred_at'])<datetime.fromisoformat(a['created_at']))
  impact,timeline=financials(day,bal,a['total_pence'],item['category'])
  payload=camel(a)
  payload.update(items=[ai],spokenLine=a['headline'],impact=impact,topFactors=[{'key':'want_level','text':'Check whether this fits your plans.'}],cues=[],negotiation=[],timeline=timeline,calibration=calibration(item['category']))
@@ -123,7 +101,7 @@ for s in scenarios:
    for f in item['factors']:
     if 'exams' in f['text'].lower():f['text']='Your rule asks for a pause on optional purchases.'
    if item.get('duplicateOf'):
-    old=next(p for p in rows['spending_purchases'] if p['id']=='curated-case-0');item['duplicateOf']={'purchaseId':old['id'],'item':old['item'],'purchasedAt':old['purchased_at']}
+    old=next(p for p in rows['spending_purchases'] if p['id']=='online-accessories-02');item['duplicateOf']={'purchaseId':old['id'],'item':old['item'],'purchasedAt':old['purchased_at']}
   for option in a['negotiation']:
    option['resultSafeToSpendAfterPence']=a['impact']['safeToSpendAfterPence']+(a['items'][option['itemIndex']]['pricePence']*a['items'][option['itemIndex']]['qty'])
  s['request']['capturedAt']=now
@@ -135,6 +113,7 @@ for s in scenarios:
   return value
  s=rewrite(s)
  owned('scenarios',id=s['id'],payload=s)
+exec(P.joinpath('scenario_details.py').read_text())
 # Supporting contract snapshots are generated from the same person and purchases.
 purchases=rows['spending_purchases'];assessments=rows['spending_assessments']
 impact,timeline=financials(end,closing,0,'other');inc=impact['nextIncome'];bill=impact['nextBill'].copy();bill.pop('coveredAfter')
@@ -142,7 +121,7 @@ summaries=[{k:a['payload'][k] for k in ['id','createdAt','merchant','totalPence'
 history=[{'weekStart':str(end-timedelta(days=end.weekday()+7*i)),'value':v} for i,v in reversed(list(enumerate([72,69,70,65,67,61,60,58]))) ]
 score={'value':72,'band':'amber','trend':'up','explanation':'An illustrative demo score. You paused before some optional purchases. Review your later feedback to see what helped.','history':history}
 pending=sum(p['feedback'] is None and p['reflection_due_at'] is not None and p['reflection_due_at']<=now for p in purchases)
-home={'demoNow':now,'spendScore':score,'balancePence':closing,'safeToSpendPence':impact['safeToSpendBeforePence'],'daysToNextIncome':impact['daysToNextIncome'],'nextIncome':inc,'nextBill':bill,'insight':'Your feedback can help you spot which purchases still feel worthwhile.','recentAssessments':summaries[:8],'pendingReflections':pending}
+home={'demoNow':now,'spendScore':score,'balancePence':closing,'safeToSpendPence':impact['safeToSpendBeforePence'],'daysToNextIncome':impact['daysToNextIncome'],'nextIncome':inc,'nextBill':bill,'insight':'You regretted 3 of your last 5 reviewed clothing orders. Pause before buying more trainers.','recentAssessments':summaries[:8],'pendingReflections':pending}
 rates=[]
 for c in categories:
  reviewed=[p for p in purchases if p['category']==c and p['feedback'] in ('happy','regretted')];regretted=sum(p['feedback']=='regretted' for p in reviewed)
@@ -153,12 +132,12 @@ def rate(ps):
 with_cue=rate([p for p in purchases if p['cues']]);without=rate([p for p in purchases if not p['cues']])
 late=[p for p in purchases if datetime.fromisoformat(p['purchased_at']).hour>=23 or datetime.fromisoformat(p['purchased_at']).hour<2]
 friday=[p for p in purchases if datetime.fromisoformat(p['purchased_at']).weekday()==4 and datetime.fromisoformat(p['purchased_at']).hour>=22]
-waits=rows['spending_waiting_items'];avoided=sum(w['price_pence'] for w in waits if w['status']=='removed')
+waits=rows['spending_waiting_items'];avoided=sum(a['total_pence'] for a in assessments if a['decision'] in ('wait','dismiss') and a['verdict']!='go_ahead' and datetime.fromisoformat(a['created_at'])>datetime.fromisoformat(now)-timedelta(days=30))
 counts=Counter(p['item'] for p in purchases)
 duplicates=[{'item':i,'count':n,'purchaseIds':[p['id'] for p in purchases if p['item']==i]} for i,n in counts.items() if n>1 and i in ('Phone case','Wireless earbuds')]
 sentences=[{'key':r['category'],'text':f"You regretted {r['regretted']} of {r['reviewed']} reviewed {r['category'].replace('_',' ')} purchases.",'evidence':f"{r['regretted']}/{r['reviewed']} reviewed; unsure excluded"} for r in rates if r['reviewed']][:4]
 sentences += [{'key':'pressure','text':f'With sales cues, {with_cue}% of reviewed purchases were regretted; without, {without}%.','evidence':'Calculated from purchases with happy or regretted feedback.'},{'key':'duplicates','text':'You already bought phone cases and earbuds more than once.','evidence':'; '.join(f"{d['item']}: {d['count']}" for d in duplicates)}]
-insights={'sentences':sentences,'regretByCategory':rates,'riskyWindows':[{'label':'Late at night','ratePct':rate(late),'evidence':f'{len(late)} purchases between 23:00 and 02:00'},{'label':'Friday after 10pm','ratePct':rate(friday),'evidence':f'{len(friday)} purchases'}], 'pressure':{'withCueRatePct':with_cue,'withoutCueRatePct':without,'sentence':sentences[-2]['text']},'duplicates':duplicates,'avoidedPence':avoided,'avoidedCouldBe':[{'label':'Weekend away','text':f'An estimated £{avoided/100:.0f} could stay available for your goal.'}],'calibration':{'overallPct':round(mean(c['tuned_pct'] for c in rows['spending_calibration'])),'byCategory':[{'category':c['category'],'pct':c['tuned_pct'],'multiplier':c['multiplier'],'deltaPct':c['tuned_pct']} for c in rows['spending_calibration']]},'limits':[dict(b,spentThisWeekPence=sum(p['amount_pence'] for p in purchases if p['category']==b['category'] and p['purchased_at'][:10]>=str(end-timedelta(days=6)))) for b in persona['limits']],'timeline':timeline}
+insights={'sentences':sentences,'regretByCategory':rates,'riskyWindows':[{'label':'Late at night','ratePct':rate(late),'evidence':f'{len(late)} purchases between 23:00 and 02:00'},{'label':'Friday after 10pm','ratePct':rate(friday),'evidence':f'{len(friday)} purchases'}], 'pressure':{'withCueRatePct':with_cue,'withoutCueRatePct':without,'sentence':sentences[-2]['text']},'duplicates':duplicates,'avoidedPence':avoided,'avoidedCouldBe':[{'label':'Weekend away','text':f'An estimated £{avoided/100:.0f} could stay available for your goal.'}],'calibration':{'overallPct':round(mean(c['tuned_pct'] for c in rows['spending_calibration'])),'byCategory':[{'category':c['category'],'pct':c['tuned_pct'],'multiplier':c['multiplier'],'deltaPct':c['tuned_pct']} for c in rows['spending_calibration']]},'limits':[dict(b,spentThisWeekPence=sum(p['amount_pence'] for p in purchases if p['category']==b['category'] and datetime.fromisoformat(now)-timedelta(days=7)<datetime.fromisoformat(p['purchased_at'])<=datetime.fromisoformat(now))) for b in persona['limits']],'timeline':timeline}
 week_start=end-timedelta(days=end.weekday());weekly=[a for a in assessments if a['created_at'][:10]>=str(week_start)]
 over=[a for a in weekly if a['decision']=='buy_anyway'];outcomes=[p['feedback'] for p in purchases if p['assessment_id'] in [a['id'] for a in over]]
 kept=sum(b['spentThisWeekPence']<=b['weeklyLimitPence'] for b in insights['limits'])
@@ -168,3 +147,7 @@ for kind,payload in [('home',home),('insights',insights),('report',report),('tim
 # Compile-time contract verification artifact (no changes to shared types).
 contract={'persona':persona,'purchases':[camel(p) for p in purchases],'assessments':[a['payload'] for a in assessments],'scenarios':[s['payload'] for s in rows['spending_scenarios']],'home':home,'insights':insights,'report':report,'timeline':rows['spending_snapshots'][-1]['payload'],'waiting':[camel(w) for w in waits]}
 P.joinpath('contract-data.json').write_text(json.dumps(contract,ensure_ascii=False,indent=2)+'\n')
+
+# Persist internal demo links without extending the shared Purchase API shape.
+for p in rows['spending_purchases']:
+ p['demo_context']=next(m for m in metadata if m['purchaseId']==p['id'])
