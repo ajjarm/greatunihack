@@ -54,7 +54,7 @@ export function TimelineChart({ points }: { points: TimelinePoint[] }) {
           />
         )}
       </svg>
-      <figcaption className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] nudge-muted">
+      <figcaption className="flex flex-wrap gap-x-3 gap-y-1 text-xs nudge-muted">
         <span className="flex items-center gap-1">
           <span className="nudge-swatch" style={{ background: "var(--color-text-muted)" }} /> without this
         </span>

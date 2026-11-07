@@ -15,7 +15,7 @@ export function NudgeToast({ assessment, onClose }: { assessment: Assessment; on
           {money(assessment.totalPence)} at {assessment.merchant} · {assessment.regretRisk}% regret risk
         </p>
       </div>
-      <button type="button" onClick={onClose} className="nudge-btn nudge-btn-ghost px-2 py-1" aria-label="Close">
+      <button type="button" onClick={onClose} className="nudge-btn nudge-btn-ghost nudge-btn-round" aria-label="Close">
         ✕
       </button>
     </div>

@@ -7,28 +7,34 @@ import { AssessmentFactors } from "@/components/dashboard/factors";
 import { BillsCalendar } from "@/components/dashboard/bills-calendar";
 import { ScoreExamples } from "@/components/dashboard/score-examples";
 import { SpendScoreBreakdown } from "@/components/dashboard/spend-score-breakdown";
-import { Card, Chip, Label, PageState, date, money, useApi } from "@/components/dashboard/shared";
+import { Bar, Card, Chip, Label, MerchantMark, MoneyFigure, PageHeader, PageState, Tile, date, money, useApi } from "@/components/dashboard/shared";
 
 const shortDate = (value: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", day: "numeric", month: "short" }).format(new Date(`${value}T12:00:00Z`));
-const scoreColor = (value: number) => value >= 90 ? "var(--color-accent)" : value >= 75 ? "var(--color-go)" : value >= 50 ? "var(--color-think)" : "var(--color-stop)";
+const weekdayDate = (value: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", weekday: "short", day: "numeric", month: "short" }).format(new Date(`${value.slice(0, 10)}T12:00:00Z`));
+const dayNumber = (value: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", day: "numeric" }).format(new Date(`${value}T12:00:00Z`));
+const decisionLabel: Record<string, string> = { wait: "Waiting", buy_anyway: "Bought anyway", dismiss: "Dismissed", pending: "Open" };
 
+const glyph = { width: 16, height: 16, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2.2, strokeLinecap: "round" as const, "aria-hidden": true };
+
+/** Eight weeks: past hatched, current solid accent. Hover shows the score and change; click selects the week. */
 function ScoreHistory({ score, selectedWeek, onSelect }: { score: SpendScore; selectedWeek: string | null; onSelect: (week: string | null) => void }) {
-  const points = score.history;
+  const points = score.history.slice(-8);
   if (points.length < 2) return null;
-  return <div className="mt-6 border-t border-[var(--color-border)] pt-5">
-    <div className="flex items-center justify-between gap-3"><h3 className="text-sm font-semibold">Score over time</h3><span className="text-xs text-[var(--color-text-muted)]">Choose a week</span></div>
-    <ol className="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-8" aria-label="Weekly Spend Score history">
+  const offset = score.history.length - points.length;
+  return <div className="min-w-0">
+    <ol className="ds-bars" aria-label="Weekly Spend Score history">
       {points.map((point, index) => {
-        const selected = selectedWeek === point.weekStart || (selectedWeek === null && index === points.length - 1);
-        return <li key={point.weekStart} className="min-w-0 text-center"><button type="button" onClick={() => onSelect(index === points.length - 1 ? null : point.weekStart)} aria-pressed={selected} aria-label={`Week of ${date(point.weekStart)}: Spend Score ${point.value}. Show details.`} className={`group relative w-full border p-2 transition-colors duration-[var(--motion-fast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${selected ? "border-[var(--color-accent)] bg-[var(--color-accent-bg)]" : "border-[var(--color-border)] bg-[var(--color-surface)]"}`} style={{ borderRadius: "var(--radius-sm)" }}>
-          <span className="text-xs font-semibold">{point.value}</span>
-          <span className="mt-1 flex h-16 items-end bg-[var(--color-surface-2)]" style={{ borderRadius: "var(--radius-sm)" }}><span className="w-full" style={{ height: `${Math.min(100, Math.max(0, point.value))}%`, backgroundColor: scoreColor(point.value), borderRadius: "var(--radius-sm)" }} /></span>
-          <span className="mt-1 block text-[10px] text-[var(--color-text-muted)]">{shortDate(point.weekStart)}</span>
-          <span role="tooltip" className="dashboard-pop pointer-events-none absolute left-0 top-full z-40 mt-1 hidden w-56 max-w-[calc(100vw-3rem)] border border-[var(--color-border)] bg-[var(--color-surface)] p-3 text-left text-xs leading-relaxed text-[var(--color-text)] shadow-[var(--shadow-float)] group-hover:block group-focus-visible:block" style={{ borderRadius: "var(--radius-md)" }}><strong>Spend Score {point.value}/100</strong><span className="mt-1 block text-[var(--color-text-muted)]">Week of {date(point.weekStart)}. The score weighs nudge choices, later feedback, weekly limits and cash position. Select this week for its available detail.</span></span>
+        const last = index === points.length - 1;
+        const selected = selectedWeek === point.weekStart || (selectedWeek === null && last);
+        const prev = score.history[offset + index - 1];
+        const change = prev ? point.value - prev.value : null;
+        return <li key={point.weekStart} className="contents"><button type="button" onClick={() => onSelect(last ? null : point.weekStart)} aria-pressed={selected} data-now={last} aria-label={`Week of ${date(point.weekStart)}: Spend Score ${point.value}. Show details.`} className="ds-sb" style={{ "--k": index } as React.CSSProperties}>
+          <span className="ds-sbcol" style={{ height: `${Math.min(100, Math.max(4, point.value))}%` }} />
+          <span className="ds-sbtip" aria-hidden="true"><b>{point.value}</b>{change === null ? "first week" : change === 0 ? "no change" : `${change > 0 ? "+" : "−"}${Math.abs(change)} on the week before`}</span>
         </button></li>;
       })}
     </ol>
-    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[var(--color-text-muted)]"><span><span className="text-[var(--color-stop)]">●</span> Below 50</span><span><span className="text-[var(--color-think)]">●</span> 50–74</span><span><span className="text-[var(--color-go)]">●</span> 75–89</span><span><span className="text-[var(--color-accent)]">●</span> 90–100</span></div>
+    <div className="ds-xaxis" aria-hidden="true">{points.map((point, index) => <span key={point.weekStart} data-now={index === points.length - 1}><span className="ds-lg">{shortDate(point.weekStart)}</span><span className="ds-sh">{dayNumber(point.weekStart)}</span></span>)}</div>
   </div>;
 }
 
@@ -52,49 +58,62 @@ export default function HomePage() {
   const change = previousWeek ? displayedScore - previousWeek.value : null;
   const selectedReport = viewingPast && weekly.data?.weekStart === selectedWeek ? weekly.data : null;
 
-  return <div className="space-y-5">
-    <header><Label>Overview</Label><h1 className="mt-1 text-3xl font-bold">Your money, today</h1><p className="mt-1 text-sm text-[var(--color-text-muted)]">{date(data.demoNow)}</p></header>
-    {data.pendingReflections > 0 && <Link href="/purchases" className="block border border-[var(--color-accent)] bg-[var(--color-accent-bg)] p-4 text-sm font-semibold text-[var(--color-accent)]" style={{ borderRadius: "var(--radius-md)" }}>{data.pendingReflections} purchase{data.pendingReflections === 1 ? " is" : "s are"} ready for a check-in →</Link>}
+  const bandWord = veryGood ? "Very good" : band === "green" ? "Doing well" : band === "amber" ? "Making progress" : "Needs attention";
+  const billCovered = data.balancePence >= data.nextBill.amountPence;
 
-    <Card className="relative z-10">
-      <div className="flex flex-col items-center gap-5 text-center">
-        <SpendScoreBreakdown value={displayedScore} tone={tone} report={viewingPast ? selectedReport || null : weekly.data?.weekStart === lastHistoryPoint?.weekStart ? weekly.data : null} current={!viewingPast} explanation={score.explanation} safeToSpendPence={data.safeToSpendPence} />
-        <div className="min-w-0 max-w-2xl" aria-live="polite">
-          <Label>{viewingPast ? `Week of ${date(selectedPoint!.weekStart)}` : "Current Spend Score"}</Label>
-          <h2 className="mt-1 text-2xl font-bold">{veryGood ? "Very good" : band === "green" ? "Doing well" : band === "amber" ? "Making progress" : "Needs attention"}</h2>
-          <div className="mt-3 flex flex-wrap items-center gap-2"><Chip tone={tone}>{veryGood ? "very good" : band}</Chip>{change !== null && <span className="text-sm font-semibold">{change > 0 ? `+${change}` : change} points vs previous week</span>}</div>
-          {viewingPast ? selectedReport ? <div className="mt-4 grid grid-cols-2 gap-3 text-sm"><div><Label>Nudges heeded</Label><strong>{selectedReport.heeded} of {selectedReport.nudgesShown}</strong></div><div><Label>Limits kept</Label><strong>{selectedReport.limitsKept} of {selectedReport.limitsKept + selectedReport.limitsExceeded}</strong></div><div><Label>Overrides regretted</Label><strong>{selectedReport.overriddenRegretted}</strong></div><div><Label>Money kept · estimated</Label><strong>{money(selectedReport.avoidedPence)}</strong></div></div> : <p className="mt-4 text-sm text-[var(--color-text-muted)]">The score is recorded for this week; a detailed weekly report is not available.</p> : <p className="mt-4 text-sm leading-relaxed">{score.explanation}</p>}
-          {viewingPast && <button type="button" onClick={() => setSelectedWeek(null)} className="mt-3 text-sm font-semibold text-[var(--color-accent)] underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]">Back to current week</button>}
-          <div className="mt-4"><Link href="/insights" className="inline-flex min-h-11 items-center gap-2 bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-[var(--color-surface)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]" style={{ borderRadius: "var(--radius-sm)" }}>Explore your insights <span aria-hidden="true">→</span></Link></div>
+  return <div className="flex flex-col gap-[14px]">
+    <PageHeader title="Home" sub={data.insight} action={<Link href="/profile" className="ds-btn ds-btn-acc shrink-0">Add a rule <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg></Link>} />
+
+    <div className="grid gap-[14px] lg:grid-cols-[minmax(0,1fr)_340px]">
+      <Card className="flex flex-col gap-[18px]">
+        <h2 className="ds-h2">Money</h2>
+        <div className="grid grid-cols-2 gap-[10px] md:grid-cols-3 md:gap-3">
+          <Tile><p className="ds-label">until {weekdayDate(data.nextIncome.date)}</p><p className="mt-0.5 text-base font-medium">Safe to spend</p><p className="ds-big mt-4"><MoneyFigure pence={data.safeToSpendPence} /></p><span className="ds-glyph"><svg {...glyph}><rect x="3" y="6" width="18" height="12" rx="3" /><path d="M3 10h18" /></svg></span></Tile>
+          <Tile><p className="ds-label">in {data.daysToNextIncome} day{data.daysToNextIncome === 1 ? "" : "s"}</p><p className="mt-0.5 text-base font-medium">Next payday</p><p className="ds-big mt-4"><MoneyFigure pence={data.nextIncome.amountPence} /></p><span className="ds-glyph"><svg {...glyph}><path d="M12 19V5M6 11l6-6 6 6" /></svg></span></Tile>
+          <Tile className="col-span-2 md:col-span-1"><p className="ds-label truncate pr-10 max-md:pr-0">{data.nextBill.name} · {weekdayDate(data.nextBill.date)}</p><p className="mt-0.5 text-base font-medium">Next bill</p><p className="mt-4 flex flex-wrap items-baseline gap-x-2.5 gap-y-1"><span className="ds-big"><MoneyFigure pence={data.nextBill.amountPence} /></span>{billCovered ? <Chip tone="go">Covered</Chip> : <Chip tone="stop">Not covered</Chip>}</p><span className="ds-glyph"><svg {...glyph}><rect x="5" y="3" width="14" height="18" rx="3" /><path d="M11 17h2" /></svg></span></Tile>
         </div>
-      </div>
-      <ScoreHistory score={score} selectedWeek={viewingPast ? selectedWeek : null} onSelect={setSelectedWeek} />
-      <p className="mt-4 text-xs text-[var(--color-text-muted)]">The score reflects nudges, later feedback, weekly limits and your cash position. Spending alone does not lower it.</p>
-    </Card>
-    <div className="grid gap-5 lg:grid-cols-2">
-      <Card><Label>Safe to spend until {date(data.nextIncome.date)}</Label><p className="mt-3 text-4xl font-bold">{money(data.safeToSpendPence)}</p><p className="mt-3 text-sm text-[var(--color-text-muted)]">{data.daysToNextIncome} day{data.daysToNextIncome === 1 ? "" : "s"} until {data.nextIncome.name} ({money(data.nextIncome.amountPence)})</p><div className="mt-6 border-t border-[var(--color-border)] pt-4"><Label>Current balance</Label><p className="mt-1 text-2xl font-semibold">{money(data.balancePence)}</p></div></Card>
-      <Card>
-        <Label>Money kept from nudges · estimated</Label>
-        {weekly.data ? <><p className="mt-3 text-4xl font-bold text-[var(--color-go)]">{money(weekly.data.avoidedPence)}</p><p className="mt-2 text-sm text-[var(--color-text-muted)]">Week of {date(weekly.data.weekStart)}</p><p className="mt-5 border-t border-[var(--color-border)] pt-4 text-sm">{weekly.data.heeded} of {weekly.data.nudgesShown} nudges heeded that week</p></> : weekly.error ? <div role="alert" className="mt-3 text-sm"><p>{weekly.error}</p><button type="button" onClick={() => void weekly.reload()} className="mt-2 font-semibold text-[var(--color-accent)] underline">Try again</button></div> : <p className="mt-3 text-sm text-[var(--color-text-muted)]">Loading weekly savings…</p>}
+        <div className="grid items-end gap-[18px] md:grid-cols-[minmax(0,300px)_minmax(0,1fr)] md:gap-7">
+          <div className="flex h-full min-w-0 flex-col justify-between" aria-live="polite">
+            <div>
+              <div className="flex items-center justify-between gap-3"><h2 className="ds-h2">Spend Score</h2>{viewingPast && <span className="ds-label">Week of {shortDate(selectedPoint!.weekStart)}</span>}</div>
+              <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-2">
+                <SpendScoreBreakdown value={displayedScore} tone={tone} report={viewingPast ? selectedReport || null : weekly.data?.weekStart === lastHistoryPoint?.weekStart ? weekly.data : null} current={!viewingPast} explanation={score.explanation} safeToSpendPence={data.safeToSpendPence} />
+                <span className="flex flex-wrap gap-1.5"><Chip tone={tone}>{bandWord}</Chip>{change !== null && <Chip tone={change > 0 ? "go" : change < 0 ? "stop" : "neutral"}>{change > 0 ? `↗ +${change}` : change < 0 ? `↘ −${Math.abs(change)}` : "→ no change"}</Chip>}</span>
+              </div>
+              {viewingPast ? selectedReport ? <div className="mt-3 grid grid-cols-2 gap-2 text-sm"><div><Label>Nudges heeded</Label><strong className="font-semibold">{selectedReport.heeded} of {selectedReport.nudgesShown}</strong></div><div><Label>Limits kept</Label><strong className="font-semibold">{selectedReport.limitsKept} of {selectedReport.limitsKept + selectedReport.limitsExceeded}</strong></div><div><Label>Overrides regretted</Label><strong className="font-semibold">{selectedReport.overriddenRegretted}</strong></div><div><Label>Money kept · estimated</Label><strong className="font-semibold">{money(selectedReport.avoidedPence)}</strong></div></div> : <p className="mt-3 text-sm text-[var(--color-text-muted)]">The score is recorded for this week; a detailed weekly report is not available.</p> : <p className="mt-3 text-[var(--color-text-muted)]">{score.explanation}</p>}
+            </div>
+            <div className="mt-[18px] flex flex-wrap gap-2">
+              {viewingPast ? <button type="button" onClick={() => setSelectedWeek(null)} className="ds-btn ds-btn-sec">Back to this week</button> : data.pendingReflections > 0 ? <Link href="/purchases" className="ds-btn ds-btn-acc">Reflect on {data.pendingReflections} purchase{data.pendingReflections === 1 ? "" : "s"}</Link> : <span className="ds-btn ds-btn-sec cursor-default">All caught up</span>}
+              <Link href="/waiting" className="ds-btn ds-btn-sec">Waiting</Link>
+            </div>
+          </div>
+          <ScoreHistory score={score} selectedWeek={viewingPast ? selectedWeek : null} onSelect={setSelectedWeek} />
+        </div>
+      </Card>
+
+      <Card className="flex flex-col gap-4">
+        <div className="flex items-center justify-between gap-3"><h2 className="ds-h2">This week</h2>{weekly.data && <Chip tone="go">Kept · estimated</Chip>}</div>
+        {weekly.data ? <>
+          <div><p className="ds-big"><MoneyFigure pence={weekly.data.avoidedPence} /></p><p className="ds-label mt-1.5">kept by waiting, week of {shortDate(weekly.data.weekStart)}</p></div>
+          <div><div className="mb-2 flex justify-between gap-3 text-sm"><span>Nudges heeded</span><span className="font-semibold">{weekly.data.heeded} of {weekly.data.nudgesShown}</span></div><Bar value={weekly.data.heeded} max={weekly.data.nudgesShown} tone="white" /></div>
+          <div><div className="mb-2 flex justify-between gap-3 text-sm"><span>Limits kept</span><span className="font-semibold">{weekly.data.limitsKept} of {weekly.data.limitsKept + weekly.data.limitsExceeded}</span></div><Bar value={weekly.data.limitsKept} max={weekly.data.limitsKept + weekly.data.limitsExceeded} tone="accent" /></div>
+          <div className="border-t border-[var(--color-border)] pt-3"><p className="ds-label">Balance today</p><p className="mt-1 text-xl font-semibold tracking-tight"><MoneyFigure pence={data.balancePence} /></p></div>
+          <Link href="/insights#spending-patterns" className="ds-btn ds-btn-sec self-start">See the evidence</Link>
+        </> : weekly.error ? <div role="alert" className="text-sm"><p>{weekly.error}</p><button type="button" onClick={() => void weekly.reload()} className="ds-btn ds-btn-sec mt-2">Try again</button></div> : <p className="text-sm text-[var(--color-text-muted)]">Having a look at this week…</p>}
       </Card>
     </div>
 
-    <Card className="relative overflow-hidden border-l-4 border-l-[var(--color-accent)]">
-      <div className="flex items-start gap-4">
-        <span aria-hidden="true" className="grid h-11 w-11 shrink-0 place-items-center bg-[var(--color-accent-bg)] text-xl font-bold text-[var(--color-accent)]" style={{ borderRadius: "var(--radius-md)" }}>✦</span>
-        <div className="min-w-0 flex-1">
-          <Label>From your spending history</Label>
-          <h2 className="mt-1 text-xl font-bold">Worth knowing</h2>
-          <p className="mt-3 max-w-3xl text-lg font-medium leading-relaxed">{data.insight}</p>
-          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--color-border)] pt-4">
-            <p className="text-xs text-[var(--color-text-muted)]">A pattern to keep in mind at your next checkout.</p>
-            <Link href="/insights#spending-patterns" className="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]">See the evidence <span aria-hidden="true" className="ml-2">→</span></Link>
-          </div>
-        </div>
-      </div>
+    <Card>
+      <div className="flex items-center justify-between gap-3"><h2 className="ds-h2">Recent checkouts</h2><Link href="/purchases" className="ds-btn ds-btn-sec min-h-[34px] px-3.5 text-xs">See all</Link></div>
+      <div className="mt-2">{data.recentAssessments.length ? data.recentAssessments.slice(0, 5).map(a => <div key={a.id} className="ds-row flex-wrap md:flex-nowrap">
+        <MerchantMark name={a.merchant} />
+        <div className="min-w-0 flex-1"><p className="truncate font-medium">{a.merchant}</p><p className="ds-label truncate">{a.headline} · {date(a.createdAt)}</p></div>
+        <span className="shrink-0 font-medium">{money(a.totalPence)}</span>
+        <span className="flex shrink-0 items-center gap-2 max-md:w-full max-md:pl-12"><AssessmentFactors id={a.id} score={a.regretRisk} />{a.outcome ? <Chip tone={a.outcome === "happy" ? "go" : a.outcome === "regretted" ? "stop" : "think"}>{a.outcome === "happy" ? "Happy" : a.outcome === "regretted" ? "Regretted" : "Unsure"}</Chip> : <Chip>{decisionLabel[a.decision] ?? a.decision.replaceAll("_", " ")}</Chip>}</span>
+      </div>) : <p className="ds-label py-3">No checkouts yet.</p>}</div>
     </Card>
+
     <BillsCalendar nextBill={data.nextBill} demoNow={data.demoNow} onSaved={() => void reload()} />
-    <section><div className="mb-3 flex items-center justify-between"><h2 className="text-xl font-bold">Recent checkouts</h2><Link href="/purchases" className="text-sm font-semibold text-[var(--color-accent)]">Purchases →</Link></div><div className="space-y-3">{data.recentAssessments.length ? data.recentAssessments.map(a => <Card key={a.id}><div className="flex items-start justify-between gap-3"><div><p className="font-semibold">{a.merchant}</p><p className="mt-1 text-sm text-[var(--color-text-muted)]">{a.headline}</p><p className="mt-2 text-xs text-[var(--color-text-muted)]">{date(a.createdAt)} · {a.decision.replaceAll("_", " ")}</p></div><p className="shrink-0 font-bold">{money(a.totalPence)}</p></div><AssessmentFactors id={a.id} score={a.regretRisk} /></Card>) : <Card><p className="text-sm text-[var(--color-text-muted)]">No checkouts yet.</p></Card>}</div></section>
     <ScoreExamples />
   </div>;
 }

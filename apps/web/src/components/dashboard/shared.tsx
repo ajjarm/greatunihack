@@ -40,51 +40,63 @@ export function useApi<T>(path: string) {
   return { data, setData, error, loading, reload };
 }
 
-export function Card({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
-  return <section id={id} className={`dashboard-card scroll-mt-6 border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-[var(--shadow-card)] ${className}`} style={{ borderRadius: "var(--radius-lg)" }}>{children}</section>;
+type Tone = "accent" | "go" | "think" | "stop";
+
+/** Glass card (DESIGN 3.1). The material sits on ::before/::after in motion.css. */
+export function Card({ children, className = "", id, style }: { children: React.ReactNode; className?: string; id?: string; style?: React.CSSProperties }) {
+  return <section id={id} className={`dashboard-card scroll-mt-6 ${className}`} style={style}>{children}</section>;
 }
-export function Label({ children }: { children: React.ReactNode }) { return <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-text-muted)]">{children}</p>; }
+/** 12px muted label, sentence case. */
+export function Label({ children }: { children: React.ReactNode }) { return <p className="ds-label">{children}</p>; }
+/** Pill button: default is the one primary (accent), quiet is secondary, danger is secondary in coral. */
 export function Button({ children, onClick, disabled, variant = "default", type = "button" }: { children: React.ReactNode; onClick?: () => void; disabled?: boolean; variant?: "default" | "quiet" | "danger"; type?: "button" | "submit" }) {
-  const colors = variant === "danger" ? "bg-[var(--color-stop-bg)] text-[var(--color-stop)]" : variant === "quiet" ? "bg-[var(--color-surface-2)] text-[var(--color-text)]" : "bg-[var(--color-accent)] text-[var(--color-surface)]";
-  return <button type={type} onClick={onClick} disabled={disabled} className={`min-h-11 px-4 py-2 text-sm font-semibold transition-opacity duration-[var(--motion-fast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] disabled:opacity-50 ${colors}`} style={{ borderRadius: "var(--radius-sm)" }}>{children}</button>;
+  const kind = variant === "danger" ? "ds-btn-danger" : variant === "quiet" ? "ds-btn-sec" : "ds-btn-acc";
+  return <button type={type} onClick={onClick} disabled={disabled} className={`ds-btn ${kind}`}>{children}</button>;
 }
-export function Chip({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | "accent" | "go" | "think" | "stop" }) {
-  const colors = tone === "accent" ? "bg-[var(--color-accent-bg)] text-[var(--color-accent)]" : tone === "go" ? "bg-[var(--color-go-bg)] text-[var(--color-go)]" : tone === "think" ? "bg-[var(--color-think-bg)] text-[var(--color-think)]" : tone === "stop" ? "bg-[var(--color-stop-bg)] text-[var(--color-stop)]" : "bg-[var(--color-surface-2)] text-[var(--color-text-muted)]";
-  return <span className={`dashboard-chip inline-flex px-2 py-1 text-xs font-medium ${colors}`} style={{ borderRadius: "var(--radius-sm)" }}>{children}</span>;
+/** Status chip: band colour on the band colour at 12%. Always words, never colour alone. */
+export function Chip({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | Tone }) {
+  return <span className={`dashboard-chip ds-chip ds-chip-${tone}`}>{children}</span>;
 }
-export function Bar({ value, max = 100, tone = "accent" }: { value: number; max?: number; tone?: "accent" | "go" | "think" | "stop" }) {
-  const color = { accent: "var(--color-accent)", go: "var(--color-go)", think: "var(--color-think)", stop: "var(--color-stop)" }[tone];
-  return <div className="h-2 w-full overflow-hidden bg-[var(--color-surface-2)]" style={{ borderRadius: "var(--radius-sm)" }}><div className="dashboard-bar-fill h-full" style={{ width: `${Math.min(100, Math.max(0, max ? value / max * 100 : 0))}%`, backgroundColor: color, borderRadius: "var(--radius-sm)" }} /></div>;
+/** Flat 6px bar: solid fill on a --color-fill-2 track, grows from the left. */
+export function Bar({ value, max = 100, tone = "accent" }: { value: number; max?: number; tone?: Tone | "white" }) {
+  const color = { accent: "var(--color-accent)", go: "var(--color-go)", think: "var(--color-think)", stop: "var(--color-stop)", white: "var(--color-text)" }[tone];
+  return <div className="ds-bar"><i style={{ width: `${Math.min(100, Math.max(0, max ? value / max * 100 : 0))}%`, backgroundColor: color }} /></div>;
 }
-export function ScoreDial({ value, tone }: { value: number; tone: "accent" | "go" | "think" | "stop" }) {
+/** Spend Score: the display number with /100 (DESIGN 4, Home). */
+export function ScoreDial({ value, tone }: { value: number; tone: Tone }) {
   const score = Math.min(100, Math.max(0, value));
-  const outerLength = 2 * Math.PI * 108;
-  const bandLength = 2 * Math.PI * 87;
-  const angle = score / 100 * 2 * Math.PI - Math.PI / 2;
-  const bands = [
-    { from: 0, to: 50, color: "var(--color-stop)" },
-    { from: 50, to: 75, color: "var(--color-think)" },
-    { from: 75, to: 90, color: "var(--color-go)" },
-    { from: 90, to: 100, color: "var(--color-accent)" },
-  ];
-  return <div role="meter" aria-label="Spend Score" aria-valuemin={0} aria-valuemax={100} aria-valuenow={score} className="dashboard-score-dial relative grid h-56 w-56 shrink-0 place-items-center sm:h-64 sm:w-64">
-    <span aria-hidden="true" className="absolute inset-[9%] rounded-full bg-[var(--color-surface-2)] opacity-50 blur-2xl" />
-    <svg aria-hidden="true" viewBox="0 0 240 240" className="absolute inset-0 h-full w-full overflow-visible">
-      <circle cx="120" cy="120" r="108" fill="none" stroke="var(--color-surface-2)" strokeWidth="8" />
-      <circle cx="120" cy="120" r="98" fill="none" stroke="var(--color-border)" strokeWidth="1" strokeDasharray="1 8" className="dashboard-score-orbit" />
-      {bands.map(band => <circle key={band.from} cx="120" cy="120" r="87" fill="none" stroke={band.color} strokeWidth="4" strokeDasharray={`${(band.to - band.from - 1) / 100 * bandLength} ${bandLength}`} strokeDashoffset={-(band.from + 0.5) / 100 * bandLength} transform="rotate(-90 120 120)" />)}
-      <circle cx="120" cy="120" r="108" fill="none" stroke={`var(--color-${tone})`} strokeWidth="8" strokeLinecap="round" strokeDasharray={`${outerLength} ${outerLength}`} strokeDashoffset={outerLength * (1 - score / 100)} transform="rotate(-90 120 120)" className="dashboard-score-progress" />
-      {score > 0 && <circle cx={120 + 108 * Math.cos(angle)} cy={120 + 108 * Math.sin(angle)} r="5" fill="var(--color-surface)" stroke={`var(--color-${tone})`} strokeWidth="3" />}
-    </svg>
-    <div className="relative flex h-[58%] w-[58%] flex-col items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[var(--shadow-card)]">
-      <span className="text-[9px] font-bold uppercase tracking-[0.22em] text-[var(--color-text-muted)] sm:text-[10px]">Spend Score</span>
-      <span className="mt-1 text-6xl font-black leading-none tracking-tight sm:text-7xl" style={{ color: `var(--color-${tone})` }}>{score}</span>
-      <span className="mt-1 text-xs font-semibold text-[var(--color-text-muted)]">of 100</span>
-    </div>
-  </div>;
+  return <span role="meter" aria-label="Spend Score" aria-valuemin={0} aria-valuemax={100} aria-valuenow={score} className="inline-flex items-baseline gap-2">
+    <span className="ds-display" data-tone={tone}>{score}</span>
+    <span className="text-xl font-medium text-[var(--color-text-dim)]">/100</span>
+  </span>;
+}
+/** Inset tile inside a card: flat --color-fill. */
+export function Tile({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return <div className={`ds-tile ${className}`}>{children}</div>;
+}
+/** Money with dimmed decimals: £412<span>.00</span>. */
+export function MoneyFigure({ pence }: { pence: Pence }) {
+  const text = money(pence);
+  const dot = text.lastIndexOf(".");
+  return dot < 0 ? <>{text}</> : <>{text.slice(0, dot)}<span className="ds-dec">{text.slice(dot)}</span></>;
+}
+/** Page header: title 28/500, one muted sentence, optional action on the right. */
+export function PageHeader({ title, sub, action }: { title: string; sub?: React.ReactNode; action?: React.ReactNode }) {
+  return <header className="mb-1 flex flex-col items-start gap-3 md:flex-row md:items-end md:justify-between md:gap-5">
+    <div className="min-w-0"><h1 className="ds-h1">{title}</h1>{sub && <p className="ds-sub">{sub}</p>}</div>
+    {action}
+  </header>;
+}
+/** Segmented control: --color-fill track, selected segment on --color-fill-2. */
+export function Segmented<T extends string>({ value, options, onChange, label }: { value: T; options: { value: T; label: string }[]; onChange: (value: T) => void; label: string }) {
+  return <div role="group" aria-label={label} className="ds-seg">{options.map(option => <button key={option.value} type="button" aria-pressed={value === option.value} onClick={() => onChange(option.value)}>{option.label}</button>)}</div>;
+}
+/** 34px merchant mark with the initial. */
+export function MerchantMark({ name }: { name: string }) {
+  return <span aria-hidden="true" className="ds-mark">{name.trim().charAt(0).toUpperCase() || "?"}</span>;
 }
 export function PageState({ loading, error, retry }: { loading: boolean; error: string; retry: () => void }) {
-  if (loading) return <Card><p role="status" className="text-[var(--color-text-muted)]">Loading your dashboard…</p></Card>;
+  if (loading) return <Card><p role="status" className="text-[var(--color-text-muted)]">Having a look…</p></Card>;
   if (error) return <Card><p role="alert">{error}</p><div className="mt-4"><Button onClick={retry}>Try again</Button></div></Card>;
   return null;
 }

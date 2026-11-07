@@ -53,14 +53,14 @@ export function NudgeCard(props: Props) {
               <span className="text-xs nudge-muted">
                 {BRAND.name} · {a.merchant} · <span className="nudge-num">{money(a.totalPence)}</span>
               </span>
-              <h1 id="nudge-headline" className={`${compact ? "text-base" : "text-lg"} font-semibold leading-snug`}>
+              <h1 id="nudge-headline" className="nudge-headline" data-compact={compact ? "true" : "false"}>
                 {a.headline}
               </h1>
             </div>
             {!done && (
               <button
                 type="button"
-                className="nudge-btn nudge-btn-ghost w-8 h-8 shrink-0 flex items-center justify-center"
+                className="nudge-btn nudge-btn-round shrink-0"
                 aria-label="Dismiss (Esc)"
                 title="Dismiss (Esc)"
                 disabled={inactive}
@@ -145,7 +145,7 @@ function RiskRow({ a, compact }: { a: Assessment; compact?: boolean }) {
         </span>
         <span className="flex-1 text-sm leading-tight">
           regret risk
-          <span className="block text-[10px] nudge-muted uppercase tracking-wider">experimental</span>
+          <span className="block text-xs nudge-muted">experimental</span>
         </span>
         <span className="nudge-band-pill text-xs px-2 py-0.5">{BAND_LABEL[b]}</span>
       </div>
@@ -373,7 +373,7 @@ function ReasonBar({
         />
         <button
           type="submit"
-          className="nudge-btn nudge-btn-primary nudge-pill-send w-9 h-9 shrink-0 flex items-center justify-center"
+          className="nudge-btn nudge-btn-primary nudge-btn-round shrink-0"
           disabled={disabled || !text.trim()}
           aria-label="Send reason"
         >

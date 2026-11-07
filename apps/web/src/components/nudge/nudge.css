@@ -1,172 +1,387 @@
-/* Nudge lane styles. Every colour, radius, shadow, font and duration comes from tokens.css.
-   All selectors are prefixed .nudge- so nothing leaks into other lanes. */
+/* Nudge lane styles (docs/DESIGN.md §3, §4, §5). Every colour, radius, shadow, font and
+   duration comes from tokens.css. All selectors are prefixed .nudge- so nothing leaks. */
 
-.nudge-card {
-  background: var(--color-surface);
-  color: var(--color-text);
+.nudge-root {
+  color-scheme: dark;
   font-family: var(--font-sans);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  /* --shadow-card, not --shadow-float: the iframe edge would clip a wide shadow into a visible box */
-  box-shadow: var(--shadow-card);
-  animation: nudge-slide-in var(--motion-slow) var(--ease-out) both;
-}
-.nudge-card[data-busy="true"] .nudge-risk-figure,
-.nudge-card[data-busy="true"] .nudge-impact {
-  animation: nudge-pulse 900ms ease-in-out infinite;
-}
-@keyframes nudge-slide-in {
-  from { transform: translateX(24px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-@keyframes nudge-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.55; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .nudge-card, .nudge-toast { animation: none !important; }
-  .nudge-card[data-busy="true"] .nudge-risk-figure,
-  .nudge-card[data-busy="true"] .nudge-impact { animation: none; opacity: 0.7; }
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
 }
 
+/* ---------- the one glass block (§3.1, --glass-tint-strong) ---------- */
+.nudge-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  color: var(--color-text);
+  color-scheme: dark;
+  /* SOLID surface. The card lives in an iframe over a shop page, so glass blur cannot work there
+     and any translucency makes white text unreadable on a white shop. Opaque, always. */
+  background: #2a2b2d;
+  background: var(--color-surface, #2a2b2d);
+  animation: nudge-panel-in 380ms var(--ease-out) both;
+}
+.nudge-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  /* sheen only; if the token is missing nothing is drawn (the solid surface above does the work) */
+  background: var(--glass-sheen, none);
+  box-shadow: var(--glass-rim, none);
+}
+.nudge-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: var(--glass-edge);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.nudge-card > * { position: relative; z-index: 1; }
+
+@keyframes nudge-panel-in {
+  from { opacity: 0; transform: translateX(44px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes nudge-land {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes nudge-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes nudge-toast-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes nudge-spin { to { transform: rotate(360deg); } }
+@keyframes nudge-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@keyframes nudge-ring-in { from { stroke-dasharray: 0 252; } }
+@keyframes nudge-grow-x { from { transform: scaleX(0); } }
+
+/* content lands with a 50ms stagger: style={{"--i": n}} */
+.nudge-land {
+  animation: nudge-land 300ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 50ms + 120ms);
+}
+
+/* ---------- text helpers ---------- */
 .nudge-muted { color: var(--color-text-muted); }
 .nudge-num { font-variant-numeric: tabular-nums; }
 .nudge-mono { font-family: var(--font-mono); }
+.nudge-eyebrow { font-size: var(--fs-label); font-weight: 600; letter-spacing: 0.02em; color: var(--color-text-muted); }
+.nudge-headline {
+  font-size: var(--fs-headline);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.nudge-headline[data-compact="true"] { font-size: 19px; }
+.nudge-section-title { color: var(--color-text-muted); font-size: var(--fs-label); font-weight: 600; }
 .nudge-divider { border-top: 1px solid var(--color-border); }
 
-.nudge-section-title {
-  color: var(--color-text-muted);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
+/* band colours: go / think / stop, always beside a number or word */
+.nudge-band-go { --band: var(--color-go); }
+.nudge-band-think { --band: var(--color-think); }
+.nudge-band-stop { --band: var(--color-stop); }
+.nudge-band-text { color: var(--band); transition: color var(--motion-base) var(--ease-out); }
 
-/* band colours: go / think / stop */
-.nudge-band-go { --band: var(--color-go); --band-bg: var(--color-go-bg); }
-.nudge-band-think { --band: var(--color-think); --band-bg: var(--color-think-bg); }
-.nudge-band-stop { --band: var(--color-stop); --band-bg: var(--color-stop-bg); }
-.nudge-band-text { color: var(--band); }
-.nudge-band-pill {
-  color: var(--band);
-  background: var(--band-bg);
-  border-radius: 999px;
-  font-weight: 600;
-}
-.nudge-risk-panel {
-  background: var(--band-bg);
+/* ---------- inset tiles (flat fills inside glass) ---------- */
+.nudge-sub {
+  position: relative;
+  background: var(--color-fill);
   border-radius: var(--radius-md);
 }
-.nudge-meter {
-  background: var(--color-surface-2);
-  border-radius: 999px;
+.nudge-tile {
+  transition: background-color var(--motion-fast) var(--ease-out);
+  cursor: default;
+}
+.nudge-tile:hover,
+.nudge-tile[data-open="true"] { background: var(--color-fill-2); }
+.nudge-tile[data-open="true"],
+.nudge-sub:has(.nudge-pop[data-open="true"]) { z-index: 20; }
+.nudge-tile-figure { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+.nudge-tile-label { font-size: var(--fs-label); line-height: 1.3; color: var(--color-text-muted); margin-top: var(--space-1); }
+
+/* score ring (§4): 76px, 7px stroke, band arc with a 5px glow, number inside */
+.nudge-ring { position: relative; width: 76px; height: 76px; }
+.nudge-ring svg { display: block; overflow: visible; }
+.nudge-ring-arc {
+  stroke: var(--band);
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--band) 50%, transparent));
+  transition: stroke-dasharray 700ms var(--ease-out), stroke var(--motion-base) var(--ease-out);
+  animation: nudge-ring-in 700ms var(--ease-out) 200ms both;
+}
+.nudge-ring-num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.nudge-ring-num small { font-size: var(--fs-label); font-weight: 600; margin-left: 1px; align-self: flex-start; margin-top: 18px; }
+
+/* flat bars (§4): no gradients, gloss or shadows */
+.nudge-flatbar {
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-fill-2);
   overflow: hidden;
 }
-.nudge-meter > span {
-  display: block;
-  height: 100%;
-  background: var(--band);
-  border-radius: 999px;
-  transition: width var(--motion-base) var(--ease-out);
+.nudge-flatbar > span {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  transform-origin: left;
+  animation: nudge-grow-x 640ms var(--ease-out) 200ms both;
+  transition: width 520ms var(--ease-out), left 520ms var(--ease-out);
 }
+.nudge-flatbar .have { left: 0; background: var(--color-text); }
+.nudge-flatbar .over { right: 0; background: var(--band); }
+.nudge-flatbar .fill { left: 0; background: var(--color-text); }
+.nudge-blocks { display: flex; gap: 3px; height: 6px; }
+.nudge-blocks span { flex: 1; border-radius: 3px; background: var(--color-fill-2); position: relative; overflow: hidden; }
+.nudge-blocks span > i { position: absolute; inset: 0 auto 0 0; background: var(--color-text); }
 
-.nudge-tag {
-  font-size: 11px;
-  font-weight: 600;
-  border-radius: 999px;
-  color: var(--color-text-muted);
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-border);
-}
-
-.nudge-panel {
-  background: var(--color-surface-2);
+/* ---------- popovers (§3.3) ---------- */
+.nudge-pop {
+  position: absolute;
+  z-index: var(--z-popover);
+  width: 250px;
+  max-width: calc(100vw - 48px);
+  padding: 12px 14px 14px;
   border-radius: var(--radius-md);
+  background: var(--color-popover);
+  box-shadow: var(--shadow-float);
+  font-size: 13px;
+  line-height: 1.45;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-6px) scale(0.97);
+  transition: opacity var(--motion-exit) var(--ease-out), transform var(--motion-exit) var(--ease-out), visibility 0s linear var(--motion-exit);
 }
-.nudge-accent-panel {
-  background: var(--color-accent-bg);
-  border-radius: var(--radius-md);
+.nudge-pop[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  transition: opacity 200ms var(--ease-out), transform 260ms var(--ease-out), visibility 0s;
 }
+.nudge-pop-row { display: flex; justify-content: space-between; gap: var(--space-3); }
+.nudge-pop-row > :last-child { font-weight: 600; }
 
-/* buttons */
-.nudge-btn {
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-  font-size: 14px;
-  transition: background var(--motion-fast) var(--ease-out), opacity var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out);
+/* ---------- timeline strip (§4) ---------- */
+.nudge-strip {
+  position: relative;
+  height: 8px;
+  margin: 10px 7px 0;
+  border-radius: 4px;
+  background: var(--color-fill-2);
+}
+.nudge-strip-seg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 4px;
+  transform-origin: left;
+  animation: nudge-grow-x 600ms var(--ease-out) 220ms both;
+  transition: left 500ms var(--ease-out), width 500ms var(--ease-out), background-color var(--motion-base) var(--ease-out);
+}
+.nudge-strip-seg[data-neg="true"] { background: var(--color-stop); }
+.nudge-strip-seg[data-neg="false"] { background: color-mix(in srgb, var(--color-text) 45%, transparent); }
+.nudge-strip-dot {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid var(--color-surface);
+  background: var(--color-text);
   cursor: pointer;
+  transition: transform var(--motion-fast) var(--ease-out), left 500ms var(--ease-out);
 }
-.nudge-btn:active:not(:disabled) { transform: scale(0.98); }
-.nudge-btn:disabled { opacity: 0.5; cursor: default; }
-.nudge-btn-primary { background: var(--color-text); color: var(--color-surface); }
-.nudge-btn-secondary { background: var(--color-surface-2); color: var(--color-text); border: 1px solid var(--color-border); }
-.nudge-btn-ghost { background: transparent; color: var(--color-text-muted); }
-.nudge-btn-ghost:hover:not(:disabled) { color: var(--color-text); }
-.nudge-btn-accent { background: var(--color-accent); color: var(--color-surface); }
-.nudge-btn-small { font-size: 12px; }
+.nudge-strip-dot:hover,
+.nudge-strip-dot[aria-expanded="true"] { transform: scale(1.3); }
+.nudge-strip-dot[data-kind="pay"] { background: var(--color-go); }
+.nudge-strip-dot[data-kind="buy"] { background: var(--band); width: 16px; height: 16px; margin: -8px 0 0 -8px; }
+.nudge-krow { display: grid; grid-template-columns: 76px 1fr auto auto; gap: var(--space-3); align-items: baseline; padding-top: var(--space-2); font-size: 13px; }
 
-.nudge-card :focus-visible,
-.nudge-toast :focus-visible {
-  outline: 2px solid var(--color-accent);
+/* ---------- chips ---------- */
+.nudge-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 0;
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+  font-size: var(--fs-label);
+  font-weight: 600;
+  color: var(--band, var(--color-text-muted));
+  background: color-mix(in srgb, var(--band, var(--color-text-muted)) 12%, transparent);
+}
+button.nudge-chip { cursor: pointer; transition: background-color var(--motion-fast) var(--ease-out), transform var(--motion-press) var(--ease-out); }
+button.nudge-chip:hover:not(:disabled) { background: color-mix(in srgb, var(--band, var(--color-text-muted)) 22%, transparent); }
+button.nudge-chip:active:not(:disabled) { transform: scale(0.95); }
+.nudge-chip-need { --band: var(--color-go); }
+.nudge-chip-useful { --band: var(--color-think); }
+.nudge-chip-want { --band: var(--color-stop); }
+
+/* ---------- buttons (§4) ---------- */
+.nudge-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  color: var(--color-text);
+  background: var(--color-fill-2);
+  cursor: pointer;
+  user-select: none;
+  transition: transform var(--motion-press) var(--ease-out), background-color var(--motion-fast) var(--ease-out), color var(--motion-fast) var(--ease-out), opacity var(--motion-fast) var(--ease-out);
+}
+.nudge-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--color-text) 16%, transparent); }
+.nudge-btn:active:not(:disabled) { transform: scale(0.97); }
+.nudge-btn:disabled { opacity: 0.5; cursor: default; }
+.nudge-btn-primary,
+.nudge-btn-accent { background: var(--color-accent); color: var(--color-on-accent); }
+.nudge-btn-primary:hover:not(:disabled),
+.nudge-btn-accent:hover:not(:disabled) { background: color-mix(in srgb, var(--color-accent) 80%, white); }
+.nudge-btn-secondary { background: var(--color-fill-2); }
+.nudge-btn-ghost { background: transparent; color: var(--color-text-muted); }
+.nudge-btn-ghost:hover:not(:disabled) { background: var(--color-fill); color: var(--color-text); }
+.nudge-btn-small { min-height: 32px; padding: 0 var(--space-3); font-size: var(--fs-label); }
+.nudge-btn-round { width: 40px; min-width: 40px; padding: 0; }
+.nudge-btn .nudge-btn-meta { font-weight: 500; opacity: 0.72; }
+.nudge-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  cursor: pointer;
+  transition: color var(--motion-fast) var(--ease-out);
+}
+.nudge-link:hover { color: var(--color-text); }
+.nudge-link svg { transition: transform var(--motion-base) var(--ease-out); }
+.nudge-link[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+.nudge-root :focus-visible {
+  outline: 2px solid var(--color-text);
   outline-offset: 2px;
 }
 
-.nudge-input {
-  background: var(--color-surface);
+/* ---------- reason input pill ---------- */
+.nudge-pill {
+  background: var(--color-fill);
+  border-radius: var(--radius-pill);
+  min-height: 48px;
+  transition: box-shadow var(--motion-fast) var(--ease-out);
+}
+.nudge-pill:focus-within { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-text) 40%, transparent); }
+.nudge-pill[data-prompt="true"] { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-stop) 70%, transparent); }
+.nudge-pill-input {
+  background: transparent;
   color: var(--color-text);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  font-family: inherit;
   font-size: 14px;
+  border: 0;
+  outline: none;
 }
-.nudge-input::placeholder { color: var(--color-text-muted); }
-
-.nudge-chip {
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  border: 1px solid var(--color-border);
-  cursor: pointer;
-  transition: background var(--motion-fast) var(--ease-out);
+.nudge-pill-input::placeholder { color: var(--color-text-muted); }
+.nudge-pill :focus-visible { outline: none; }
+.nudge-pill .nudge-btn:focus-visible { outline: 2px solid var(--color-text); outline-offset: 2px; }
+.nudge-reply {
+  font-size: 13px;
+  animation: nudge-land var(--motion-base) var(--ease-out) both;
 }
-.nudge-chip-need { color: var(--color-go); background: var(--color-go-bg); }
-.nudge-chip-useful { color: var(--color-think); background: var(--color-think-bg); }
-.nudge-chip-want { color: var(--color-stop); background: var(--color-stop-bg); }
+.nudge-thinking { animation: nudge-fade-in var(--motion-base) var(--ease-out) both; }
 
-.nudge-bar {
-  background: var(--color-surface);
-  border-radius: 999px;
-  overflow: hidden;
+/* ---------- errors ---------- */
+.nudge-error {
+  color: var(--color-stop);
+  background: color-mix(in srgb, var(--color-stop) 12%, transparent);
+  border-radius: var(--radius-md);
 }
-.nudge-bar > span { display: block; height: 100%; background: var(--color-accent); border-radius: 999px; }
 
-.nudge-swatch { display: inline-block; width: 12px; height: 3px; border-radius: 2px; }
-.nudge-dot { display: inline-block; width: 7px; height: 7px; border-radius: 999px; }
-
-.nudge-error { color: var(--color-stop); background: var(--color-stop-bg); border-radius: var(--radius-sm); }
-
+/* ---------- show details ---------- */
 .nudge-expand {
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows var(--motion-base) var(--ease-out);
 }
 .nudge-expand[data-open="true"] { grid-template-rows: 1fr; }
-.nudge-expand > div { overflow: hidden; }
+.nudge-expand > div { overflow: hidden; min-height: 0; }
+.nudge-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); padding: 9px 0; font-size: 13px; }
+.nudge-row + .nudge-row { border-top: 1px solid var(--color-border); }
 
-/* toast (verdict go_ahead) */
-.nudge-toast {
-  height: 72px;
-  background: var(--color-go-bg);
-  color: var(--color-go);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
-  font-family: var(--font-sans);
-  animation: nudge-slide-in var(--motion-slow) var(--ease-out) both;
+/* ---------- thinking (pending) ---------- */
+.nudge-spin { transform-origin: 46px 46px; animation: nudge-spin 1.1s linear infinite; }
+.nudge-shim {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--color-fill), var(--color-fill-2), color-mix(in srgb, var(--color-text) 20%, transparent), var(--color-fill));
+  background-size: 200% 100%;
+  animation: nudge-shimmer 1.4s linear infinite;
 }
+
+/* ---------- toast (go, score < 40) ---------- */
+.nudge-toast {
+  position: relative;
+  min-height: 56px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-card);
+  color: var(--color-text);
+  animation: nudge-toast-in 260ms var(--ease-out) both;
+}
+.nudge-toast::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--glass-sheen), var(--color-popover);
+  box-shadow: var(--glass-rim);
+}
+.nudge-toast > * { position: relative; z-index: 1; }
 .nudge-toast-icon {
-  background: var(--color-go);
-  color: var(--color-surface);
-  border-radius: 999px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--color-go);
+  background: color-mix(in srgb, var(--color-go) 18%, transparent);
+}
+
+/* 70+: dim the page behind a centred card (the iframe fills the viewport in this mode) */
+.nudge-backdrop {
+  background: var(--color-scrim);
+  animation: nudge-fade-in 320ms var(--ease-out) both;
 }
 
 /* inside the extension's iframe the page around the card must be see-through */
@@ -177,73 +392,70 @@ body:has(.nudge-root) { background: transparent; }
    tokens, so the scheme only affects browser defaults; keep it "normal" to stay see-through. */
 html:has(.nudge-root) { color-scheme: normal; }
 
-/* cost in working hours: the line meant to stop you */
-.nudge-hours {
-  background: var(--color-think-bg);
-  border-left: 4px solid var(--color-think);
-  border-radius: var(--radius-sm);
-}
-.nudge-hours-figure {
-  color: var(--color-think);
-  font-size: 34px;
-  font-weight: 800;
-  line-height: 1;
-  white-space: nowrap;
-}
-.nudge-hours-unit { font-size: 16px; font-weight: 700; margin-left: 3px; }
-
-/* money lines: label left, figure right, hairline between */
-.nudge-row + .nudge-row { border-top: 1px solid var(--color-border); }
-
-/* reason pill bar and chat bubbles, under the card */
-.nudge-pill {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  box-shadow: var(--shadow-card);
-}
-.nudge-pill:focus-within { outline: 2px solid var(--color-accent); outline-offset: 2px; }
-.nudge-pill-input {
-  background: transparent;
-  color: var(--color-text);
-  font-family: var(--font-sans);
-  font-size: 15px;
-  border: 0;
-  outline: none;
-}
-.nudge-pill-input::placeholder { color: var(--color-text-muted); }
-.nudge-pill-send { border-radius: 999px; font-size: 16px; }
-.nudge-pill :focus-visible { outline: none; }
-.nudge-bubble-user {
-  background: var(--color-text);
-  color: var(--color-surface);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-}
-.nudge-bubble-reply {
-  background: var(--color-surface);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
-  animation: nudge-slide-in var(--motion-base) var(--ease-out) both;
-}
-.nudge-thinking { animation: nudge-pulse 900ms ease-in-out infinite; }
-@media (prefers-reduced-motion: reduce) {
-  .nudge-bubble-reply, .nudge-thinking { animation: none; }
-}
-
-/* 70+: grey the page behind a centred card (the iframe fills the viewport in this mode) */
-.nudge-backdrop {
-  /* dim with the page background colour so it darkens in any palette */
-  background: color-mix(in srgb, var(--color-bg) 65%, transparent);
-  backdrop-filter: blur(3px);
-  animation: nudge-fade-in var(--motion-slow) var(--ease-out) both;
-}
-@keyframes nudge-fade-in { from { opacity: 0; } to { opacity: 1; } }
-.nudge-pill[data-prompt="true"] { border: 2px solid var(--color-stop); }
-@media (prefers-reduced-motion: reduce) { .nudge-backdrop { animation: none; } }
-.nudge-hours-figure[data-compact="true"] { font-size: 26px; }
-
 /* dev only: the Next.js dev badge renders inside the popup iframe and covers its corner */
 html:has(.nudge-root) nextjs-portal { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nudge-card, .nudge-toast, .nudge-land, .nudge-reply, .nudge-backdrop, .nudge-thinking,
+  .nudge-ring-arc, .nudge-flatbar > span, .nudge-strip-seg { animation: none !important; }
+  .nudge-spin, .nudge-shim { animation: none; }
+  .nudge-ring-arc, .nudge-flatbar > span, .nudge-strip-seg, .nudge-strip-dot { transition-duration: 0ms; }
+}
+
+/* ---------- existing component classes mapped onto the design system ---------- */
+.nudge-band-pill {
+  color: var(--band);
+  background: color-mix(in srgb, var(--band) 12%, transparent);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-label);
+  font-weight: 600;
+}
+.nudge-risk-figure { letter-spacing: -0.03em; font-weight: 600; }
+.nudge-meter { background: var(--color-fill-2); border-radius: 3px; overflow: hidden; height: 6px; }
+.nudge-meter > span {
+  display: block;
+  height: 100%;
+  background: var(--band);
+  border-radius: 3px;
+  transform-origin: left;
+  animation: nudge-grow-x 640ms var(--ease-out) 200ms both;
+  transition: width 520ms var(--ease-out);
+}
+.nudge-panel { background: var(--color-fill); border-radius: var(--radius-md); }
+.nudge-accent-panel { background: var(--color-fill); border-radius: var(--radius-md); }
+.nudge-bar { background: var(--color-fill-2); border-radius: 3px; overflow: hidden; }
+.nudge-bar > span { display: block; height: 100%; background: var(--color-text); border-radius: 3px; }
+.nudge-tag { font-size: var(--fs-label); font-weight: 600; border-radius: var(--radius-pill); color: var(--color-text-muted); background: var(--color-fill-2); }
+.nudge-input { background: var(--color-fill); color: var(--color-text); border: 0; border-radius: var(--radius-pill); font-size: 14px; }
+.nudge-input::placeholder { color: var(--color-text-muted); }
+.nudge-swatch { display: inline-block; width: 12px; height: 3px; border-radius: 2px; }
+.nudge-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+
+/* working hours: an inset tile with the figure in think amber */
+.nudge-hours { background: var(--color-fill); border-radius: var(--radius-md); }
+.nudge-hours-figure { color: var(--color-text); font-size: 30px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; }
+.nudge-hours-figure[data-compact="true"] { font-size: 24px; }
+.nudge-hours-unit { font-size: 15px; font-weight: 600; margin-left: 3px; color: var(--color-text-muted); }
+
+/* reason pill and replies sit under the card: give them the solid glass base so they read on any page */
+.nudge-root .nudge-pill:not(.nudge-card .nudge-pill) {
+  background: var(--glass-sheen), var(--glass-tint-strong), color-mix(in srgb, var(--color-bg) 72%, transparent);
+  box-shadow: var(--shadow-card), var(--glass-rim);
+}
+.nudge-bubble-user {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  border-radius: 18px 18px 6px 18px;
+  font-weight: 500;
+  animation: nudge-land var(--motion-base) var(--ease-out) both;
+}
+.nudge-bubble-reply {
+  background: var(--glass-sheen), var(--color-popover);
+  color: var(--color-text);
+  border-radius: 18px 18px 18px 6px;
+  box-shadow: var(--shadow-card), var(--glass-rim);
+  animation: nudge-land var(--motion-base) var(--ease-out) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nudge-meter > span, .nudge-bubble-user, .nudge-bubble-reply { animation: none !important; }
+}
