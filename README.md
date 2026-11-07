@@ -1,40 +1,53 @@
-# Great Uni Hack 2026 — [project name]
+# [name TBD] — Great Uni Hack 2026, BNY track
 
-> Unlike ___, we ___, which means ___.
+> Unlike budgeting apps that tell you what you spent last month, it steps in at the
+> checkout, knows what your rent and payday do to this purchase, and tells you what to
+> drop instead of saying no.
 
-**Track:** [sponsor track] · **Team:** Ajjar Mansoor, Zack Aftab, Rayan Deputy, Aarav Bhatnagar · **Built in 6 hours, 8 Nov 2026, Manchester**
+**Team:** Ajjar Mansoor, Zack Aftab, Rayan Deputy, Aarav Bhatnagar · **Built in 6 hours, 8 Nov 2026, Manchester**
 
 ## What it does
 
-[Two sentences. Problem, then what the demo shows.]
-
-## Under the hood
-
-[What is actually happening: the AI calls, the maths, the pipeline. This is the part judges
-cannot see from the UI alone, so it is also a live panel in the app.]
+A money agent for students that lives on your Mac. It watches your screen and, the
+moment you reach a checkout, steps in with a predicted regret risk, the real impact on
+your money before your next income, the factors that matter, and which item to drop
+instead of saying no. It learns from how you feel about purchases later and shows you
+how well it has learned you.
 
 ## Run it
 
 ```bash
-cp .env.example .env   # fill in keys
-npm install
-npm run dev
+cd apps/web && npm install && DEMO_FAST_TIMERS=1 npm run dev
 ```
+
+Then open http://localhost:3000 for the index, `/nudge?scenario=scn_1_impulse` for
+the nudge, `/home` for the dashboard. The Watcher is in `apps/watcher`
+(`npm install && npm start`).
+
+## Start here (team)
+
+1. `./scripts/sync.sh`
+2. Read `AGENTS.md`, `docs/INTERFACES.md`, `apps/web/src/lib/types.ts`, then your file
+   in `plan/active/`.
+3. Paste the prompt at the bottom of your plan file into your agent.
 
 ## Repo guide
 
 | Path | What |
 |---|---|
-| `docs/DECISIONS.md` | Track, idea, stack, what is mocked. Agents read this first. |
-| `docs/PLAYBOOK.md` | Strategy, 6-hour timeline, lessons from Ox Hack. |
+| `docs/SPEC.md` | The product, the demo-first phases, per-person instructions. |
+| `docs/INTERFACES.md` | The contract: directories, API, fixture shapes, tokens. |
+| `docs/MOCK-DATA-GUIDE.md` | Zack's guide to the fixture data. |
+| `docs/DECISIONS.md` | What is decided, what is mocked, who is on what. |
 | `docs/PITCH.md` | Timed, owned pitch script and Q&A bank. |
 | `docs/GITHUB-WORKFLOW.md` | How four people and their agents share this repo. |
-| `docs/INTERFACES.md` | Directory map and the shapes shared between lanes. |
-| `docs/TRACK-ANALYSIS.md` | Every track and idea scored, with the recommendation. |
-| `plan/active/` | One file per feature in flight: owner, files, done-when. |
+| `docs/TRACK-ANALYSIS.md` | Every track and idea scored. |
+| `plan/active/` | One file per person: directories, steps, done-when, the prompt. |
+| `apps/web` | Next.js: API + nudge page + dashboard. |
+| `apps/watcher` | Electron menu-bar Watcher (macOS). |
+| `data/` | Fixture data (the demo's brain in phase 1). |
 | `scripts/` | `sync`, `checkpoint`, `land`, `ask`, `inbox`, `answer`. |
-| `AGENTS.md` / `CLAUDE.md` | Rules every agent follows. |
 
 ## Screenshots
 
-[main screen] · [under-the-hood panel] · [result]
+[nudge] · [show more] · [dashboard home]

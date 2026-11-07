@@ -16,11 +16,11 @@ own branch and lands through `./scripts/land.sh`.
 
 ## Read order (every session)
 
-1. `docs/DECISIONS.md` — current idea, target track, stack, what is mocked. If it is
-   still a template, stop and ask the human before building anything.
-2. `plan/active/*.md` — what is being built right now, by whom, and what "done" means.
-3. `./scripts/inbox.sh` — open handoff requests addressed to the current user.
-4. `docs/PLAYBOOK.md` — lessons from the last hackathon and the 6-hour timeline.
+1. `docs/INTERFACES.md` and `apps/web/src/lib/types.ts` — the contract. Types are law.
+2. `plan/active/<you>-*.md` — your lane: directories, steps, done-when, the prompt.
+3. `docs/SPEC.md` — the product and the per-surface detail (sections 4, 8, 9).
+4. `./scripts/inbox.sh` — open handoff requests addressed to the current user.
+5. `docs/DECISIONS.md` — what was decided and what is mocked.
 
 ## Hard rules
 
@@ -71,14 +71,16 @@ own branch and lands through `./scripts/land.sh`.
 - At handoff or end of session: update `plan/active/<feature>.md` with what is done,
   what is not, and the next step, so the other person's agent can continue.
 
-## Default lanes (confirm names and directories in docs/DECISIONS.md tomorrow)
+## Lanes (final, 8 Nov 2026) — full detail in docs/SPEC.md and plan/active/
 
-| Lane | Who | Owns |
-|---|---|---|
-| Integrator + core | Ajjar | Architecture, scaffold, shared files, `main`, core feature, conflict resolution, pitch delivery |
-| Under-the-hood | Zack | The live "show the complexity" panel (trace, numbers, pipeline), demo data and scenarios, demo driving in the pitch |
-| Second feature | Rayan | A self-contained feature in its own directory (sponsor API integration, export, second screen), QA on every landing |
-| Track + pitch | Aarav | Track criteria owner (re-reads the brief, flags drift), deck, script timing, rehearsal, submission form, README, screenshots, backup video, Codex adversarial review |
+| Lane | Who | Directories (only these) | Branch |
+|---|---|---|---|
+| Watcher, Brain, design, integrator | Ajjar | `apps/watcher/**`, `apps/web/src/lib/**`, `apps/web/src/app/api/**`, shared files, `docs/DESIGN.md` | `ajjar/*` |
+| The nudge page | Rayan | `apps/web/src/app/nudge/**`, `apps/web/src/components/nudge/**` | `rayan/nudge` |
+| The dashboard | Aarav | `apps/web/src/app/(dashboard)/**`, `apps/web/src/components/dashboard/**` | `aarav/dashboard` |
+| Fixture data, then pitch | Zack | `data/**`, then `docs/PITCH.md`, `README.md` | `zack/data` |
 
-Lanes are directories, not just topics. Four agents editing four directories do not
-collide; four agents editing one `app/` folder will.
+Lanes are directories. UI lanes talk only to the API (`docs/INTERFACES.md`), never to
+`data/`. Colours, radii, shadows, fonts and motion come only from
+`apps/web/src/styles/tokens.css`. Shared files (package.json, lockfile, root layout,
+globals.css, tokens.css, types.ts, INTERFACES.md) are Ajjar's; ask for changes.
