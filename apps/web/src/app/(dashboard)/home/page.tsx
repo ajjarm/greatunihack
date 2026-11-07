@@ -7,6 +7,7 @@ import { AssessmentFactors } from "@/components/dashboard/factors";
 import { Card, Chip, Label, PageState, ScoreDial, date, money, useApi } from "@/components/dashboard/shared";
 
 const shortDate = (value: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", day: "numeric", month: "short" }).format(new Date(`${value}T12:00:00Z`));
+const scoreColor = (value: number) => value >= 90 ? "var(--color-accent)" : value >= 75 ? "var(--color-go)" : value >= 50 ? "var(--color-think)" : "var(--color-stop)";
 
 function ScoreHistory({ score, selectedWeek, onSelect }: { score: SpendScore; selectedWeek: string | null; onSelect: (week: string | null) => void }) {
   const points = score.history;
@@ -18,11 +19,12 @@ function ScoreHistory({ score, selectedWeek, onSelect }: { score: SpendScore; se
         const selected = selectedWeek === point.weekStart || (selectedWeek === null && index === points.length - 1);
         return <li key={point.weekStart} className="min-w-0 text-center"><button type="button" onClick={() => onSelect(index === points.length - 1 ? null : point.weekStart)} aria-pressed={selected} aria-label={`Week of ${date(point.weekStart)}: Spend Score ${point.value}. Show details.`} className={`w-full border p-2 transition-colors duration-[var(--motion-fast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${selected ? "border-[var(--color-accent)] bg-[var(--color-accent-bg)]" : "border-[var(--color-border)] bg-[var(--color-surface)]"}`} style={{ borderRadius: "var(--radius-sm)" }}>
           <span className="text-xs font-semibold">{point.value}</span>
-          <span className="mt-1 flex h-16 items-end bg-[var(--color-surface-2)]" style={{ borderRadius: "var(--radius-sm)" }}><span className="w-full" style={{ height: `${Math.min(100, Math.max(0, point.value))}%`, backgroundColor: selected ? "var(--color-accent)" : "var(--color-text-muted)", borderRadius: "var(--radius-sm)" }} /></span>
+          <span className="mt-1 flex h-16 items-end bg-[var(--color-surface-2)]" style={{ borderRadius: "var(--radius-sm)" }}><span className="w-full" style={{ height: `${Math.min(100, Math.max(0, point.value))}%`, backgroundColor: scoreColor(point.value), borderRadius: "var(--radius-sm)" }} /></span>
           <span className="mt-1 block text-[10px] text-[var(--color-text-muted)]">{shortDate(point.weekStart)}</span>
         </button></li>;
       })}
     </ol>
+    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-[var(--color-text-muted)]"><span><span className="text-[var(--color-stop)]">●</span> Below 50</span><span><span className="text-[var(--color-think)]">●</span> 50–74</span><span><span className="text-[var(--color-go)]">●</span> 75–89</span><span><span className="text-[var(--color-accent)]">●</span> 90–100</span></div>
   </div>;
 }
 
@@ -40,7 +42,8 @@ export default function HomePage() {
   const selectedIndex = viewingPast ? score.history.findIndex(point => point.weekStart === selectedWeek) : score.history.length - 1;
   const displayedScore = viewingPast ? selectedPoint!.value : score.value;
   const band = viewingPast ? displayedScore >= 75 ? "green" : displayedScore >= 50 ? "amber" : "red" : score.band;
-  const tone = band === "green" ? "go" : band === "amber" ? "think" : "stop";
+  const veryGood = displayedScore >= 90;
+  const tone = veryGood ? "accent" : band === "green" ? "go" : band === "amber" ? "think" : "stop";
   const previousWeek = viewingPast ? score.history[selectedIndex - 1] : lastHistoryPoint?.value === score.value ? score.history.at(-2) : lastHistoryPoint;
   const change = previousWeek ? displayedScore - previousWeek.value : null;
   const selectedReport = viewingPast && weekly.data?.weekStart === selectedWeek ? weekly.data : null;
@@ -54,8 +57,8 @@ export default function HomePage() {
         <ScoreDial value={displayedScore} tone={tone} />
         <div className="min-w-0 flex-1" aria-live="polite">
           <Label>{viewingPast ? `Week of ${date(selectedPoint!.weekStart)}` : "Current Spend Score"}</Label>
-          <h2 className="mt-1 text-2xl font-bold">{band === "green" ? "Doing well" : band === "amber" ? "Making progress" : "Needs attention"}</h2>
-          <div className="mt-3 flex flex-wrap items-center gap-2"><Chip tone={tone}>{band}</Chip>{change !== null && <span className="text-sm font-semibold">{change > 0 ? `+${change}` : change} points vs previous week</span>}</div>
+          <h2 className="mt-1 text-2xl font-bold">{veryGood ? "Very good" : band === "green" ? "Doing well" : band === "amber" ? "Making progress" : "Needs attention"}</h2>
+          <div className="mt-3 flex flex-wrap items-center gap-2"><Chip tone={tone}>{veryGood ? "very good" : band}</Chip>{change !== null && <span className="text-sm font-semibold">{change > 0 ? `+${change}` : change} points vs previous week</span>}</div>
           {viewingPast ? selectedReport ? <div className="mt-4 grid grid-cols-2 gap-3 text-sm"><div><Label>Nudges heeded</Label><strong>{selectedReport.heeded} of {selectedReport.nudgesShown}</strong></div><div><Label>Limits kept</Label><strong>{selectedReport.limitsKept} of {selectedReport.limitsKept + selectedReport.limitsExceeded}</strong></div><div><Label>Overrides regretted</Label><strong>{selectedReport.overriddenRegretted}</strong></div><div><Label>Money kept · estimated</Label><strong>{money(selectedReport.avoidedPence)}</strong></div></div> : <p className="mt-4 text-sm text-[var(--color-text-muted)]">The score is recorded for this week; a detailed weekly report is not available.</p> : <p className="mt-4 text-sm leading-relaxed">{score.explanation}</p>}
           {viewingPast && <button type="button" onClick={() => setSelectedWeek(null)} className="mt-3 text-sm font-semibold text-[var(--color-accent)] underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]">Back to current week</button>}
         </div>
