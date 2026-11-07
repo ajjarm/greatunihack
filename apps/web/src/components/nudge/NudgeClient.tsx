@@ -109,6 +109,12 @@ function NudgeLoader({ assessmentId, scenario }: { assessmentId: string | null; 
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape" || !assessment || done || isToast) return;
       e.preventDefault();
+      // first Escape inside a text box just leaves the box; the next one dismisses
+      const el = document.activeElement;
+      if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
+        el.blur();
+        return;
+      }
       onDecision("dismiss");
     };
     window.addEventListener("keydown", onKey);

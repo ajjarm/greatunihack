@@ -422,16 +422,19 @@ function DoneState({ a, done }: { a: Assessment; done: DoneInfo }) {
   } else {
     text = "Dismissed. I won’t mention it again.";
   }
+  // Aarav's dashboard routes: the page that shows what this decision just created
+  const path = done.decision === "wait" ? "/waiting" : done.decision === "buy_anyway" ? "/purchases" : "/home";
+  const linkText = done.decision === "wait" ? "See your waiting list" : done.decision === "buy_anyway" ? "See your purchases" : "Open the dashboard";
   return (
     <div className="nudge-panel px-3 py-3 flex flex-col gap-2" role="status">
       <p className="text-sm">{text}</p>
       {!isHosted() ? (
-        <Link href="/" className="text-xs nudge-muted underline">
-          Open the dashboard
+        <Link href={path} className="text-xs nudge-muted underline">
+          {linkText}
         </Link>
       ) : (
-        <button type="button" className="nudge-btn nudge-btn-ghost text-xs self-start p-0" onClick={() => hostOpenDashboard()}>
-          Open the dashboard
+        <button type="button" className="nudge-btn nudge-btn-ghost text-xs self-start p-0" onClick={() => hostOpenDashboard(path)}>
+          {linkText}
         </button>
       )}
     </div>
