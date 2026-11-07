@@ -1,0 +1,244 @@
+/* Nudge lane styles. Every colour, radius, shadow, font and duration comes from tokens.css.
+   All selectors are prefixed .nudge- so nothing leaks into other lanes. */
+
+.nudge-card {
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  /* --shadow-card, not --shadow-float: the iframe edge would clip a wide shadow into a visible box */
+  box-shadow: var(--shadow-card);
+  animation: nudge-slide-in var(--motion-slow) var(--ease-out) both;
+}
+.nudge-card[data-busy="true"] .nudge-risk-figure,
+.nudge-card[data-busy="true"] .nudge-impact {
+  animation: nudge-pulse 900ms ease-in-out infinite;
+}
+@keyframes nudge-slide-in {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes nudge-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nudge-card, .nudge-toast { animation: none !important; }
+  .nudge-card[data-busy="true"] .nudge-risk-figure,
+  .nudge-card[data-busy="true"] .nudge-impact { animation: none; opacity: 0.7; }
+}
+
+.nudge-muted { color: var(--color-text-muted); }
+.nudge-num { font-variant-numeric: tabular-nums; }
+.nudge-mono { font-family: var(--font-mono); }
+.nudge-divider { border-top: 1px solid var(--color-border); }
+
+.nudge-section-title {
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* band colours: go / think / stop */
+.nudge-band-go { --band: var(--color-go); --band-bg: var(--color-go-bg); }
+.nudge-band-think { --band: var(--color-think); --band-bg: var(--color-think-bg); }
+.nudge-band-stop { --band: var(--color-stop); --band-bg: var(--color-stop-bg); }
+.nudge-band-text { color: var(--band); }
+.nudge-band-pill {
+  color: var(--band);
+  background: var(--band-bg);
+  border-radius: 999px;
+  font-weight: 600;
+}
+.nudge-risk-panel {
+  background: var(--band-bg);
+  border-radius: var(--radius-md);
+}
+.nudge-meter {
+  background: var(--color-surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.nudge-meter > span {
+  display: block;
+  height: 100%;
+  background: var(--band);
+  border-radius: 999px;
+  transition: width var(--motion-base) var(--ease-out);
+}
+
+.nudge-tag {
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+  color: var(--color-text-muted);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+}
+
+.nudge-panel {
+  background: var(--color-surface-2);
+  border-radius: var(--radius-md);
+}
+.nudge-accent-panel {
+  background: var(--color-accent-bg);
+  border-radius: var(--radius-md);
+}
+
+/* buttons */
+.nudge-btn {
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 14px;
+  transition: background var(--motion-fast) var(--ease-out), opacity var(--motion-fast) var(--ease-out), transform var(--motion-fast) var(--ease-out);
+  cursor: pointer;
+}
+.nudge-btn:active:not(:disabled) { transform: scale(0.98); }
+.nudge-btn:disabled { opacity: 0.5; cursor: default; }
+.nudge-btn-primary { background: var(--color-text); color: var(--color-surface); }
+.nudge-btn-secondary { background: var(--color-surface-2); color: var(--color-text); border: 1px solid var(--color-border); }
+.nudge-btn-ghost { background: transparent; color: var(--color-text-muted); }
+.nudge-btn-ghost:hover:not(:disabled) { color: var(--color-text); }
+.nudge-btn-accent { background: var(--color-accent); color: var(--color-surface); }
+.nudge-btn-small { font-size: 12px; }
+
+.nudge-card :focus-visible,
+.nudge-toast :focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.nudge-input {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+.nudge-input::placeholder { color: var(--color-text-muted); }
+
+.nudge-chip {
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-out);
+}
+.nudge-chip-need { color: var(--color-go); background: var(--color-go-bg); }
+.nudge-chip-useful { color: var(--color-think); background: var(--color-think-bg); }
+.nudge-chip-want { color: var(--color-stop); background: var(--color-stop-bg); }
+
+.nudge-bar {
+  background: var(--color-surface);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.nudge-bar > span { display: block; height: 100%; background: var(--color-accent); border-radius: 999px; }
+
+.nudge-swatch { display: inline-block; width: 12px; height: 3px; border-radius: 2px; }
+.nudge-dot { display: inline-block; width: 7px; height: 7px; border-radius: 999px; }
+
+.nudge-error { color: var(--color-stop); background: var(--color-stop-bg); border-radius: var(--radius-sm); }
+
+.nudge-expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--motion-base) var(--ease-out);
+}
+.nudge-expand[data-open="true"] { grid-template-rows: 1fr; }
+.nudge-expand > div { overflow: hidden; }
+
+/* toast (verdict go_ahead) */
+.nudge-toast {
+  height: 72px;
+  background: var(--color-go-bg);
+  color: var(--color-go);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-sans);
+  animation: nudge-slide-in var(--motion-slow) var(--ease-out) both;
+}
+.nudge-toast-icon {
+  background: var(--color-go);
+  color: var(--color-surface);
+  border-radius: 999px;
+}
+
+/* inside the extension's iframe the page around the card must be see-through */
+html:has(.nudge-root),
+body:has(.nudge-root) { background: transparent; }
+
+/* cost in working hours: the line meant to stop you */
+.nudge-hours {
+  background: var(--color-think-bg);
+  border-left: 4px solid var(--color-think);
+  border-radius: var(--radius-sm);
+}
+.nudge-hours-figure {
+  color: var(--color-think);
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+.nudge-hours-unit { font-size: 16px; font-weight: 700; margin-left: 3px; }
+
+/* money lines: label left, figure right, hairline between */
+.nudge-row + .nudge-row { border-top: 1px solid var(--color-border); }
+
+/* reason pill bar and chat bubbles, under the card */
+.nudge-pill {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  box-shadow: var(--shadow-card);
+}
+.nudge-pill:focus-within { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.nudge-pill-input {
+  background: transparent;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  border: 0;
+  outline: none;
+}
+.nudge-pill-input::placeholder { color: var(--color-text-muted); }
+.nudge-pill-send { border-radius: 999px; font-size: 16px; }
+.nudge-pill :focus-visible { outline: none; }
+.nudge-bubble-user {
+  background: var(--color-text);
+  color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+.nudge-bubble-reply {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  animation: nudge-slide-in var(--motion-base) var(--ease-out) both;
+}
+.nudge-thinking { animation: nudge-pulse 900ms ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .nudge-bubble-reply, .nudge-thinking { animation: none; }
+}
+
+/* 70+: grey the page behind a centred card (the iframe fills the viewport in this mode) */
+.nudge-backdrop {
+  background: color-mix(in srgb, var(--color-text) 55%, transparent);
+  backdrop-filter: blur(3px);
+  animation: nudge-fade-in var(--motion-slow) var(--ease-out) both;
+}
+@keyframes nudge-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.nudge-pill[data-prompt="true"] { border: 2px solid var(--color-stop); }
+@media (prefers-reduced-motion: reduce) { .nudge-backdrop { animation: none; } }
+.nudge-hours-figure[data-compact="true"] { font-size: 26px; }
+
+/* dev only: the Next.js dev badge renders inside the popup iframe and covers its corner */
+html:has(.nudge-root) nextjs-portal { display: none; }
