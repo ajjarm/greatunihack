@@ -1,24 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { Home, Report, SpendScore } from "@/lib/types";
 import { AssessmentFactors } from "@/components/dashboard/factors";
 import { Card, Chip, Label, PageState, ScoreDial, date, money, useApi } from "@/components/dashboard/shared";
 
 const shortDate = (value: string) => new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/London", day: "numeric", month: "short" }).format(new Date(`${value}T12:00:00Z`));
 
-function ScoreHistory({ score }: { score: SpendScore }) {
-  const points = score.history.slice(-6);
+function ScoreHistory({ score, selectedWeek, onSelect }: { score: SpendScore; selectedWeek: string | null; onSelect: (week: string | null) => void }) {
+  const points = score.history;
   if (points.length < 2) return null;
   return <div className="mt-6 border-t border-[var(--color-border)] pt-5">
-    <div className="flex items-center justify-between gap-3"><h3 className="text-sm font-semibold">Score over time</h3><span className="text-xs text-[var(--color-text-muted)]">Last {points.length} weeks</span></div>
-    <ol className="mt-4 grid gap-2" style={{ gridTemplateColumns: `repeat(${points.length}, minmax(0, 1fr))` }} aria-label="Weekly Spend Score history">
-      {points.map((point, index) => <li key={point.weekStart} className="min-w-0 text-center">
-        <span className="text-xs font-semibold">{point.value}</span>
-        <div className="mt-1 flex h-16 items-end bg-[var(--color-surface-2)]" style={{ borderRadius: "var(--radius-sm)" }}><div className="w-full" style={{ height: `${Math.min(100, Math.max(0, point.value))}%`, backgroundColor: index === points.length - 1 ? "var(--color-accent)" : "var(--color-text-muted)", borderRadius: "var(--radius-sm)" }} /></div>
-        <span className="mt-1 block text-[10px] text-[var(--color-text-muted)]">{shortDate(point.weekStart)}</span>
-      </li>)}
+    <div className="flex items-center justify-between gap-3"><h3 className="text-sm font-semibold">Score over time</h3><span className="text-xs text-[var(--color-text-muted)]">Choose a week</span></div>
+    <ol className="mt-4 grid grid-cols-4 gap-2 sm:grid-cols-8" aria-label="Weekly Spend Score history">
+      {points.map((point, index) => {
+        const selected = selectedWeek === point.weekStart || (selectedWeek === null && index === points.length - 1);
+        return <li key={point.weekStart} className="min-w-0 text-center"><button type="button" onClick={() => onSelect(index === points.length - 1 ? null : point.weekStart)} aria-pressed={selected} aria-label={`Week of ${date(point.weekStart)}: Spend Score ${point.value}. Show details.`} className={`w-full border p-2 transition-colors duration-[var(--motion-fast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] ${selected ? "border-[var(--color-accent)] bg-[var(--color-accent-bg)]" : "border-[var(--color-border)] bg-[var(--color-surface)]"}`} style={{ borderRadius: "var(--radius-sm)" }}>
+          <span className="text-xs font-semibold">{point.value}</span>
+          <span className="mt-1 flex h-16 items-end bg-[var(--color-surface-2)]" style={{ borderRadius: "var(--radius-sm)" }}><span className="w-full" style={{ height: `${Math.min(100, Math.max(0, point.value))}%`, backgroundColor: selected ? "var(--color-accent)" : "var(--color-text-muted)", borderRadius: "var(--radius-sm)" }} /></span>
+          <span className="mt-1 block text-[10px] text-[var(--color-text-muted)]">{shortDate(point.weekStart)}</span>
+        </button></li>;
+      })}
     </ol>
   </div>;
 }
@@ -26,14 +29,21 @@ function ScoreHistory({ score }: { score: SpendScore }) {
 export default function HomePage() {
   const { data, error, loading, reload } = useApi<Home>("home");
   const weekly = useApi<Report>("report?week=current");
+  const [selectedWeek, setSelectedWeek] = useState<string | null>(null);
   useEffect(() => { const timer = setInterval(() => { void reload(); }, 10000); return () => clearInterval(timer); }, [reload]);
   if (!data) return <PageState loading={loading} error={error} retry={reload} />;
 
   const score = data.spendScore;
-  const tone = score.band === "green" ? "go" : score.band === "amber" ? "think" : "stop";
   const lastHistoryPoint = score.history.at(-1);
-  const previousWeek = lastHistoryPoint?.value === score.value ? score.history.at(-2) : lastHistoryPoint;
-  const change = previousWeek ? score.value - previousWeek.value : null;
+  const selectedPoint = score.history.find(point => point.weekStart === selectedWeek);
+  const viewingPast = Boolean(selectedPoint && selectedPoint.weekStart !== lastHistoryPoint?.weekStart);
+  const selectedIndex = viewingPast ? score.history.findIndex(point => point.weekStart === selectedWeek) : score.history.length - 1;
+  const displayedScore = viewingPast ? selectedPoint!.value : score.value;
+  const band = viewingPast ? displayedScore >= 75 ? "green" : displayedScore >= 50 ? "amber" : "red" : score.band;
+  const tone = band === "green" ? "go" : band === "amber" ? "think" : "stop";
+  const previousWeek = viewingPast ? score.history[selectedIndex - 1] : lastHistoryPoint?.value === score.value ? score.history.at(-2) : lastHistoryPoint;
+  const change = previousWeek ? displayedScore - previousWeek.value : null;
+  const selectedReport = viewingPast && weekly.data?.weekStart === selectedWeek ? weekly.data : null;
 
   return <div className="space-y-5">
     <header><Label>Overview</Label><h1 className="mt-1 text-3xl font-bold">Your money, today</h1><p className="mt-1 text-sm text-[var(--color-text-muted)]">{date(data.demoNow)}</p></header>
@@ -41,15 +51,16 @@ export default function HomePage() {
 
     <Card>
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-7">
-        <ScoreDial value={score.value} tone={tone} />
-        <div className="min-w-0 flex-1">
-          <Label>Spend Score</Label>
-          <h2 className="mt-1 text-2xl font-bold">{score.band === "green" ? "Doing well" : score.band === "amber" ? "Making progress" : "Needs attention"}</h2>
-          <div className="mt-3 flex flex-wrap items-center gap-2"><Chip tone={tone}>{score.band}</Chip>{change !== null && <span className="text-sm font-semibold">{change > 0 ? `+${change}` : change} points vs previous week</span>}</div>
-          <p className="mt-4 text-sm leading-relaxed">{score.explanation}</p>
+        <ScoreDial value={displayedScore} tone={tone} />
+        <div className="min-w-0 flex-1" aria-live="polite">
+          <Label>{viewingPast ? `Week of ${date(selectedPoint!.weekStart)}` : "Current Spend Score"}</Label>
+          <h2 className="mt-1 text-2xl font-bold">{band === "green" ? "Doing well" : band === "amber" ? "Making progress" : "Needs attention"}</h2>
+          <div className="mt-3 flex flex-wrap items-center gap-2"><Chip tone={tone}>{band}</Chip>{change !== null && <span className="text-sm font-semibold">{change > 0 ? `+${change}` : change} points vs previous week</span>}</div>
+          {viewingPast ? selectedReport ? <div className="mt-4 grid grid-cols-2 gap-3 text-sm"><div><Label>Nudges heeded</Label><strong>{selectedReport.heeded} of {selectedReport.nudgesShown}</strong></div><div><Label>Limits kept</Label><strong>{selectedReport.limitsKept} of {selectedReport.limitsKept + selectedReport.limitsExceeded}</strong></div><div><Label>Overrides regretted</Label><strong>{selectedReport.overriddenRegretted}</strong></div><div><Label>Money kept · estimated</Label><strong>{money(selectedReport.avoidedPence)}</strong></div></div> : <p className="mt-4 text-sm text-[var(--color-text-muted)]">The score is recorded for this week; a detailed weekly report is not available.</p> : <p className="mt-4 text-sm leading-relaxed">{score.explanation}</p>}
+          {viewingPast && <button type="button" onClick={() => setSelectedWeek(null)} className="mt-3 text-sm font-semibold text-[var(--color-accent)] underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]">Back to current week</button>}
         </div>
       </div>
-      <ScoreHistory score={score} />
+      <ScoreHistory score={score} selectedWeek={viewingPast ? selectedWeek : null} onSelect={setSelectedWeek} />
       <p className="mt-4 text-xs text-[var(--color-text-muted)]">The score reflects nudges, later feedback, weekly limits and your cash position. Spending alone does not lower it.</p>
     </Card>
 
