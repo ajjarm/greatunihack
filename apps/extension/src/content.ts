@@ -272,30 +272,58 @@ async function judgeStashed(): Promise<boolean> {
   return ok;
 }
 
-function isAddToBasketControl(target: EventTarget | null): boolean {
-  const el = (target as Element | null)?.closest?.("input, button, a, span, div[role='button']") as HTMLElement | null;
-  if (!el) return false;
-  const idName = `${el.id ?? ""} ${el.getAttribute("name") ?? ""} ${el.getAttribute("data-action") ?? ""}`;
-  if (/add-to-cart|add-to-basket|buy-now|buynow|addToCart/i.test(idName)) return true;
-  const text = ((el as HTMLInputElement).value || el.textContent || "").trim();
-  return text.length < 40 && /^(add to basket|add to cart|buy now)$/i.test(text);
+const ADD_RE = /add-to-cart|add-to-basket|addtocart|buy-now|buynow|one-click|oneclick|submit\.add|atc/i;
+const ADD_TEXT_RE = /^(add to basket|add to cart|buy now|add to your basket)$/i;
+
+function isAddToBasketControl(ev: Event): boolean {
+  const path = (typeof ev.composedPath === "function" ? ev.composedPath() : []) as Element[];
+  const chain = path.length ? path : [ev.target as Element];
+  for (const node of chain) {
+    if (!(node instanceof Element)) continue;
+    const el = node as HTMLElement;
+    const idName = `${el.id ?? ""} ${el.getAttribute("name") ?? ""} ${el.getAttribute("data-action") ?? ""} ${el.getAttribute("aria-labelledby") ?? ""} ${el.className ?? ""}`;
+    if (ADD_RE.test(idName)) return true;
+    const text = ((el as HTMLInputElement).value || el.getAttribute("aria-label") || el.textContent || "").trim();
+    if (text.length < 40 && ADD_TEXT_RE.test(text)) return true;
+    if (el.matches?.("#buybox, #desktop_buybox, #addToCart, form#addToCart, #buyBoxAccordion, #rightCol")) break;
+  }
+  return false;
 }
 
-document.addEventListener(
-  "click",
-  (ev) => {
-    if (!isProductPage() || !isAddToBasketControl(ev.target)) return;
-    const parsed = stashProduct();
-    if (!parsed) return;
-    console.info("[st] add-to-basket clicked; the card follows to the next page or shows here");
-    // Amazon normally navigates to the "Added to basket" page, where judgeStashed() picks this up.
-    // If it stays on this page (in-page confirmation), show the card here after a moment.
-    setTimeout(() => {
-      if (document.visibilityState !== "hidden" && isProductPage()) void judgeProduct(parsed);
-    }, 1500);
-  },
-  true,
-);
+let productJudged = false;
+function onAddToBasket(source: string) {
+  if (!isProductPage() || productJudged) return;
+  const parsed = stashProduct();
+  if (!parsed) return;
+  productJudged = true;
+  console.info(`[st] add-to-basket detected (${source}); the card follows to the next page or shows here`);
+  // Amazon normally navigates to the "Added to basket" page, where judgeStashed() picks this up.
+  // If it stays on this page (in-page confirmation), show the card here after a moment.
+  setTimeout(() => {
+    if (document.visibilityState !== "hidden" && isProductPage()) void judgeProduct(parsed);
+  }, 1200);
+}
+
+for (const type of ["pointerdown", "click"] as const) {
+  document.addEventListener(
+    type,
+    (ev) => {
+      if (!isProductPage()) return;
+      if (isAddToBasketControl(ev)) onAddToBasket(type);
+    },
+    true,
+  );
+}
+
+// Belt and braces: Amazon's in-page "Added to basket" confirmation, or the basket count going up.
+const cartCountAtLoad = parseInt(document.querySelector("#nav-cart-count")?.textContent ?? "0", 10) || 0;
+function checkAddedToBasketSignals() {
+  if (!isProductPage() || productJudged) return;
+  const conf = document.querySelector("#attach-added-to-cart-message, #sw-atc-details-single-container, #NATC_SMART_WAGON_CONF_MSG_SUCCESS, #huc-v2-order-row-confirm-text, [data-feature-name='attachSiNoCoverage']");
+  if (conf && /added to (your )?basket|added to cart/i.test(conf.textContent ?? "")) return onAddToBasket("confirmation");
+  const count = parseInt(document.querySelector("#nav-cart-count")?.textContent ?? "0", 10) || 0;
+  if (count > cartCountAtLoad) return onAddToBasket("basket-count");
+}
 
 async function judgeParsed(force: boolean): Promise<boolean> {
   if (isProductPage() && !force) return false; // product pages wait for the add-to-basket click
@@ -316,6 +344,7 @@ async function judgeParsed(force: boolean): Promise<boolean> {
 async function tick() {
   if (inFlight) return;
   if (await isPaused()) return;
+  if (isProductPage()) checkAddedToBasketSignals();
   inFlight = true;
   try {
     if (!isProductPage() && (await judgeStashed())) return;
