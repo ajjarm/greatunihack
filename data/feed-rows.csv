@@ -1,0 +1,7 @@
+externalId,date,merchant,description,amountPence,category
+sam-demo-feed-01,2026-11-08T23:40:00+00:00,Amazon,Nike Air Max 90,8500,clothes
+sam-demo-feed-02,2026-11-08T23:40:00+00:00,Amazon,Cotton hoodie,4500,clothes
+sam-demo-feed-03,2026-11-08T23:40:00+00:00,Amazon,Noise-cancelling headphones,5400,tech
+sam-demo-feed-04,2026-11-08T23:40:00+00:00,Amazon,Phone case gift,3500,accessories
+sam-demo-feed-05,2026-11-08T23:40:00+00:00,Amazon,Paracetamol,349,health
+sam-demo-feed-06,2026-11-08T23:40:00+00:00,Amazon,Course reader,600,books

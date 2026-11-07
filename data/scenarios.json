@@ -3478,18 +3478,18 @@
   },
   {
     "id": "scn_5_steam",
-    "title": "A Steam sale on a Friday night",
+    "title": "An Amazon lightning deal with Friday-night history",
     "trigger": {
-      "merchant": "Steam",
+      "merchant": "Amazon",
       "keywords": [
-        "Purchase"
+        "Place your order"
       ],
-      "urlPattern": "store.steampowered.com/checkout"
+      "urlPattern": "amazon.co.uk/gp/buy"
     },
     "request": {
       "source": "watcher",
-      "merchant": "Steam",
-      "url": "https://store.steampowered.com/checkout/",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/",
       "items": [
         {
           "name": "Hollow Knight: Silksong",
@@ -3503,7 +3503,7 @@
       "cues": [
         {
           "key": "countdown",
-          "text": "-40% ends in 2 days"
+          "text": "Lightning deal ends in 2h 10m"
         },
         {
           "key": "sale",
@@ -3511,14 +3511,14 @@
         }
       ],
       "capturedAt": "2026-11-06T22:30:00+00:00",
-      "basketHash": "steam|hollow knight: silksong:3999|3999"
+      "basketHash": "amazon|hollow knight: silksong:3999|3999"
     },
     "response": {
       "id": "asm_scn_5",
       "createdAt": "2026-11-08T23:40:00+00:00",
       "source": "watcher",
-      "merchant": "Steam",
-      "url": "https://store.steampowered.com/checkout/",
+      "merchant": "Amazon",
+      "url": "https://www.amazon.co.uk/gp/buy/",
       "totalPence": 3999,
       "verdict": "nudge",
       "headline": "Friday after ten, and a sale timer.",
@@ -3556,7 +3556,7 @@
               "key": "pressure",
               "points": 9,
               "max": 10,
-              "text": "A countdown and a discount together"
+              "text": "A countdown asks for a quick decision."
             },
             {
               "key": "timing",
@@ -3604,22 +3604,22 @@
       "topFactors": [
         {
           "key": "timing",
-          "text": "Friday after 10pm: five for five regretted"
+          "text": "Friday after 10pm: 5 of 5 reviewed orders regretted."
         },
         {
           "key": "pressure",
-          "text": "The timer ends in two days, which is after Friday's shift anyway"
+          "text": "The countdown is a sales cue. Waiting until payday is still an option."
         },
         {
           "key": "money_strain",
-          "text": "£40 on a £30 fun limit"
+          "text": "£40 is above your £30 weekly fun limit."
         }
       ],
       "cues": [
         {
           "key": "countdown",
-          "text": "-40% ends in 2 days",
-          "note": "Steam sales come round every few weeks. The timer is there to make you decide tonight."
+          "text": "Lightning deal ends in 2h 10m",
+          "note": "The timer encourages a quick decision. It does not tell you whether this fits your plans."
         },
         {
           "key": "sale",
@@ -3640,7 +3640,7 @@
         }
       ],
       "reflectionDays": 7,
-      "reasoning": "Friday after 10pm is your worst window: all five purchases you made then were regrets, and Hades II on 16 October was this exact setup, sale timer included. £40 is £10 over the fun limit. The discount still has two days on it, and Friday's shift pays before it ends, so waiting costs nothing.",
+      "reasoning": "Your Friday-night order history and the countdown suggest pausing. The cash and category-limit figures show what this order changes. Waiting until payday is an option.",
       "timeline": [
         {
           "date": "2026-11-08",

@@ -122,3 +122,27 @@ assert rate(pay)>rate(reviewed)
 assert len(friday)>=4 and len(late)>=6 and regretted(late)>=4
 print(f'Extended fixtures: {len(ps)} purchases, {len(reviewed)} reviews, {len(history)} assessments; avoided {avoided}p')
 print('Report:',{k:report[k] for k in ['nudgesShown','heeded','overridden','overriddenHappy','overriddenRegretted','avoidedPence','limitsKept','limitsExceeded']})
+# Keep the starter scenario ID consumed by the existing checker/API, but align its
+# checkout surface with the current Amazon-only interface contract.
+scenarios=read('scenarios')
+s=next(s for s in scenarios if s['id']=='scn_5_steam')
+s['title']='An Amazon lightning deal with Friday-night history'
+s['trigger']={'merchant':'Amazon','keywords':['Place your order'],'urlPattern':'amazon.co.uk/gp/buy'}
+s['request'].update(merchant='Amazon',url='https://www.amazon.co.uk/gp/buy/',basketHash='amazon|hollow knight: silksong:3999|3999')
+s['request']['cues'][0]['text']='Lightning deal ends in 2h 10m'
+for response in [s['response']]+[v['response'] for v in s.get('variants',{}).values()]:
+ response['merchant']='Amazon';response['url']=s['request']['url']
+ response['topFactors']=[{'key':'timing','text':f'Friday after 10pm: {evidence(friday)}.'},{'key':'pressure','text':'The countdown is a sales cue. Waiting until payday is still an option.'},{'key':'money_strain','text':'£40 is above your £30 weekly fun limit.'}]
+ for cue in response['cues']:
+  if cue['key']=='countdown':cue['text']='Lightning deal ends in 2h 10m';cue['note']='The timer encourages a quick decision. It does not tell you whether this fits your plans.'
+ response['reasoning']='Your Friday-night order history and the countdown suggest pausing. The cash and category-limit figures show what this order changes. Waiting until payday is an option.'
+ for item in response['items']:
+  for factor in item['factors']:
+   if factor['key']=='pressure':factor['text']='A countdown asks for a quick decision.'
+write('scenarios',scenarios)
+# Extra transactions are deliberately not loaded into purchases at startup.
+import csv
+with (P/'feed-rows.csv').open('w',newline='') as f:
+ writer=csv.DictWriter(f,fieldnames=['externalId','date','merchant','description','amountPence','category']);writer.writeheader()
+ for i,(item,amount,category) in enumerate([('Nike Air Max 90',8500,'clothes'),('Cotton hoodie',4500,'clothes'),('Noise-cancelling headphones',5400,'tech'),('Phone case gift',3500,'accessories'),('Paracetamol',349,'health'),('Course reader',600,'books')]):
+  writer.writerow({'externalId':f'sam-demo-feed-{i+1:02d}','date':persona['demoNow'],'merchant':'Amazon','description':item,'amountPence':amount,'category':category})
