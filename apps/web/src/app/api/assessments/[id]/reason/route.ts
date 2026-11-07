@@ -18,6 +18,40 @@ export async function POST(req: Request, { params }: Params<"id">) {
     if (!text) return error("text is required", 400);
 
     // demo words are answered instantly and deterministically; everything else goes to Claude
+    // Replacement of something that broke: a duplicate stops being a duplicate.
+    const BROKE = /\b(broke|broken|died|dead|stopped working|snapped|lost|stolen|cracked|not working)\b/i;
+    if (current.items.some((i) => i.duplicateOf) && BROKE.test(text)) {
+      await new Promise((r) => setTimeout(r, 1500));
+      const before = current.regretRisk;
+      const total = current.items.reduce((sum, i) => sum + i.pricePence * i.qty, 0) || 1;
+      for (const it of current.items) {
+        if (!it.duplicateOf) continue;
+        const owned = it.duplicateOf.item;
+        delete it.duplicateOf;
+        it.regretRisk = 15;
+        it.factors = [
+          ...it.factors.filter((f) => f.key !== "duplicate" && f.key !== "reason"),
+          { key: "duplicate", points: 0, max: 15, text: `Your ${owned} broke, so this is a replacement, not a repeat` },
+          { key: "reason", points: -65, max: 0, text: `Your reason: ${text}` },
+        ];
+      }
+      current.regretRisk = Math.round(current.items.reduce((sum, i) => sum + i.regretRisk * i.pricePence * i.qty, 0) / total);
+      current.verdict = current.regretRisk >= 70 ? "strong_nudge" : current.regretRisk >= 40 ? "nudge" : "go_ahead";
+      current.headline = "Fair enough. A replacement for a broken pair is a sensible buy.";
+      current.spokenLine = current.headline;
+      current.topFactors = [
+        { key: "duplicate", text: "Your old pair broke, so this is a replacement, not a repeat" },
+        { key: "money_strain", text: "It's cheap against what's safe to spend before payday" },
+      ];
+      current.reason = {
+        text,
+        accepted: true,
+        adjustment: -(before - current.regretRisk),
+        verdictText: `Your old pair broke, so this is a replacement, not a repeat. Risk drops from ${before} to ${current.regretRisk}. The money picture is unchanged.`,
+      };
+      return json(putAssessment(current));
+    }
+
     const quick = quickReasonVerdict(text);
     if (quick) {
       // a beat of "thinking" so the instant answer reads as considered, not canned
