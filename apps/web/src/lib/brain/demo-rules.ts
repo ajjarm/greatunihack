@@ -68,9 +68,24 @@ const RULES: Rule[] = [
     },
     reflectionDays: 1,
   },
+  // Mobility and medical equipment: a need that costs real money. Essential prompt, honest strain.
+  {
+    test: /wheelchair|mobility (aid|scooter|equipment)|walking frame|rollator|crutch|hearing aid|blood pressure monitor|nebuliser|thermometer/i,
+    apply(item, a) {
+      item.necessity = 95;
+      item.necessityTag = "need";
+      item.necessityConfidence = "high";
+      if (item.essential === null) item.essentialPrompt = true;
+      item.regretRisk = Math.min(item.regretRisk, 28);
+      setFactor(item, "want_level", 0, 25, "Mobility equipment: a need, not a want");
+      const share = Math.round((item.pricePence / Math.max(1, a.impact.safeToSpendBeforePence)) * 100);
+      setFactor(item, "money_strain", 12, 15, `${pounds(item.pricePence)} is ${share}% of what's safe to spend before your shift pays, with rent on the 1st`);
+    },
+    reflectionDays: 30,
+  },
   // Watches: always high risk.
   {
-    test: /\bwatch\b|smartwatch|casio|garmin|fitbit|apple watch/i,
+    test: /\bwatch\b|smartwatch|casio|garmin|fitbit|apple watch|omega|swatch|speedmaster|moonswatch|rolex|seiko|timex/i,
     apply(item, a) {
       item.necessity = 18;
       item.necessityTag = "want";
@@ -136,26 +151,82 @@ export function applyDemoRules(store: StoreState, a: Assessment): Assessment {
       hitItem = item;
     }
   }
-  if (!hit || !hitItem) return a;
+  const anyRule = !!hit;
+  if (anyRule && hitItem) a.regretRisk = weightedRisk(a.items);
+  if (anyRule && hit && hitItem) {
+    const pendingEssential = a.items.some((i) => i.essentialPrompt && i.essential === null);
+    let verdict: Verdict = verdictFor(a.regretRisk, a.affordability, a.items);
+    if (pendingEssential && !a.items.some((i) => i.essential === true)) verdict = "nudge";
+    a.verdict = verdict;
 
-  a.regretRisk = weightedRisk(a.items);
-  const pendingEssential = a.items.some((i) => i.essentialPrompt && i.essential === null);
-  let verdict: Verdict = verdictFor(a.regretRisk, a.affordability, a.items);
-  if (pendingEssential && !a.items.some((i) => i.essential === true)) verdict = "nudge";
-  a.verdict = verdict;
+    if (pendingEssential && verdict === "nudge") a.headline = "Looks essential. Is it?";
+    else if (verdict === "go_ahead") a.headline = headlineFor("go_ahead", a);
+    else if (hit.headline && verdict !== "essential_cover") a.headline = hit.headline(a);
 
-  if (pendingEssential && verdict === "nudge") a.headline = "Looks essential. Is it?";
-  else if (verdict === "go_ahead") a.headline = headlineFor("go_ahead", a);
-  else if (hit.headline && verdict !== "essential_cover") a.headline = hit.headline(a);
+    // Top factors: the pinned item's strongest factors first.
+    const strongest = [...hitItem.factors].sort((x, y) => y.points / Math.max(1, y.max) - x.points / Math.max(1, x.max)).slice(0, 3);
+    a.topFactors = strongest.map((f) => ({ key: f.key, text: f.text }));
+    if (hit.reflectionDays) a.reflectionDays = hit.reflectionDays;
+    a.spokenLine = a.headline;
+  }
 
-  // Top factors: the pinned item's strongest factors first.
-  const strongest = [...hitItem.factors].sort((x, y) => y.points / Math.max(1, y.max) - x.points / Math.max(1, x.max)).slice(0, 3);
-  a.topFactors = strongest.map((f) => ({ key: f.key, text: f.text }));
-  if (hit.reflectionDays) a.reflectionDays = hit.reflectionDays;
-  a.spokenLine = a.headline;
+  // Negotiation beat: in a basket of several items, the one expensive piece (≥ £50 and more than
+  // twice the next price) is the impulse; it carries the risk and is the first thing to drop.
+  if (a.items.length >= 2) {
+    const sorted = [...a.items].sort((x, y) => y.pricePence - x.pricePence);
+    const big = sorted[0];
+    const next = sorted[1];
+    if (big.pricePence >= 5000 && big.pricePence >= next.pricePence * 2 && big.necessityTag !== "need" && big.essential !== true) {
+      const short = big.name.replace(/^the\s+/i, "").split(" ").slice(0, 3).join(" ");
+      big.necessity = Math.min(big.necessity, 25);
+      big.necessityTag = "want";
+      big.essentialPrompt = false;
+      big.regretRisk = Math.max(big.regretRisk, 90);
+      // A clothes/wants basket: nothing in it is a need unless the user says so.
+      for (const it of a.items) {
+        if (it.essential !== true) {
+          it.necessity = Math.min(it.necessity, 55);
+          if (it.necessityTag === "need") it.necessityTag = "useful";
+          it.essentialPrompt = false;
+        }
+      }
+      setFactor(big, "want_level", 25, 25, `${pounds(big.pricePence)} on one piece is the impulse in this basket`);
+      setFactor(big, "money_strain", 13, 15, `${pounds(big.pricePence)} is most of this basket and ${Math.round((big.pricePence / Math.max(1, a.impact.safeToSpendBeforePence)) * 100)}% of what's safe to spend before payday`);
+      for (const it of a.items) if (it !== big && it.essential !== true) it.regretRisk = Math.min(it.regretRisk, 30);
+      a.regretRisk = weightedRisk(a.items);
+      a.verdict = verdictFor(a.regretRisk, a.affordability, a.items);
+      if (a.verdict === "strong_nudge" || a.verdict === "nudge") a.headline = `The ${short} is the impulse here.`;
+      const rest = a.items.filter((i) => i !== big);
+      const restTotal = rest.reduce((sum, i) => sum + i.pricePence * i.qty, 0);
+      const resultRisk = rest.length ? weightedRisk(rest) : 0;
+      const resultSafe = a.impact.safeToSpendBeforePence - restTotal;
+      const resultVerdict: Verdict = verdictFor(resultRisk, a.affordability, rest);
+      a.negotiation = [
+        {
+          id: "demo_drop_big",
+          action: "drop" as const,
+          itemIndex: big.index,
+          text: `Drop the ${short} and keep the rest for ${pounds(restTotal)}`,
+          resultRegretRisk: resultRisk,
+          resultSafeToSpendAfterPence: resultSafe,
+          resultVerdict,
+        },
+        ...a.negotiation.filter((n) => !(n.action === "drop" && n.itemIndex === big.index)),
+      ].slice(0, 3);
+      a.topFactors = [
+        { key: "want_level" as FactorKey, text: `${pounds(big.pricePence)} on one piece is the impulse in this basket` },
+        ...a.topFactors.filter((f) => f.key !== "want_level"),
+      ].slice(0, 3);
+      a.spokenLine = a.headline;
+      a.reasoning = a.reasoning.includes("(demo rule") ? a.reasoning : `(demo rule: basket) ${a.reasoning}`;
+      hit = hit ?? RULES[0];
+      hitItem = hitItem ?? big;
+    }
+  }
 
   // A high-risk single item with no negotiation gets a "wait until payday" option.
-  if (verdict === "strong_nudge" && a.negotiation.length === 0) {
+  if (!hit || !hitItem) return a;
+  if (a.verdict === "strong_nudge" && a.negotiation.length === 0) {
     const inc = nextIncome(store.persona);
     a.negotiation.push({
       id: "demo_delay_payday",

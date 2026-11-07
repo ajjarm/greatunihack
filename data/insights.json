@@ -34,6 +34,21 @@
       "key": "calibration",
       "text": "I'm 81% tuned to you, up from 64% a month ago.",
       "evidence": "Prepared demo calibration: accessories 81%, clothes 78%, books 90%"
+    },
+    {
+      "key": "late_tech",
+      "text": "Tech and accessories after 11pm are your blind spot: every late-night one you reviewed was a regret. The Sony headphones you kept were a 10am buy.",
+      "evidence": "3 reviewed late-night tech and accessory purchases, 3 regretted; p_08 Sony WH-CH520 bought 22 Sep at 10:15, happy"
+    },
+    {
+      "key": "essentials",
+      "text": "Books and travel never come back as regrets. Needs are not your problem; wants after dark are.",
+      "evidence": "books 0 of 3 regretted, transport 0 of 1"
+    },
+    {
+      "key": "waiting",
+      "text": "You have paused four baskets this month and have not bought any of them yet. Sleeping on it works for you.",
+      "evidence": "4 'wait' decisions in the last 30 days, 0 later purchases"
     }
   ],
   "regretByCategory": [

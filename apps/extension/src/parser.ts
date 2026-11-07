@@ -41,7 +41,7 @@ const DELIVERY_FREE_RE = /^(postage(\s*(&|and)\s*packing)?|p\s*&\s*p|delivery|sh
 const SUMMARY_LABEL_RE =
   /^(items?(\s*\(\d+\))?|item\(s\)|subtotal|sub-total|total before vat|estimated vat|vat|total|promotions?( applied)?|discount|gift cards?|you saved?|savings|import fees deposit)\s*(subtotal)?\s*:?$/i;
 const TITLE_JUNK_RE =
-  /^(qty|quantity|delivery|arriving|dispatch|sold by|gift|change|remove|delete|save for later|free|in stock|eligible|prime|order summary|items?\s*:?$|postage|order total|subtotal|total|£)/i;
+  /^(qty|quantity|delivery|arriving|dispatch|sold by|gift|change|remove|delete|save for later|free|in stock|eligible|prime|order summary|items?\s*:?$|postage|order total|subtotal|total|£|rrp|was\b|new price|list price|typical price|lowest price|save \d|deal|sponsored|limited time|\(?\d[\d.,]*k?\)?$)/i;
 const QTY_RE = /\b(?:qty|quantity)\s*:?\s*(\d{1,3})\b/i;
 const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEMPLATE", "HEAD", "IFRAME", "SVG", "OPTION"]);
 
@@ -90,9 +90,14 @@ function hasOwnText(el: Element): boolean {
   return false;
 }
 
+const EXCLUDE_REGIONS =
+  ".a-carousel, [data-a-carousel-options], #rhf, #rhf-container, [id^='sims'], [cel_widget_id*='sims'], [cel_widget_id*='recommend'], #nav-belt, #nav-main, #navbar, #navFooter, footer, #sc-recommendations, .sc-rec-carousel";
+
 function allElements(doc: Document): Element[] {
   if (!doc.body) return [];
-  return Array.from(doc.body.querySelectorAll("*")).filter((el) => !SKIP_TAGS.has(el.tagName.toUpperCase()) && !el.closest("script,style,noscript,template,svg"));
+  return Array.from(doc.body.querySelectorAll("*")).filter(
+    (el) => !SKIP_TAGS.has(el.tagName.toUpperCase()) && !el.closest("script,style,noscript,template,svg") && !el.closest(EXCLUDE_REGIONS),
+  );
 }
 
 function isCueText(t: string): boolean {
@@ -351,7 +356,81 @@ function isAmazonBasketUrl(url: string): boolean {
   return /amazon\.[a-z.]+\/(cart|gp\/cart|gp\/aw\/c|gp\/buy|checkout)/i.test(url);
 }
 
+
+/** Demo products pinned by ASIN: the name is what the scorer keys on; the price is a fallback
+ *  when the page price cannot be read. */
+export const DEMO_PRODUCTS: Record<string, { name: string; pricePence: number }> = {
+  B0CM4MLRMQ: { name: "Omega x Swatch MoonSwatch Mission to the Moon watch", pricePence: 26000 },
+  B0BTJD6LCL: { name: "Sony WH-CH520 Wireless Bluetooth Headphones, Black", pricePence: 3999 },
+  B0CWRYJ6T7: { name: "Lightweight folding wheelchair, free mobility equipment", pricePence: 15999 },
+};
+
+export function asinFromUrl(url: string): string | null {
+  const m = /\/(?:dp|gp\/product)\/([A-Z0-9]{10})(?:[/?#]|$)/i.exec(url);
+  return m ? m[1].toUpperCase() : null;
+}
+
+const PRODUCT_PRICE_SELECTORS =
+  "#corePrice_feature_div .a-offscreen, #corePriceDisplay_desktop_feature_div .priceToPay .a-offscreen, #corePriceDisplay_desktop_feature_div .a-offscreen, .priceToPay .a-offscreen, #price_inside_buybox, #priceblock_ourprice, #priceblock_dealprice, #apex_desktop .a-offscreen";
+
+/** A product page is a one-item basket: the title plus the page price (or the demo table). */
+export function parseProductPage(doc: Document, url: string): ParsedCheckout | null {
+  const asin = asinFromUrl(url);
+  if (!asin) return null;
+  const known = DEMO_PRODUCTS[asin];
+  const titleEl = doc.querySelector("#productTitle, #title");
+  const title = titleEl ? norm(titleEl.textContent ?? "") : "";
+  let pagePrice: number | null = null;
+  for (const el of Array.from(doc.querySelectorAll(PRODUCT_PRICE_SELECTORS))) {
+    const p = parsePence(el.textContent ?? "");
+    if (p != null && p > 0) {
+      pagePrice = p;
+      break;
+    }
+  }
+  const name = known?.name ?? title;
+  const pricePence = pagePrice ?? known?.pricePence ?? null;
+  if (!name || pricePence == null) return null;
+  const items: BasketItem[] = [{ name, pricePence, qty: 1 }];
+  return {
+    isCheckout: true,
+    hasOrderButton: true,
+    hasSummary: true,
+    merchant: MERCHANT,
+    url,
+    items,
+    deliveryPence: 0,
+    totalPence: pricePence,
+    cues: findCues(visibleLines(doc)),
+    basketHash: `amazon|${asin}|${pricePence}`,
+  };
+}
+
+/** Real basket rows on Amazon's cart page, ignoring recommendation carousels. */
+function amazonCartRows(doc: Document): BasketItem[] {
+  const rows = Array.from(
+    doc.querySelectorAll('#sc-active-cart [data-asin], [data-name="Active Items"] [data-asin], .sc-list-item[data-asin], #activeCartViewForm [data-asin]'),
+  ).filter((r) => !r.closest(EXCLUDE_REGIONS));
+  const out: BasketItem[] = [];
+  const seen = new Set<string>();
+  for (const row of rows) {
+    const titleEl = row.querySelector(".sc-product-title, a.sc-product-link, .a-truncate-full, .a-truncate-cut, a[href*='/dp/']");
+    const name = norm(titleEl?.textContent ?? "");
+    if (name.length < 6 || seen.has(name.toLowerCase())) continue;
+    const priceEl = row.querySelector(".sc-product-price, .sc-item-price-block .a-offscreen, .a-price .a-offscreen, .sc-price");
+    const pricePence = parsePence(priceEl?.textContent ?? "") ?? 0;
+    const qtyEl = row.querySelector("select[name^='quantity'], input.sc-quantity-textfield, [data-a-selector='value']") as HTMLSelectElement | HTMLInputElement | HTMLElement | null;
+    const qtyText = qtyEl ? ("value" in qtyEl ? String(qtyEl.value) : qtyEl.textContent ?? "") : "";
+    const qty = Math.max(1, parseInt(qtyText || "1", 10) || 1);
+    seen.add(name.toLowerCase());
+    out.push({ name, pricePence, qty });
+  }
+  return out;
+}
+
 export function parseCheckout(doc: Document, url: string): ParsedCheckout {
+  const product = parseProductPage(doc, url);
+  if (product) return product;
   const els = allElements(doc);
   const button = findOrderButton(doc);
   const prices = priceElements(doc, els);
@@ -370,9 +449,12 @@ export function parseCheckout(doc: Document, url: string): ParsedCheckout {
     seen.add(key);
     items.push(it);
   }
+  const cartRows = amazonCartRows(doc);
+  if (cartRows.length) items = cartRows;
   const lines = visibleLines(doc);
   if (items.length === 0) items = itemsFromLines(lines);
   if (items.length === 0) items = amazonItems(doc, totalPence);
+  items = items.slice(0, 12);
   if (items.length === 0 && totalPence != null && isAmazonBasketUrl(url)) {
     items = [{ name: "Your Amazon basket", pricePence: totalPence, qty: 1 }];
   }
