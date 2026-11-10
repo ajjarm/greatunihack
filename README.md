@@ -1,4 +1,4 @@
-# [name TBD] — Great Uni Hack 2026, BNY track
+# SecondThought — Great Uni Hack 2026, BNY track
 
 > Unlike budgeting apps that tell you what you spent last month, it steps in at the
 > checkout, knows what your rent and payday do to this purchase, and tells you what to
